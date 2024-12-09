@@ -80,7 +80,7 @@ def generate_html(papers, output_file='index.html'):
         file.write(rendered_html)
 
 # Processing DOIs
-dois = [preprocess_doi(doi) for doi in open('doi.txt').read().splitlines()]
+dois = [preprocess_doi(doi) for doi in open('list.txt').read().splitlines()]
 papers = []
 
 # Archive names 

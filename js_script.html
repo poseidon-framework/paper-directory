@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Directory Check</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Paper Directory Check</h1>
+    <form id="doiForm">
+        <label for="dois">Enter DOIs (comma-separated):</label><br>
+        <input type="text" id="dois" placeholder="e.g., 10.1038/nature12373, 10.1126/science.1243731"><br>
+        <button type="button" id="checkButton">Check</button>
+    </form>
+
+    <div id="results">
+        <h2>Results:</h2>
+        <table id="resultsTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>DOI</th>
+                    <th>Title</th>
+                    <th>Community Archive</th>
+                    <th>AADR Archive</th>
+                    <th>Minotaur Archive</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        const crossrefApiBase = "https://api.crossref.org/works/";
+        const poseidonApiBase = "https://server.poseidon-adna.org/packages";
+
+        // Fetch paper title using CrossRef API
+        async function getPaperTitle(doi) {
+            try {
+                const response = await fetch(`${crossrefApiBase}${doi}`);
+                if (!response.ok) throw new Error('Failed to fetch CrossRef data');
+                const data = await response.json();
+                return data.message.title[0];
+            } catch (error) {
+                console.error(`Error fetching title for DOI ${doi}:`, error);
+                return null;
+            }
+        }
+
+        // Fetch Poseidon packages for a specific archive
+        async function fetchPoseidonPackages(archiveName) {
+            try {
+                const response = await fetch(`${poseidonApiBase}?archive=${archiveName}`);
+                if (!response.ok) throw new Error('Failed to fetch Poseidon data');
+                const data = await response.json();
+                return data.serverResponse.packageInfo || [];
+            } catch (error) {
+                console.error(`Error fetching packages for archive ${archiveName}:`, error);
+                return [];
+            }
+        }
+
+        // Clean description from Poseidon package info
+        function cleanDescription(description) {
+            return description.split('.')[0] + '.';
+        }
+
+        // Check if a paper title matches any package description
+        function isPaperInArchive(title, packageInfoList) {
+            return packageInfoList.some(pkg =>
+                title.toLowerCase().includes(cleanDescription(pkg.description).toLowerCase())
+            );
+        }
+
+        // Handle form submission
+        document.getElementById('checkButton').addEventListener('click', async () => {
+            const doiInput = document.getElementById('dois').value;
+            if (!doiInput.trim()) {
+                alert('Please enter at least one DOI.');
+                return;
+            }
+
+            const dois = doiInput.split(',').map(doi => doi.trim());
+            const communityPackages = await fetchPoseidonPackages('community-archive');
+            const aadrPackages = await fetchPoseidonPackages('aadr-archive');
+            const minotaurPackages = await fetchPoseidonPackages('minotaur-archive');
+
+            const resultsTable = document.getElementById('resultsTable');
+            const tbody = resultsTable.querySelector('tbody');
+            tbody.innerHTML = '';
+
+            for (const doi of dois) {
+                const title = await getPaperTitle(doi);
+                if (title) {
+                    const communityArchive = isPaperInArchive(title, communityPackages);
+                    const aadrArchive = isPaperInArchive(title, aadrPackages);
+                    const minotaurArchive = isPaperInArchive(title, minotaurPackages);
+
+                    const row = `<tr>
+                        <td>${doi}</td>
+                        <td>${title}</td>
+                        <td>${communityArchive ? '✔' : '✘'}</td>
+                        <td>${aadrArchive ? '✔' : '✘'}</td>
+                        <td>${minotaurArchive ? '✔' : '✘'}</td>
+                    </tr>`;
+                    tbody.insertAdjacentHTML('beforeend', row);
+                } else {
+                    console.warn(`Title not found for DOI ${doi}`);
+                }
+            }
+
+            resultsTable.style.display = 'table';
+        });
+    </script>
+</body>
+</html>
+
