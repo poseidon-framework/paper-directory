@@ -1,41 +1,35 @@
 import requests
 from jinja2 import Template
+from collections import defaultdict
 
-# get metadata using CrossRef API
-def get_paper_title(doi):
-    url = f"https://api.crossref.org/works/{doi}"
+# Fetch bibliography info from archives
+def fetch_poseidon_bibliography(archive_name):
+    url = f"http://server.poseidon-adna.org:3000/bibliography?archive={archive_name}"
     response = requests.get(url)
     if response.status_code == 200:
-        metadata = response.json()
-        return metadata['message']['title'][0]  # Extracting the paper title
-    return None
-
-# fetch package info from Poseidon API
-def fetch_poseidon_packages(archive_name):
-    url = f"https://server.poseidon-adna.org/packages?archive={archive_name}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json().get("serverResponse", {}).get("packageInfo", [])
+        return response.json().get("serverResponse", {}).get("bibEntries", [])
     return []
 
-# parse the package description
-def clean_description(description):
-    return description.split('.')[0] + '.'  # Remove the part after the first full stop
+# Load all bibliographies into a single structure
+def load_all_bibliographies():
+    archives = ["community-archive", "minotaur-archive", "aadr-archive"]
+    archive_doi_map = defaultdict(dict)  # Map DOI to archive set and title
+    for archive in archives:
+        entries = fetch_poseidon_bibliography(archive)
+        for entry in entries:
+            doi = entry.get("bibDoi")
+            title = entry.get("bibTitle", "No Title Available")
+            if doi:  # Ignore entries without DOIs
+                if doi.lower() not in archive_doi_map:
+                    archive_doi_map[doi.lower()] = {'archives': set(), 'title': title}
+                archive_doi_map[doi.lower()]['archives'].add(archive)
+    return archive_doi_map
 
-# check if a title description
-def check_paper_in_archive(paper_title, package_info_list):
-    for package in package_info_list:
-        cleaned_description = clean_description(package['description'])
-        if paper_title.lower() in cleaned_description.lower():
-            return True  # Paper title matches the cleaned description
-    return False
-
-# Preprocess DOIs 
+# Preprocess DOIs
 def preprocess_doi(doi):
-    # Remove 'https://doi.org/' prefix
-    return doi.replace("https://doi.org/", "").strip()
+    return doi.replace("https://doi.org/", "").strip().lower()
 
-# generate HTML from inline template
+# Generate HTML into an inline template
 def generate_html(papers, output_file='index.html'):
     html_template = """
     <!DOCTYPE html>
@@ -48,11 +42,52 @@ def generate_html(papers, output_file='index.html'):
             table { width: 100%; border-collapse: collapse; }
             th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
             th { background-color: #f2f2f2; }
+            select { margin: 5px; }
         </style>
+        <script>
+            function filterColumn(columnIndex, filterValue) {
+                const table = document.getElementById('paperTable');
+                const rows = table.getElementsByTagName('tr');
+                for (let i = 1; i < rows.length; i++) {
+                    const cell = rows[i].getElementsByTagName('td')[columnIndex];
+                    if (cell) {
+                        const cellText = cell.textContent.trim();
+                        rows[i].style.display = (filterValue === 'all' || cellText === filterValue) ? '' : 'none';
+                    }
+                }
+            }
+            function resetFilters() {
+                const rows = document.getElementById('paperTable').getElementsByTagName('tr');
+                for (let i = 1; i < rows.length; i++) {
+                    rows[i].style.display = '';
+                }
+            }
+        </script>
     </head>
     <body>
         <h1>Paper Directory</h1>
-        <table>
+        <div>
+            <label for="communityFilter">Community Archive:</label>
+            <select id="communityFilter" onchange="filterColumn(2, this.value)">
+                <option value="all">All</option>
+                <option value="✔">✔</option>
+                <option value="✘">✘</option>
+            </select>
+            <label for="aadrFilter">AADR Archive:</label>
+            <select id="aadrFilter" onchange="filterColumn(3, this.value)">
+                <option value="all">All</option>
+                <option value="✔">✔</option>
+                <option value="✘">✘</option>
+            </select>
+            <label for="minotaurFilter">Minotaur Archive:</label>
+            <select id="minotaurFilter" onchange="filterColumn(4, this.value)">
+                <option value="all">All</option>
+                <option value="✔">✔</option>
+                <option value="✘">✘</option>
+            </select>
+            <button onclick="resetFilters()">Reset Filters</button>
+        </div>
+        <table id="paperTable">
             <tr>
                 <th>DOI</th>
                 <th>Title</th>
@@ -64,9 +99,9 @@ def generate_html(papers, output_file='index.html'):
             <tr>
                 <td>{{ paper.doi }}</td>
                 <td>{{ paper.title }}</td>
-                <td>{{ '✔' if paper.community_archive else '✘' }}</td>
-                <td>{{ '✔' if paper.aadr_archive else '✘' }}</td>
-                <td>{{ '✔' if paper.minotaur_archive else '✘' }}</td>
+                <td>{{ '✔' if 'community-archive' in paper.archives else '✘' }}</td>
+                <td>{{ '✔' if 'aadr-archive' in paper.archives else '✘' }}</td>
+                <td>{{ '✔' if 'minotaur-archive' in paper.archives else '✘' }}</td>
             </tr>
             {% endfor %}
         </table>
@@ -79,38 +114,25 @@ def generate_html(papers, output_file='index.html'):
     with open(output_file, 'w') as file:
         file.write(rendered_html)
 
-# Processing DOIs
+# Process input DOIs
 dois = [preprocess_doi(doi) for doi in open('list.txt').read().splitlines()]
+
+# Load all bibliography data
+archive_doi_map = load_all_bibliographies()
+
+# Check each DOIs
 papers = []
-
-# Archive names 
-archives = {
-    'community': 'community-archive',
-    'minotaur': 'minotaur-archive',
-    'aadr': 'aadr-archive'
-}
-
-# Fetch package info for all archives
-package_info_by_archive = {
-    archive: fetch_poseidon_packages(archives[archive])
-    for archive in archives
-}
-
-# Processing DOIs and check if they are in archives
 for doi in dois:
-    paper_title = get_paper_title(doi)
-    if paper_title:
-        paper = {
-            'doi': doi,
-            'title': paper_title,
-            'community_archive': check_paper_in_archive(paper_title, package_info_by_archive['community']),
-            'aadr_archive': check_paper_in_archive(paper_title, package_info_by_archive['aadr']),
-            'minotaur_archive': check_paper_in_archive(paper_title, package_info_by_archive['minotaur'])
-        }
-        papers.append(paper)
+    data = archive_doi_map.get(doi, {'archives': set(), 'title': 'No Title Available'})
+    paper = {
+        'doi': doi,
+        'title': data['title'],
+        'archives': data['archives']
+    }
+    papers.append(paper)
 
-# Sorting papers by title 
-papers.sort(key=lambda x: x['title'])
+# Sort papers by DOI
+papers.sort(key=lambda x: x['doi'])
 
 # Generate the HTML table
 generate_html(papers)
