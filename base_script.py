@@ -169,7 +169,7 @@ def generate_html(papers, output_file="index.html"):
     with open(output_file, "w") as file:
         file.write(rendered_html)
 
-#Read and parse input
+#Read and parse input DOIs
 dois = [preprocess_doi(doi) for doi in open("list.txt").read().splitlines()]
 
 # Get CrossRef metadata
