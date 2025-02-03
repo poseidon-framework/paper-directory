@@ -85,7 +85,7 @@ def generate_html(papers, output_file="index.html"):
             table { width: 100%; border-collapse: collapse; }
             th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
             th { background-color: #f2f2f2; }
-            select { margin: 5px; }
+            select, input { margin: 5px; padding: 5px; }
         </style>
         <script>
             function filterColumn(columnIndex, filterValue) {
@@ -101,19 +101,39 @@ def generate_html(papers, output_file="index.html"):
             }
 
             function resetFilters() {
-                const rows = document.getElementById('paperTable').getElementsByTagName('tr');
-                for (let i = 1; i < rows.length; i++) {
-                    rows[i].style.display = '';  // Show all rows
-                }
+                document.getElementById('searchInput').value = "";
                 document.getElementById('communityFilter').value = 'all';
                 document.getElementById('aadrFilter').value = 'all';
                 document.getElementById('minotaurFilter').value = 'all';
+                filterTable();  // Reset search filter too
+                const rows = document.getElementById('paperTable').getElementsByTagName('tr');
+                for (let i = 1; i < rows.length; i++) {
+                    rows[i].style.display = '';
+                }
+            }
+
+            function filterTable() {
+                let input = document.getElementById("searchInput");
+                let filter = input.value.toLowerCase();
+                let table = document.getElementById("paperTable");
+                let rows = table.getElementsByTagName("tr");
+
+                for (let i = 1; i < rows.length; i++) {
+                    let titleCell = rows[i].getElementsByTagName("td")[1]; // Column index for Title
+                    if (titleCell) {
+                        let titleText = titleCell.textContent || titleCell.innerText;
+                        rows[i].style.display = titleText.toLowerCase().includes(filter) ? "" : "none";
+                    }
+                }
             }
         </script>
     </head>
     <body>
         <h1>Paper Directory</h1>
         <div>
+            <label for="searchInput">Search Title:</label>
+            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search...">
+            
             <label for="communityFilter">Community Archive:</label>
             <select id="communityFilter" onchange="filterColumn(6, this.value)">
                 <option value="all">All</option>
@@ -169,6 +189,7 @@ def generate_html(papers, output_file="index.html"):
     with open(output_file, "w") as file:
         file.write(rendered_html)
 
+
 #Read and parse input DOIs
 dois = [preprocess_doi(doi) for doi in open("list.txt").read().splitlines()]
 
@@ -196,7 +217,7 @@ for doi in dois:
     }
     papers.append(paper)
 
-# Sort papers by year (descending)
+# Sort papers by year 
 papers.sort(key=lambda x: int(x["year"]), reverse=True)
 
 # Generate HTML report
