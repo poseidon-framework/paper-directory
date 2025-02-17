@@ -1,4 +1,4 @@
-
+ 
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -29,7 +29,7 @@
                 document.getElementById('communityFilter').value = 'all';
                 document.getElementById('aadrFilter').value = 'all';
                 document.getElementById('minotaurFilter').value = 'all';
-                filterTable();  // Reset search filter too
+                filterTable();
                 const rows = document.getElementById('paperTable').getElementsByTagName('tr');
                 for (let i = 1; i < rows.length; i++) {
                     rows[i].style.display = '';
@@ -43,7 +43,7 @@
                 let rows = table.getElementsByTagName("tr");
 
                 for (let i = 1; i < rows.length; i++) {
-                    let titleCell = rows[i].getElementsByTagName("td")[1]; // Column index for Title
+                    let titleCell = rows[i].getElementsByTagName("td")[1];
                     if (titleCell) {
                         let titleText = titleCell.textContent || titleCell.innerText;
                         rows[i].style.display = titleText.toLowerCase().includes(filter) ? "" : "none";
@@ -54,30 +54,7 @@
     </head>
     <body>
         <h1>Paper Directory</h1>
-        <div>
-            <label for="searchInput">Search Title:</label>
-            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search...">
-            
-            <label for="communityFilter">Community Archive:</label>
-            <select id="communityFilter" onchange="filterColumn(6, this.value)">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <label for="aadrFilter">AADR Archive:</label>
-            <select id="aadrFilter" onchange="filterColumn(7, this.value)">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <label for="minotaurFilter">Minotaur Archive:</label>
-            <select id="minotaurFilter" onchange="filterColumn(8, this.value)">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <button onclick="resetFilters()">Reset Filters</button>
-        </div>
+        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search Title...">
         <table id="paperTable">
             <tr>
                 <th>DOI</th>
@@ -122,7 +99,7 @@
                 <td>Current Biology</td>
                 <td>Sanni Peltola</td>
                 <td>2022-12-12</td>
-                <td>✘</td>
+                <td>✔</td>
                 <td>✘</td>
                 <td>✔</td>
             </tr>
@@ -196,7 +173,7 @@
                 <td>2021-04-15</td>
                 <td>✔</td>
                 <td>✔</td>
-                <td>✘</td>
+                <td>✔</td>
             </tr>
             
             <tr>
@@ -388,7 +365,7 @@
                 <td>Scientific Reports</td>
                 <td>Suzanne Freilich</td>
                 <td>2021-08-18</td>
-                <td>✘</td>
+                <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
             </tr>
@@ -570,7 +547,7 @@
                 <td>2020-06-04</td>
                 <td>✔</td>
                 <td>✔</td>
-                <td>✘</td>
+                <td>✔</td>
             </tr>
             
             <tr>
