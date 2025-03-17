@@ -2,6 +2,7 @@ import requests
 from jinja2 import Template
 from collections import defaultdict
 from datetime import datetime
+import sys
 
 # Retrieve metadata from CrossRef API ---
 def get_crossref_metadata(doi, index, total):
@@ -38,7 +39,8 @@ def get_crossref_metadata(doi, index, total):
             "first_author_lastname": first_author_lastname,
             "doi_link": f"https://doi.org/{doi}",
         }
-
+    
+    sys.stderr.write(f"Warning!! Failed to fetch metadata for DOI: {doi}\n")  
     return {
         "title": "No Title Available",
         "year": 0,
@@ -77,17 +79,23 @@ def preprocess_doi(doi):
 # Check for duplicate DOIs 
 def check_for_duplicates(dois):
     seen = set()
+    unique_dois = []
     duplicates = []
+
     for doi in dois:
         if doi in seen:
-            duplicates.append(doi)
-        seen.add(doi)
-    
+            duplicates.append(doi)  # Store duplicate for logging
+        else:
+            seen.add(doi)
+            unique_dois.append(doi)  # Keep only unique DOIs
+
     if duplicates:
-        print("\n⚠️ WARNING: Duplicate DOIs found:")
+        print("\n WARNING: Duplicate DOIs found and removed:")
         for duplicate in duplicates:
             print(f"- {duplicate}")
-        print("\nPlease remove duplicates from input.txt to avoid redundant queries.\n")
+        print("\nProceeding with a cleaned DOI list.\n")
+
+    return unique_dois  # Return unique dois
 
 # Generate index.html
 def generate_html(papers, output_file="index.html"):
@@ -106,14 +114,40 @@ def generate_html(papers, output_file="index.html"):
             select, input { margin: 5px; padding: 5px; }
         </style>
         <script>
-            function filterColumn(columnIndex, filterValue) {
-                const table = document.getElementById('paperTable');
-                const rows = table.getElementsByTagName('tr');
+            function filterTable() {
+                let input = document.getElementById("searchInput").value.toLowerCase();
+                let communityFilter = document.getElementById("communityFilter").value;
+                let aadrFilter = document.getElementById("aadrFilter").value;
+                let minotaurFilter = document.getElementById("minotaurFilter").value;
+
+                let table = document.getElementById("paperTable");
+                let rows = table.getElementsByTagName("tr");
+
                 for (let i = 1; i < rows.length; i++) {
-                    const cell = rows[i].getElementsByTagName('td')[columnIndex];
-                    if (cell) {
-                        const cellText = cell.textContent.trim();
-                        rows[i].style.display = (filterValue === 'all' || cellText === filterValue) ? '' : 'none';
+                    let titleCell = rows[i].getElementsByTagName("td")[1]; // Title column
+                    let authorCell = rows[i].getElementsByTagName("td")[4]; // Author column
+                    let communityCell = rows[i].getElementsByTagName("td")[6]; // Community Archive column
+                    let aadrCell = rows[i].getElementsByTagName("td")[7]; // AADR Archive column
+                    let minotaurCell = rows[i].getElementsByTagName("td")[8]; // Minotaur Archive column
+
+                    if (titleCell && authorCell && communityCell && aadrCell && minotaurCell) {
+                        let titleText = titleCell.textContent.toLowerCase();
+                        let authorText = authorCell.textContent.toLowerCase();
+                        let communityText = communityCell.textContent.trim();
+                        let aadrText = aadrCell.textContent.trim();
+                        let minotaurText = minotaurCell.textContent.trim();
+
+                        // Apply search filter (title or author must match)
+                        let matchesSearch = titleText.includes(input) || authorText.includes(input);
+
+                        // Apply archive filters using logical AND
+                        let matchesFilters =
+                            (communityFilter === "all" || (communityFilter === "✔" && communityText === "✔") || (communityFilter === "✘" && communityText === "✘")) &&
+                            (aadrFilter === "all" || (aadrFilter === "✔" && aadrText === "✔") || (aadrFilter === "✘" && aadrText === "✘")) &&
+                            (minotaurFilter === "all" || (minotaurFilter === "✔" && minotaurText === "✔") || (minotaurFilter === "✘" && minotaurText === "✘"));
+
+                        // Show or hide row based on both search and filter conditions
+                        rows[i].style.display = (matchesSearch && matchesFilters) ? "" : "none";
                     }
                 }
             }
@@ -124,25 +158,6 @@ def generate_html(papers, output_file="index.html"):
                 document.getElementById('aadrFilter').value = 'all';
                 document.getElementById('minotaurFilter').value = 'all';
                 filterTable();
-                const rows = document.getElementById('paperTable').getElementsByTagName('tr');
-                for (let i = 1; i < rows.length; i++) {
-                    rows[i].style.display = '';
-                }
-            }
-
-            function filterTable() {
-                let input = document.getElementById("searchInput");
-                let filter = input.value.toLowerCase();
-                let table = document.getElementById("paperTable");
-                let rows = table.getElementsByTagName("tr");
-
-                for (let i = 1; i < rows.length; i++) {
-                    let titleCell = rows[i].getElementsByTagName("td")[1];
-                    if (titleCell) {
-                        let titleText = titleCell.textContent || titleCell.innerText;
-                        rows[i].style.display = titleText.toLowerCase().includes(filter) ? "" : "none";
-                    }
-                }
             }
         </script>
     </head>
@@ -150,23 +165,23 @@ def generate_html(papers, output_file="index.html"):
         <h1>Paper Directory</h1>
         
         <div>
-            <label for="searchInput">Search Title:</label>
+            <label for="searchInput">Search Title or Author:</label>
             <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search...">
             
             <label for="communityFilter">Community Archive:</label>
-            <select id="communityFilter" onchange="filterColumn(6, this.value)">
+            <select id="communityFilter" onchange="filterTable()">
                 <option value="all">All</option>
                 <option value="✔">✔</option>
                 <option value="✘">✘</option>
             </select>
             <label for="aadrFilter">AADR Archive:</label>
-            <select id="aadrFilter" onchange="filterColumn(7, this.value)">
+            <select id="aadrFilter" onchange="filterTable()">
                 <option value="all">All</option>
                 <option value="✔">✔</option>
                 <option value="✘">✘</option>
             </select>
             <label for="minotaurFilter">Minotaur Archive:</label>
-            <select id="minotaurFilter" onchange="filterColumn(8, this.value)">
+            <select id="minotaurFilter" onchange="filterTable()">
                 <option value="all">All</option>
                 <option value="✔">✔</option>
                 <option value="✘">✘</option>
@@ -215,8 +230,8 @@ dois = [preprocess_doi(doi) for doi in open("list.txt").read().splitlines()]
 
 print(f"Processing {len(dois)} DOIs...")
 
-# Check for duplicates
-check_for_duplicates(dois)
+# Check for duplicates and get a unique list
+dois = check_for_duplicates(dois)
 
 # Get CrossRef metadata
 metadata_map = {doi: get_crossref_metadata(doi, index, len(dois)) for index, doi in enumerate(dois)}

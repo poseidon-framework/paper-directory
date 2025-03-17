@@ -12,14 +12,40 @@
             select, input { margin: 5px; padding: 5px; }
         </style>
         <script>
-            function filterColumn(columnIndex, filterValue) {
-                const table = document.getElementById('paperTable');
-                const rows = table.getElementsByTagName('tr');
+            function filterTable() {
+                let input = document.getElementById("searchInput").value.toLowerCase();
+                let communityFilter = document.getElementById("communityFilter").value;
+                let aadrFilter = document.getElementById("aadrFilter").value;
+                let minotaurFilter = document.getElementById("minotaurFilter").value;
+
+                let table = document.getElementById("paperTable");
+                let rows = table.getElementsByTagName("tr");
+
                 for (let i = 1; i < rows.length; i++) {
-                    const cell = rows[i].getElementsByTagName('td')[columnIndex];
-                    if (cell) {
-                        const cellText = cell.textContent.trim();
-                        rows[i].style.display = (filterValue === 'all' || cellText === filterValue) ? '' : 'none';
+                    let titleCell = rows[i].getElementsByTagName("td")[1]; // Title column
+                    let authorCell = rows[i].getElementsByTagName("td")[4]; // Author column
+                    let communityCell = rows[i].getElementsByTagName("td")[6]; // Community Archive column
+                    let aadrCell = rows[i].getElementsByTagName("td")[7]; // AADR Archive column
+                    let minotaurCell = rows[i].getElementsByTagName("td")[8]; // Minotaur Archive column
+
+                    if (titleCell && authorCell && communityCell && aadrCell && minotaurCell) {
+                        let titleText = titleCell.textContent.toLowerCase();
+                        let authorText = authorCell.textContent.toLowerCase();
+                        let communityText = communityCell.textContent.trim();
+                        let aadrText = aadrCell.textContent.trim();
+                        let minotaurText = minotaurCell.textContent.trim();
+
+                        // Apply search filter (title or author must match)
+                        let matchesSearch = titleText.includes(input) || authorText.includes(input);
+
+                        // Apply archive filters using logical AND
+                        let matchesFilters =
+                            (communityFilter === "all" || (communityFilter === "✔" && communityText === "✔") || (communityFilter === "✘" && communityText === "✘")) &&
+                            (aadrFilter === "all" || (aadrFilter === "✔" && aadrText === "✔") || (aadrFilter === "✘" && aadrText === "✘")) &&
+                            (minotaurFilter === "all" || (minotaurFilter === "✔" && minotaurText === "✔") || (minotaurFilter === "✘" && minotaurText === "✘"));
+
+                        // Show or hide row based on both search and filter conditions
+                        rows[i].style.display = (matchesSearch && matchesFilters) ? "" : "none";
                     }
                 }
             }
@@ -30,25 +56,6 @@
                 document.getElementById('aadrFilter').value = 'all';
                 document.getElementById('minotaurFilter').value = 'all';
                 filterTable();
-                const rows = document.getElementById('paperTable').getElementsByTagName('tr');
-                for (let i = 1; i < rows.length; i++) {
-                    rows[i].style.display = '';
-                }
-            }
-
-            function filterTable() {
-                let input = document.getElementById("searchInput");
-                let filter = input.value.toLowerCase();
-                let table = document.getElementById("paperTable");
-                let rows = table.getElementsByTagName("tr");
-
-                for (let i = 1; i < rows.length; i++) {
-                    let titleCell = rows[i].getElementsByTagName("td")[1];
-                    if (titleCell) {
-                        let titleText = titleCell.textContent || titleCell.innerText;
-                        rows[i].style.display = titleText.toLowerCase().includes(filter) ? "" : "none";
-                    }
-                }
             }
         </script>
     </head>
@@ -56,23 +63,23 @@
         <h1>Paper Directory</h1>
         
         <div>
-            <label for="searchInput">Search Title:</label>
+            <label for="searchInput">Search Title or Author:</label>
             <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search...">
             
             <label for="communityFilter">Community Archive:</label>
-            <select id="communityFilter" onchange="filterColumn(6, this.value)">
+            <select id="communityFilter" onchange="filterTable()">
                 <option value="all">All</option>
                 <option value="✔">✔</option>
                 <option value="✘">✘</option>
             </select>
             <label for="aadrFilter">AADR Archive:</label>
-            <select id="aadrFilter" onchange="filterColumn(7, this.value)">
+            <select id="aadrFilter" onchange="filterTable()">
                 <option value="all">All</option>
                 <option value="✔">✔</option>
                 <option value="✘">✘</option>
             </select>
             <label for="minotaurFilter">Minotaur Archive:</label>
-            <select id="minotaurFilter" onchange="filterColumn(8, this.value)">
+            <select id="minotaurFilter" onchange="filterTable()">
                 <option value="all">All</option>
                 <option value="✔">✔</option>
                 <option value="✘">✘</option>
@@ -118,6 +125,198 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1007/s12520-024-02050-0" target="_blank">10.1007/s12520-024-02050-0</a></td>
+                <td>Bioarchaeological Perspectives on Late Antiquity in Dalmatia: Paleogenetic, Dietary, and Population Studies of the Hvar—Radošević burial site</td>
+                <td>2024</td>
+                <td>Archaeological and Anthropological Sciences</td>
+                <td>Brina Zagorc</td>
+                <td>2024-08-20</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.15184/aqy.2024.94" target="_blank">10.15184/aqy.2024.94</a></td>
+                <td>High levels of consanguinity in a child from Paquimé, Chihuahua, Mexico</td>
+                <td>2024</td>
+                <td>Antiquity</td>
+                <td>Jakob Sedig</td>
+                <td>2024-08-13</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1007/s12520-024-02036-y" target="_blank">10.1007/s12520-024-02036-y</a></td>
+                <td>Ancient genomes provide insights into the genetic history in the historical era of southwest China</td>
+                <td>2024</td>
+                <td>Archaeological and Anthropological Sciences</td>
+                <td>Fan Zhang</td>
+                <td>2024-07-17</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-024-07651-2" target="_blank">10.1038/s41586-024-07651-2</a></td>
+                <td>Repeated plague infections across six generations of Neolithic Farmers</td>
+                <td>2024</td>
+                <td>Nature</td>
+                <td>Frederik Valeur Seersholm</td>
+                <td>2024-07-10</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-024-07509-7" target="_blank">10.1038/s41586-024-07509-7</a></td>
+                <td>Ancient genomes reveal insights into ritual life at Chichén Itzá</td>
+                <td>2024</td>
+                <td>Nature</td>
+                <td>Rodrigo Barquera</td>
+                <td>2024-06-12</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41562-024-01888-7" target="_blank">10.1038/s41562-024-01888-7</a></td>
+                <td>Evidence for dynastic succession among early Celtic elites in Central Europe</td>
+                <td>2024</td>
+                <td>Nature Human Behaviour</td>
+                <td>Joscha Gretzinger</td>
+                <td>2024-06-03</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1101/2024.05.29.596386" target="_blank">10.1101/2024.05.29.596386</a></td>
+                <td>Ancient genomes reveal Avar-Hungarian transformations in the 9th-10th centuries CE Carpathian Basin</td>
+                <td>0</td>
+                <td>No Journal</td>
+                <td>Dániel Gerber</td>
+                <td>2024-06-02</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41598-024-61052-z" target="_blank">10.1038/s41598-024-61052-z</a></td>
+                <td>Bioarchaeology aids the cultural understanding of six characters in search of their agency (Tarquinia, ninth–seventh century BC, central Italy)</td>
+                <td>2024</td>
+                <td>Scientific Reports</td>
+                <td>G. Bagnasco</td>
+                <td>2024-05-28</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-024-07312-4" target="_blank">10.1038/s41586-024-07312-4</a></td>
+                <td>Network of large pedigrees reveals social practices of Avar communities</td>
+                <td>2024</td>
+                <td>Nature</td>
+                <td>Guido Alberto Gnecchi-Ruscone</td>
+                <td>2024-04-24</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.47248/hpgg2404010004" target="_blank">10.47248/hpgg2404010004</a></td>
+                <td>Medieval genomes from eastern Mongolia share a stable genetic profile over a millennium</td>
+                <td>2024</td>
+                <td>Human Population Genetics and Genomics</td>
+                <td>Juhyeon Lee</td>
+                <td>2024-03-01</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.xgen.2024.100507" target="_blank">10.1016/j.xgen.2024.100507</a></td>
+                <td>Ancient genomes illuminate Eastern Arabian population history and adaptation against malaria</td>
+                <td>2024</td>
+                <td>Cell Genomics</td>
+                <td>Rui Martiniano</td>
+                <td>2024-02-27</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1073/pnas.2310545121" target="_blank">10.1073/pnas.2310545121</a></td>
+                <td>Genomic ancestry and social dynamics of the last hunter-gatherers of Atlantic France</td>
+                <td>2024</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Luciana G. Simões</td>
+                <td>2024-02-26</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41598-024-54462-6" target="_blank">10.1038/s41598-024-54462-6</a></td>
+                <td>Kinship practices at the early bronze age site of Leubingen in Central Germany</td>
+                <td>2024</td>
+                <td>Scientific Reports</td>
+                <td>Sandra Penske</td>
+                <td>2024-02-16</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.7554/elife.79714" target="_blank">10.7554/elife.79714</a></td>
+                <td>Stable population structure in Europe since the Iron Age, despite high mobility</td>
+                <td>2024</td>
+                <td>eLife</td>
+                <td>Margaret L Antonio</td>
+                <td>2024-01-30</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-023-06618-z" target="_blank">10.1038/s41586-023-06618-z</a></td>
+                <td>Elevated genetic risk for multiple sclerosis emerged in steppe pastoralist populations</td>
+                <td>2024</td>
+                <td>Nature</td>
+                <td>William Barrie</td>
+                <td>2024-01-10</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-023-06865-0" target="_blank">10.1038/s41586-023-06865-0</a></td>
+                <td>Population genomics of post-glacial western Eurasia</td>
+                <td>2024</td>
+                <td>Nature</td>
+                <td>Morten E. Allentoft</td>
+                <td>2024-01-10</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1038/s41467-023-44328-2" target="_blank">10.1038/s41467-023-44328-2</a></td>
                 <td>Genomic portrait and relatedness patterns of the Iron Age Log Coffin culture in northwestern Thailand</td>
                 <td>2023</td>
@@ -125,7 +324,163 @@
                 <td>Selina Carlhoff</td>
                 <td>2023-12-22</td>
                 <td>✔</td>
+                <td>✔</td>
                 <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2023.10.018" target="_blank">10.1016/j.cell.2023.10.018</a></td>
+                <td>A genetic history of the Balkans from Roman frontier to Slavic migrations</td>
+                <td>2023</td>
+                <td>Cell</td>
+                <td>Iñigo Olalde</td>
+                <td>2023-12-07</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✔</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-023-06771-5" target="_blank">10.1038/s41586-023-06771-5</a></td>
+                <td>Genetic continuity and change among the Indigenous peoples of California</td>
+                <td>2023</td>
+                <td>Nature</td>
+                <td>Nathan Nakatsuka</td>
+                <td>2023-11-22</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41559-023-02211-9" target="_blank">10.1038/s41559-023-02211-9</a></td>
+                <td>Genome sequences of 36,000- to 37,000-year-old modern humans at Buran-Kaya III in Crimea</td>
+                <td>2023</td>
+                <td>Nature Ecology &amp; Evolution</td>
+                <td>E. Andrew Bennett</td>
+                <td>2023-10-23</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.ajhg.2023.08.001" target="_blank">10.1016/j.ajhg.2023.08.001</a></td>
+                <td>The ancestry and geographical origins of St Helena’s liberated Africans</td>
+                <td>2023</td>
+                <td>The American Journal of Human Genetics</td>
+                <td>Marcela Sandoval-Velasco</td>
+                <td>2023-09-07</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1073/pnas.2303574120" target="_blank">10.1073/pnas.2303574120</a></td>
+                <td>Descent, marriage, and residence practices of a 3,800-year-old pastoral community in Central Eurasia</td>
+                <td>2023</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Jens Blöcher</td>
+                <td>2023-08-21</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41559-023-02143-4" target="_blank">10.1038/s41559-023-02143-4</a></td>
+                <td>A genetic history of continuity and mobility in the Iron Age central Mediterranean</td>
+                <td>2023</td>
+                <td>Nature Ecology &amp; Evolution</td>
+                <td>Hannah M. Moots</td>
+                <td>2023-08-17</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.xgen.2023.100377" target="_blank">10.1016/j.xgen.2023.100377</a></td>
+                <td>High-coverage genome of the Tyrolean Iceman reveals unusually high Anatolian farmer ancestry</td>
+                <td>2023</td>
+                <td>Cell Genomics</td>
+                <td>Ke Wang</td>
+                <td>2023-08-16</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s42003-023-05131-3" target="_blank">10.1038/s42003-023-05131-3</a></td>
+                <td>Genetic continuity, isolation, and gene flow in Stone Age Central and Eastern Europe</td>
+                <td>2023</td>
+                <td>Communications Biology</td>
+                <td>Tiina M. Mattila</td>
+                <td>2023-08-09</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.ade4995" target="_blank">10.1126/science.ade4995</a></td>
+                <td>The genetic legacy of African Americans from Catoctin Furnace</td>
+                <td>2023</td>
+                <td>Science</td>
+                <td>Éadaoin Harney</td>
+                <td>2023-08-08</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-023-40072-9" target="_blank">10.1038/s41467-023-40072-9</a></td>
+                <td>Patrilocality and hunter-gatherer-related ancestry of populations in East-Central Europe during the Middle Bronze Age</td>
+                <td>2023</td>
+                <td>Nature Communications</td>
+                <td>Maciej Chyleński</td>
+                <td>2023-08-01</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41559-023-02114-9" target="_blank">10.1038/s41559-023-02114-9</a></td>
+                <td>Genomic history of coastal societies from eastern South America</td>
+                <td>2023</td>
+                <td>Nature Ecology &amp; Evolution</td>
+                <td>Tiago Ferraz</td>
+                <td>2023-07-31</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✔</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-023-06350-8" target="_blank">10.1038/s41586-023-06350-8</a></td>
+                <td>Extensive pedigrees reveal the social organization of a Neolithic community</td>
+                <td>2023</td>
+                <td>Nature</td>
+                <td>Maïté Rivollat</td>
+                <td>2023-07-26</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1186/s13059-023-03013-9" target="_blank">10.1186/s13059-023-03013-9</a></td>
+                <td>Genetic history of East-Central Europe in the first millennium CE</td>
+                <td>2023</td>
+                <td>Genome Biology</td>
+                <td>Ireneusz Stolarek</td>
+                <td>2023-07-24</td>
+                <td>✘</td>
+                <td>✔</td>
                 <td>✘</td>
             </tr>
             
@@ -137,7 +492,67 @@
                 <td>Sandra Penske</td>
                 <td>2023-07-19</td>
                 <td>✔</td>
+                <td>✔</td>
                 <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1101/2023.07.07.548126" target="_blank">10.1101/2023.07.07.548126</a></td>
+                <td>Social and genetic diversity among the first farmers of Central Europe</td>
+                <td>0</td>
+                <td>No Journal</td>
+                <td>Pere Gelabert</td>
+                <td>2023-07-09</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1371/journal.pone.0285449" target="_blank">10.1371/journal.pone.0285449</a></td>
+                <td>Interactions between Trypillian farmers and North Pontic forager-pastoralists in Eneolithic central Ukraine</td>
+                <td>2023</td>
+                <td>PLOS ONE</td>
+                <td>Alexey G. Nikitin</td>
+                <td>2023-06-14</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-023-06166-6" target="_blank">10.1038/s41586-023-06166-6</a></td>
+                <td>Northwest African Neolithic initiated by migrants from Iberia and Levant</td>
+                <td>2023</td>
+                <td>Nature</td>
+                <td>Luciana G. Simões</td>
+                <td>2023-06-07</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.add6142" target="_blank">10.1126/science.add6142</a></td>
+                <td>Demographic history and genetic structure in pre-Hispanic Central Mexico</td>
+                <td>2023</td>
+                <td>Science</td>
+                <td>Viridiana Villa-Islas</td>
+                <td>2023-05-11</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✔</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.7554/elife.85492" target="_blank">10.7554/elife.85492</a></td>
+                <td>On the limits of fitting complex models of population history to f-statistics</td>
+                <td>2023</td>
+                <td>eLife</td>
+                <td>Robert Maier</td>
+                <td>2023-04-14</td>
+                <td>✘</td>
+                <td>✔</td>
                 <td>✘</td>
             </tr>
             
@@ -154,6 +569,138 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1038/s41586-023-05754-w" target="_blank">10.1038/s41586-023-05754-w</a></td>
+                <td>Entwined African and Asian genetic roots of medieval peoples of the Swahili coast</td>
+                <td>2023</td>
+                <td>Nature</td>
+                <td>Esther S. Brielle</td>
+                <td>2023-03-29</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s42003-023-04681-w" target="_blank">10.1038/s42003-023-04681-w</a></td>
+                <td>Genome-wide analysis of a collective grave from Mentesh Tepe provides insight into the population structure of early neolithic population in the South Caucasus</td>
+                <td>2023</td>
+                <td>Communications Biology</td>
+                <td>Perle Guarino-Vignon</td>
+                <td>2023-03-25</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2023.02.041" target="_blank">10.1016/j.cub.2023.02.041</a></td>
+                <td>Genomic analyses of hair from Ludwig van Beethoven</td>
+                <td>2023</td>
+                <td>Current Biology</td>
+                <td>Tristan James Alexander Begg</td>
+                <td>2023-03-22</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/sciadv.add5582" target="_blank">10.1126/sciadv.add5582</a></td>
+                <td>Human genetic history on the Tibetan Plateau in the past 5100 years</td>
+                <td>2023</td>
+                <td>Science Advances</td>
+                <td>Hongru Wang</td>
+                <td>2023-03-17</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41559-023-01987-0" target="_blank">10.1038/s41559-023-01987-0</a></td>
+                <td>A 23,000-year-old southern Iberian individual links human groups that lived in Western Europe before and after the Last Glacial Maximum</td>
+                <td>2023</td>
+                <td>Nature Ecology &amp; Evolution</td>
+                <td>Vanessa Villalba-Mouco</td>
+                <td>2023-03-01</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-023-05726-0" target="_blank">10.1038/s41586-023-05726-0</a></td>
+                <td>Palaeogenomics of Upper Palaeolithic to Neolithic European hunter-gatherers</td>
+                <td>2023</td>
+                <td>Nature</td>
+                <td>Cosimo Posth</td>
+                <td>2023-03-01</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.15184/aqy.2023.2" target="_blank">10.15184/aqy.2023.2</a></td>
+                <td>Kinship practices in Early Iron Age South-east Europe: genetic and isotopic analysis of burials from the Dolge njive barrow cemetery, Dolenjska, Slovenia</td>
+                <td>2023</td>
+                <td>Antiquity</td>
+                <td>Ian Armit</td>
+                <td>2023-02-17</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1073/pnas.2210611120" target="_blank">10.1073/pnas.2210611120</a></td>
+                <td>Isotopic and DNA analyses reveal multiscale PPNB mobility and migration across Southeastern Anatolia and the Southern Levant</td>
+                <td>2023</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Xiaoran Wang</td>
+                <td>2023-01-17</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2022.11.062" target="_blank">10.1016/j.cub.2022.11.062</a></td>
+                <td>Middle Holocene Siberian genomes reveal highly connected gene pools throughout North Asia</td>
+                <td>2023</td>
+                <td>Current Biology</td>
+                <td>Ke Wang</td>
+                <td>2023-01-12</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2022.11.024" target="_blank">10.1016/j.cell.2022.11.024</a></td>
+                <td>The genetic history of Scandinavia from the Roman Iron Age to the present</td>
+                <td>2023</td>
+                <td>Cell</td>
+                <td>Ricardo Rodríguez-Varela</td>
+                <td>2023-01-05</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✔</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41598-022-26799-3" target="_blank">10.1038/s41598-022-26799-3</a></td>
+                <td>Ancient DNA from Protohistoric Period Cambodia indicates that South Asians admixed with local populations as early as 1st–3rd centuries CE</td>
+                <td>2022</td>
+                <td>Scientific Reports</td>
+                <td>Piya Changmai</td>
+                <td>2022-12-29</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1016/j.cub.2022.11.036" target="_blank">10.1016/j.cub.2022.11.036</a></td>
                 <td>Genetic admixture and language shift in the medieval Volga-Oka interfluve</td>
                 <td>2023</td>
@@ -161,8 +708,92 @@
                 <td>Sanni Peltola</td>
                 <td>2022-12-12</td>
                 <td>✔</td>
+                <td>✔</td>
+                <td>✔</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2022.11.034" target="_blank">10.1016/j.cub.2022.11.034</a></td>
+                <td>Spatial and temporal heterogeneity in human mobility patterns in Holocene Southwest Asia and the East Mediterranean</td>
+                <td>2023</td>
+                <td>Current Biology</td>
+                <td>Dilek Koptekin</td>
+                <td>2022-12-08</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41598-022-25384-y" target="_blank">10.1038/s41598-022-25384-y</a></td>
+                <td>4000-year-old hair from the Middle Nile highlights unusual ancient DNA degradation pattern and a potential source of early eastern Africa pastoralists</td>
+                <td>2022</td>
+                <td>Scientific Reports</td>
+                <td>Ke Wang</td>
+                <td>2022-12-03</td>
                 <td>✘</td>
                 <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2022.11.002" target="_blank">10.1016/j.cell.2022.11.002</a></td>
+                <td>Genome-wide data from medieval German Jews show that the Ashkenazi founder event pre-dated the 14th century</td>
+                <td>2022</td>
+                <td>Cell</td>
+                <td>Shamam Waldman</td>
+                <td>2022-11-30</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.isci.2022.105636" target="_blank">10.1016/j.isci.2022.105636</a></td>
+                <td>Cultural and demic co-diffusion of Tubo Empire on Tibetan Plateau</td>
+                <td>2022</td>
+                <td>iScience</td>
+                <td>Kongyang Zhu</td>
+                <td>2022-11-22</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s42003-022-04190-2" target="_blank">10.1038/s42003-022-04190-2</a></td>
+                <td>Genomic ancestry, diet and microbiomes of Upper Palaeolithic hunter-gatherers from San Teodoro cave</td>
+                <td>2022</td>
+                <td>Communications Biology</td>
+                <td>Gabriele Scorrano</td>
+                <td>2022-11-18</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/sciadv.abo3609" target="_blank">10.1126/sciadv.abo3609</a></td>
+                <td>A genomic snapshot of demographic and cultural dynamism in Upper Mesopotamia during the Neolithic Transition</td>
+                <td>2022</td>
+                <td>Science Advances</td>
+                <td>N. Ezgi Altınışık</td>
+                <td>2022-11-04</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1073/pnas.2205272119" target="_blank">10.1073/pnas.2205272119</a></td>
+                <td>The diverse genetic origins of a Classical period Greek army</td>
+                <td>2022</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Laurie J. Reitsema</td>
+                <td>2022-10-03</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
             </tr>
             
             <tr>
@@ -172,6 +803,510 @@
                 <td>Nature</td>
                 <td>Joscha Gretzinger</td>
                 <td>2022-09-21</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✔</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2022.08.004" target="_blank">10.1016/j.cell.2022.08.004</a></td>
+                <td>High-coverage whole-genome sequencing of the expanded 1000 Genomes Project cohort including 602 trios</td>
+                <td>2022</td>
+                <td>Cell</td>
+                <td>Marta Byrska-Bishop</td>
+                <td>2022-09-01</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2022.08.036" target="_blank">10.1016/j.cub.2022.08.036</a></td>
+                <td>Genomes from a medieval mass burial show Ashkenazi-associated hereditary diseases pre-date the 12th century</td>
+                <td>2022</td>
+                <td>Current Biology</td>
+                <td>Selina Brace</td>
+                <td>2022-08-30</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1086/720748" target="_blank">10.1086/720748</a></td>
+                <td>A Bioarchaeological Investigation of Fraternal Stillborn Twins from Tell el-Hesi</td>
+                <td>2022</td>
+                <td>Near Eastern Archaeology</td>
+                <td>Jaime Ullinger</td>
+                <td>2022-08-30</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.21203/rs.3.rs-1993191/v1" target="_blank">10.21203/rs.3.rs-1993191/v1</a></td>
+                <td>First ancient DNA analysis of mummies from the post-Scythian Oglakhty cemetery in South Siberia</td>
+                <td>0</td>
+                <td>No Journal</td>
+                <td>Artem Nedoluzhko</td>
+                <td>2022-08-29</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.abm4247" target="_blank">10.1126/science.abm4247</a></td>
+                <td>The genetic history of the Southern Arc: A bridge between West Asia and Europe</td>
+                <td>2022</td>
+                <td>Science</td>
+                <td>Iosif Lazaridis</td>
+                <td>2022-08-25</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2022.06.016" target="_blank">10.1016/j.cub.2022.06.016</a></td>
+                <td>A Late Pleistocene human genome from Southwest China</td>
+                <td>2022</td>
+                <td>Current Biology</td>
+                <td>Xiaoming Zhang</td>
+                <td>2022-07-14</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.15184/aqy.2022.79" target="_blank">10.15184/aqy.2022.79</a></td>
+                <td>Life and death in early colonial Campeche: new insights from ancient DNA</td>
+                <td>2022</td>
+                <td>Antiquity</td>
+                <td>Vera Tiesler</td>
+                <td>2022-07-13</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.abm6536" target="_blank">10.1126/science.abm6536</a></td>
+                <td>Ancient DNA reveals five streams of migration into Micronesia and matrilocality in early Pacific seafarers</td>
+                <td>2022</td>
+                <td>Science</td>
+                <td>Yue-Chen Liu</td>
+                <td>2022-06-30</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2022.06.004" target="_blank">10.1016/j.cub.2022.06.004</a></td>
+                <td>Northeastern Asian and Jomon-related genetic structure in the Three Kingdoms period of Gimhae, Korea</td>
+                <td>2022</td>
+                <td>Current Biology</td>
+                <td>Pere Gelabert</td>
+                <td>2022-06-21</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-022-04800-3" target="_blank">10.1038/s41586-022-04800-3</a></td>
+                <td>The source of the Black Death in fourteenth-century central Eurasia</td>
+                <td>2022</td>
+                <td>Nature</td>
+                <td>Maria A. Spyrou</td>
+                <td>2022-06-15</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1101/2022.06.12.495320" target="_blank">10.1101/2022.06.12.495320</a></td>
+                <td>Technical Report on Ancient DNA analysis of 27 African Americans from Catoctin Furnace, Maryland</td>
+                <td>0</td>
+                <td>No Journal</td>
+                <td>Éadaoin Harney</td>
+                <td>2022-06-15</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41559-022-01775-2" target="_blank">10.1038/s41559-022-01775-2</a></td>
+                <td>Ancient genomes from the last three millennia support multiple human dispersals into Wallacea</td>
+                <td>2022</td>
+                <td>Nature Ecology &amp; Evolution</td>
+                <td>Sandra Oliveira</td>
+                <td>2022-06-09</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s42003-022-03508-4" target="_blank">10.1038/s42003-022-03508-4</a></td>
+                <td>Bioarchaeological evidence of one of the earliest Islamic burials in the Levant</td>
+                <td>2022</td>
+                <td>Communications Biology</td>
+                <td>Megha Srigyan</td>
+                <td>2022-06-07</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41598-022-10899-1" target="_blank">10.1038/s41598-022-10899-1</a></td>
+                <td>Bioarchaeological and palaeogenomic portrait of two Pompeians that died during the eruption of Vesuvius in 79 AD</td>
+                <td>2022</td>
+                <td>Scientific Reports</td>
+                <td>Gabriele Scorrano</td>
+                <td>2022-05-26</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2022.04.093" target="_blank">10.1016/j.cub.2022.04.093</a></td>
+                <td>The genetic origin of Huns, Avars, and conquering Hungarians</td>
+                <td>2022</td>
+                <td>Current Biology</td>
+                <td>Zoltán Maróti</td>
+                <td>2022-05-25</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2022.04.069" target="_blank">10.1016/j.cub.2022.04.069</a></td>
+                <td>Ancient Maltese genomes and the genetic geography of Neolithic Europe</td>
+                <td>2022</td>
+                <td>Current Biology</td>
+                <td>Bruno Ariano</td>
+                <td>2022-05-18</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1093/molbev/msac108" target="_blank">10.1093/molbev/msac108</a></td>
+                <td>Population Genetics and Signatures of Selection in Early Neolithic European Farmers</td>
+                <td>2022</td>
+                <td>Molecular Biology and Evolution</td>
+                <td>Ainash Childebayeva</td>
+                <td>2022-05-17</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2022.04.008" target="_blank">10.1016/j.cell.2022.04.008</a></td>
+                <td>The genomic origins of the world’s first farmers</td>
+                <td>2022</td>
+                <td>Cell</td>
+                <td>Nina Marchi</td>
+                <td>2022-05-12</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41598-022-11117-8" target="_blank">10.1038/s41598-022-11117-8</a></td>
+                <td>Genomes from Verteba cave suggest diversity within the Trypillians in Ukraine</td>
+                <td>2022</td>
+                <td>Scientific Reports</td>
+                <td>Pere Gelabert</td>
+                <td>2022-05-04</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1073/pnas.2120786119" target="_blank">10.1073/pnas.2120786119</a></td>
+                <td>Ancient DNA gives new insights into a Norman Neolithic monumental cemetery dedicated to male elites</td>
+                <td>2022</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Maïté Rivollat</td>
+                <td>2022-04-21</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1093/pnasnexus/pgac047" target="_blank">10.1093/pnasnexus/pgac047</a></td>
+                <td>The genomic prehistory of the Indigenous peoples of Uruguay</td>
+                <td>2022</td>
+                <td>PNAS Nexus</td>
+                <td>John Lindo</td>
+                <td>2022-04-21</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.isci.2022.104244" target="_blank">10.1016/j.isci.2022.104244</a></td>
+                <td>Genomic and dietary discontinuities during the Mesolithic and Neolithic in Sicily</td>
+                <td>2022</td>
+                <td>iScience</td>
+                <td>He Yu</td>
+                <td>2022-04-12</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2022.03.007" target="_blank">10.1016/j.cell.2022.03.007</a></td>
+                <td>Ancient genomes reveal origin and rapid trans-Eurasian migration of 7th century Avar elites</td>
+                <td>2022</td>
+                <td>Cell</td>
+                <td>Guido Alberto Gnecchi-Ruscone</td>
+                <td>2022-04-01</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.abk1534" target="_blank">10.1126/science.abk1534</a></td>
+                <td>Bronze and Iron Age population movements underlie Xinjiang population history</td>
+                <td>2022</td>
+                <td>Science</td>
+                <td>Vikas Kumar</td>
+                <td>2022-03-31</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-022-29158-y" target="_blank">10.1038/s41467-022-29158-y</a></td>
+                <td>South-to-north migration preceded the advent of intensive farming in the Maya region</td>
+                <td>2022</td>
+                <td>Nature Communications</td>
+                <td>Douglas J. Kennett</td>
+                <td>2022-03-22</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✔</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.isci.2022.104094" target="_blank">10.1016/j.isci.2022.104094</a></td>
+                <td>Origin and mobility of Iron Age Gaulish groups in present-day France revealed through archaeogenomics</td>
+                <td>2022</td>
+                <td>iScience</td>
+                <td>Claire-Elise Fischer</td>
+                <td>2022-03-16</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✔</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-022-28827-2" target="_blank">10.1038/s41467-022-28827-2</a></td>
+                <td>Ancient genomes from the Himalayas illuminate the genetic history of Tibetans and their Tibeto-Burman speaking neighbors</td>
+                <td>2022</td>
+                <td>Nature Communications</td>
+                <td>Chi-Chun Liu</td>
+                <td>2022-03-08</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.abi8264" target="_blank">10.1126/science.abi8264</a></td>
+                <td>A unified genealogy of modern and ancient genomes</td>
+                <td>2022</td>
+                <td>Science</td>
+                <td>Anthony Wilder Wohns</td>
+                <td>2022-02-24</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-022-04430-9" target="_blank">10.1038/s41586-022-04430-9</a></td>
+                <td>Ancient DNA and deep population structure in sub-Saharan African foragers</td>
+                <td>2022</td>
+                <td>Nature</td>
+                <td>Mark Lipson</td>
+                <td>2022-02-23</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1073/pnas.2108001119" target="_blank">10.1073/pnas.2108001119</a></td>
+                <td>Ancient DNA at the edge of the world: Continental immigration and the persistence of Neolithic male lineages in Bronze Age Orkney</td>
+                <td>2022</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Katharina Dulias</td>
+                <td>2022-02-07</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1093/molbev/msac014" target="_blank">10.1093/molbev/msac014</a></td>
+                <td>The Genetic Origin of Daunians and the Pan-Mediterranean Southern Italian Iron Age Context</td>
+                <td>2022</td>
+                <td>Molecular Biology and Evolution</td>
+                <td>Serena Aneli</td>
+                <td>2022-01-13</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.3390/genes13010136" target="_blank">10.3390/genes13010136</a></td>
+                <td>First Glimpse into the Genomic Characterization of People from the Imperial Roman Community of Casal Bertone (Rome, First–Third Centuries AD)</td>
+                <td>2022</td>
+                <td>Genes</td>
+                <td>Flavio De Angelis</td>
+                <td>2022-01-13</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-021-04241-4" target="_blank">10.1038/s41586-021-04241-4</a></td>
+                <td>A high-resolution picture of kinship practices in an Early Neolithic tomb</td>
+                <td>2022</td>
+                <td>Nature</td>
+                <td>Chris Fowler</td>
+                <td>2021-12-22</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-021-04287-4" target="_blank">10.1038/s41586-021-04287-4</a></td>
+                <td>Large-scale migration into Britain during the Middle to Late Bronze Age</td>
+                <td>2022</td>
+                <td>Nature</td>
+                <td>Nick Patterson</td>
+                <td>2021-12-22</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-021-27356-8" target="_blank">10.1038/s41467-021-27356-8</a></td>
+                <td>Social stratification without genetic differentiation at the site of Kulubnarti in Christian Period Nubia</td>
+                <td>2021</td>
+                <td>Nature Communications</td>
+                <td>Kendra A. Sirak</td>
+                <td>2021-12-14</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/sciadv.abi7038" target="_blank">10.1126/sciadv.abi7038</a></td>
+                <td>Genomic transformation and social organization during the Copper Age–Bronze Age transition in southern Iberia</td>
+                <td>2021</td>
+                <td>Science Advances</td>
+                <td>Vanessa Villalba-Mouco</td>
+                <td>2021-11-17</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-021-04108-8" target="_blank">10.1038/s41586-021-04108-8</a></td>
+                <td>Triangulation supports agricultural spread of the Transeurasian languages</td>
+                <td>2021</td>
+                <td>Nature</td>
+                <td>Martine Robbeets</td>
+                <td>2021-11-10</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-021-04052-7" target="_blank">10.1038/s41586-021-04052-7</a></td>
+                <td>The genomic origins of the Bronze Age Tarim Basin mummies</td>
+                <td>2021</td>
+                <td>Nature</td>
+                <td>Fan Zhang</td>
+                <td>2021-10-27</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/sciadv.abg7261" target="_blank">10.1126/sciadv.abg7261</a></td>
+                <td>Ancient genomes reveal long-range influence of the pre-Columbian culture and site of Tiwanaku</td>
+                <td>2021</td>
+                <td>Science Advances</td>
+                <td>Danijela Popović</td>
+                <td>2021-09-24</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/sciadv.abi7673" target="_blank">10.1126/sciadv.abi7673</a></td>
+                <td>The origin and legacy of the Etruscans through a 2000-year archeogenomic time transect</td>
+                <td>2021</td>
+                <td>Science Advances</td>
+                <td>Cosimo Posth</td>
+                <td>2021-09-24</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/sciadv.abh2419" target="_blank">10.1126/sciadv.abh2419</a></td>
+                <td>Ancient genomics reveals tripartite origins of Japanese populations</td>
+                <td>2021</td>
+                <td>Science Advances</td>
+                <td>Niall P. Cooke</td>
+                <td>2021-09-17</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41598-021-95996-3" target="_blank">10.1038/s41598-021-95996-3</a></td>
+                <td>Biomolecular insights into North African-related ancestry, mobility and diet in eleventh-century Al-Andalus</td>
+                <td>2021</td>
+                <td>Scientific Reports</td>
+                <td>Marina Silva</td>
+                <td>2021-09-13</td>
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
@@ -198,7 +1333,7 @@
                 <td>2021-08-25</td>
                 <td>✔</td>
                 <td>✔</td>
-                <td>✘</td>
+                <td>✔</td>
             </tr>
             
             <tr>
@@ -209,6 +1344,54 @@
                 <td>Suzanne Freilich</td>
                 <td>2021-08-18</td>
                 <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1093/gbe/evab192" target="_blank">10.1093/gbe/evab192</a></td>
+                <td>Whole-Genome Sequencing of a 900-Year-Old Human Skeleton Supports Two Past Migration Events from the Russian Far East to Northern Japan</td>
+                <td>2021</td>
+                <td>Genome Biology and Evolution</td>
+                <td>Takehiro Sato</td>
+                <td>2021-08-18</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1093/molbev/msab216" target="_blank">10.1093/molbev/msab216</a></td>
+                <td>Genetic Continuity of Bronze Age Ancestry with Increased Steppe-Related Ancestry in Late Iron Age Uzbekistan</td>
+                <td>2021</td>
+                <td>Molecular Biology and Evolution</td>
+                <td>Vikas Kumar</td>
+                <td>2021-07-27</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1371/journal.pone.0241883" target="_blank">10.1371/journal.pone.0241883</a></td>
+                <td>Human mobility at Tell Atchana (Alalakh), Hatay, Turkey during the 2nd millennium BC: Integration of isotopic and genomic evidence</td>
+                <td>2021</td>
+                <td>PLOS ONE</td>
+                <td>Tara Ingman</td>
+                <td>2021-06-30</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2021.05.018" target="_blank">10.1016/j.cell.2021.05.018</a></td>
+                <td>Human population history at the crossroads of East and Southeast Asia since 11,000 years ago</td>
+                <td>2021</td>
+                <td>Cell</td>
+                <td>Tianyi Wang</td>
+                <td>2021-06-24</td>
+                <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
             </tr>
@@ -245,7 +1428,19 @@
                 <td>A. Žegarac</td>
                 <td>2021-05-12</td>
                 <td>✔</td>
+                <td>✔</td>
                 <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2021.04.022" target="_blank">10.1016/j.cub.2021.04.022</a></td>
+                <td>Ancient genomes reveal structural shifts after the arrival of Steppe-related ancestry in the Italian Peninsula</td>
+                <td>2021</td>
+                <td>Current Biology</td>
+                <td>Tina Saupe</td>
+                <td>2021-05-10</td>
+                <td>✔</td>
+                <td>✔</td>
                 <td>✘</td>
             </tr>
             
@@ -283,6 +1478,42 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41559-021-01443-x" target="_blank">10.1038/s41559-021-01443-x</a></td>
+                <td>A genome sequence from a modern human skull over 45,000 years old from Zlatý kůň in Czechia</td>
+                <td>2021</td>
+                <td>Nature Ecology &amp; Evolution</td>
+                <td>Kay Prüfer</td>
+                <td>2021-04-07</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-021-03335-3" target="_blank">10.1038/s41586-021-03335-3</a></td>
+                <td>Initial Upper Palaeolithic humans in Europe had recent Neanderthal ancestry</td>
+                <td>2021</td>
+                <td>Nature</td>
+                <td>Mateja Hajdinjak</td>
+                <td>2021-04-07</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.isci.2021.102383" target="_blank">10.1016/j.isci.2021.102383</a></td>
+                <td>No particular genomic features underpin the dramatic economic consequences of 17th century plague epidemics in Italy</td>
+                <td>2021</td>
+                <td>iScience</td>
+                <td>Andaine Seguin-Orlando</td>
+                <td>2021-04-01</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
             </tr>
             
             <tr>
@@ -353,6 +1584,18 @@
                 <td>Éadaoin Harney</td>
                 <td>2021-02-17</td>
                 <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s42003-020-01627-4" target="_blank">10.1038/s42003-020-01627-4</a></td>
+                <td>Genome-wide study of a Neolithic Wartberg grave community reveals distinct HLA variation and hunter-gatherer ancestry</td>
+                <td>2021</td>
+                <td>Communications Biology</td>
+                <td>Alexander Immel</td>
+                <td>2021-01-25</td>
+                <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
             </tr>
@@ -432,6 +1675,18 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1371/journal.pone.0241278" target="_blank">10.1371/journal.pone.0241278</a></td>
+                <td>Kinship and social organization in Copper Age Europe. A cross-disciplinary analysis of archaeology, DNA, isotopes, and anthropology from two Bell Beaker cemeteries</td>
+                <td>2020</td>
+                <td>PLOS ONE</td>
+                <td>Karl-Göran Sjögren</td>
+                <td>2020-11-16</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1038/s42003-020-01372-8" target="_blank">10.1038/s42003-020-01372-8</a></td>
                 <td>Ancient DNA reveals monozygotic newborn twins from the Upper Palaeolithic</td>
                 <td>2020</td>
@@ -456,6 +1711,18 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.2144/btn-2020-0100" target="_blank">10.2144/btn-2020-0100</a></td>
+                <td>Comparison of Target Enrichment Strategies for Ancient Pathogen DNA</td>
+                <td>2020</td>
+                <td>BioTechniques</td>
+                <td>Anja Furtwängler</td>
+                <td>2020-11-02</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1126/science.abc1166" target="_blank">10.1126/science.abc1166</a></td>
                 <td>Denisovan ancestry and population history of early East Asians</td>
                 <td>2020</td>
@@ -463,6 +1730,18 @@
                 <td>Diyendo Massilani</td>
                 <td>2020-10-29</td>
                 <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2020.09.035" target="_blank">10.1016/j.cub.2020.09.035</a></td>
+                <td>Three Phases of Ancient Migration Shaped the Ancestry of Human Populations in Vanuatu</td>
+                <td>2020</td>
+                <td>Current Biology</td>
+                <td>Mark Lipson</td>
+                <td>2020-10-15</td>
+                <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
             </tr>
@@ -486,6 +1765,42 @@
                 <td>Current Biology</td>
                 <td>Joachim Burger</td>
                 <td>2020-09-03</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-020-17656-w" target="_blank">10.1038/s41467-020-17656-w</a></td>
+                <td>Ancient genomes in South Patagonia reveal population movements associated with technological shifts and geography</td>
+                <td>2020</td>
+                <td>Nature Communications</td>
+                <td>Nathan Nakatsuka</td>
+                <td>2020-08-03</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1073/pnas.2005965117" target="_blank">10.1073/pnas.2005965117</a></td>
+                <td>Integration of ancient DNA with transdisciplinary dataset finds strong support for Inca resettlement in the south Peruvian coast</td>
+                <td>2020</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Jacob L. Bongers</td>
+                <td>2020-07-14</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✔</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-020-2378-6" target="_blank">10.1038/s41586-020-2378-6</a></td>
+                <td>A dynastic elite in monumental Neolithic society</td>
+                <td>2020</td>
+                <td>Nature</td>
+                <td>Lara M. Cassidy</td>
+                <td>2020-06-17</td>
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
@@ -540,12 +1855,108 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1038/s41467-020-16557-2" target="_blank">10.1038/s41467-020-16557-2</a></td>
+                <td>Ancient genomes from northern China suggest links between subsistence changes and human migration</td>
+                <td>2020</td>
+                <td>Nature Communications</td>
+                <td>Chao Ning</td>
+                <td>2020-06-01</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/sciadv.aaz5344" target="_blank">10.1126/sciadv.aaz5344</a></td>
+                <td>Ancient genome-wide DNA from France highlights the complexity of interactions between Mesolithic hunter-gatherers and Neolithic farmers</td>
+                <td>2020</td>
+                <td>Science Advances</td>
+                <td>Maïté Rivollat</td>
+                <td>2020-05-29</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1016/j.ajhg.2020.05.008" target="_blank">10.1016/j.ajhg.2020.05.008</a></td>
                 <td>A Genetic History of the Near East from an aDNA Time Course Sampling Eight Points in the Past 4,000 Years</td>
                 <td>2020</td>
                 <td>The American Journal of Human Genetics</td>
                 <td>Marc Haber</td>
                 <td>2020-05-28</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2020.04.024" target="_blank">10.1016/j.cell.2020.04.024</a></td>
+                <td>The Genomic History of the Bronze Age Southern Levant</td>
+                <td>2020</td>
+                <td>Cell</td>
+                <td>Lily Agranat-Tamir</td>
+                <td>2020-05-28</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2020.04.044" target="_blank">10.1016/j.cell.2020.04.044</a></td>
+                <td>Genomic History of Neolithic to Bronze Age Anatolia, Northern Levant, and Southern Caucasus</td>
+                <td>2020</td>
+                <td>Cell</td>
+                <td>Eirini Skourtanioti</td>
+                <td>2020-05-28</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1073/pnas.1918034117" target="_blank">10.1073/pnas.1918034117</a></td>
+                <td>Ancient genomes from present-day France unveil 7,000 years of its demographic history</td>
+                <td>2020</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Samantha Brunel</td>
+                <td>2020-05-26</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2020.04.037" target="_blank">10.1016/j.cell.2020.04.037</a></td>
+                <td>Paleolithic to Bronze Age Siberians Reveal Connections with First Americans and across Eurasia</td>
+                <td>2020</td>
+                <td>Cell</td>
+                <td>He Yu</td>
+                <td>2020-05-20</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.aba0909" target="_blank">10.1126/science.aba0909</a></td>
+                <td>Ancient DNA indicates human population shifts and admixture in northern and southern China</td>
+                <td>2020</td>
+                <td>Science</td>
+                <td>Melinda A. Yang</td>
+                <td>2020-05-14</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2020.04.015" target="_blank">10.1016/j.cell.2020.04.015</a></td>
+                <td>A Paleogenomic Reconstruction of the Deep Population History of the Andes</td>
+                <td>2020</td>
+                <td>Cell</td>
+                <td>Nathan Nakatsuka</td>
+                <td>2020-05-07</td>
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
@@ -559,7 +1970,31 @@
                 <td>Rodrigo Barquera</td>
                 <td>2020-04-30</td>
                 <td>✔</td>
+                <td>✔</td>
                 <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41598-020-63138-w" target="_blank">10.1038/s41598-020-63138-w</a></td>
+                <td>Corded Ware cultural complexity uncovered using genomic and isotopic analysis from south-eastern Poland</td>
+                <td>2020</td>
+                <td>Scientific Reports</td>
+                <td>Anna Linderholm</td>
+                <td>2020-04-17</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1101/2020.03.25.004606" target="_blank">10.1101/2020.03.25.004606</a></td>
+                <td>The Genomic Formation of Human Populations in East Asia</td>
+                <td>0</td>
+                <td>No Journal</td>
+                <td>Chuan-Chao Wang</td>
+                <td>2020-03-26</td>
+                <td>✘</td>
+                <td>✔</td>
                 <td>✘</td>
             </tr>
             
@@ -570,6 +2005,30 @@
                 <td>Science</td>
                 <td>Anders Bergström</td>
                 <td>2020-03-19</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41598-020-61190-0" target="_blank">10.1038/s41598-020-61190-0</a></td>
+                <td>Gene-flow from steppe individuals into Cucuteni-Trypillia associated populations indicates long-standing contacts and gradual admixture</td>
+                <td>2020</td>
+                <td>Scientific Reports</td>
+                <td>Alexander Immel</td>
+                <td>2020-03-06</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-020-15020-6" target="_blank">10.1038/s41467-020-15020-6</a></td>
+                <td>Differential DNA methylation of vocal and facial anatomy genes in modern humans</td>
+                <td>2020</td>
+                <td>Nature Communications</td>
+                <td>David Gokhman</td>
+                <td>2020-03-04</td>
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
@@ -612,12 +2071,72 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1038/s41598-019-56029-2" target="_blank">10.1038/s41598-019-56029-2</a></td>
+                <td>Interactions between earliest Linearbandkeramik farmers and central European hunter gatherers at the dawn of European Neolithization</td>
+                <td>2019</td>
+                <td>Scientific Reports</td>
+                <td>Alexey G. Nikitin</td>
+                <td>2019-12-20</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-019-13549-9" target="_blank">10.1038/s41467-019-13549-9</a></td>
+                <td>A 5700 year-old human genome and oral microbiome from chewed birch pitch</td>
+                <td>2019</td>
+                <td>Nature Communications</td>
+                <td>Theis Z. T. Jensen</td>
+                <td>2019-12-17</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1093/molbev/msz267" target="_blank">10.1093/molbev/msz267</a></td>
                 <td>Ancient DNA Reconstructs the Genetic Legacies of Precontact Puerto Rico Communities</td>
                 <td>2020</td>
                 <td>Molecular Biology and Evolution</td>
                 <td>Maria A Nieves-Colón</td>
                 <td>2019-11-08</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.aay6826" target="_blank">10.1126/science.aay6826</a></td>
+                <td>Ancient Rome: A genetic crossroads of Europe and the Mediterranean</td>
+                <td>2019</td>
+                <td>Science</td>
+                <td>Margaret L. Antonio</td>
+                <td>2019-11-08</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.aax6219" target="_blank">10.1126/science.aax6219</a></td>
+                <td>Kinship-based social inequality in Bronze Age Europe</td>
+                <td>2019</td>
+                <td>Science</td>
+                <td>Alissa Mittnik</td>
+                <td>2019-10-10</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1098/rspb.2019.1528" target="_blank">10.1098/rspb.2019.1528</a></td>
+                <td>The genomic ancestry of the Scandinavian Battle Axe Culture people and their relation to the broader Corded Ware horizon</td>
+                <td>2019</td>
+                <td>Proceedings of the Royal Society B: Biological Sciences</td>
+                <td>Helena Malmström</td>
+                <td>2019-10-09</td>
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
@@ -636,11 +2155,95 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2019.08.048" target="_blank">10.1016/j.cell.2019.08.048</a></td>
+                <td>An Ancient Harappan Genome Lacks Ancestry from Steppe Pastoralists or Iranian Farmers</td>
+                <td>2019</td>
+                <td>Cell</td>
+                <td>Vasant Shinde</td>
+                <td>2019-09-05</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-019-11357-9" target="_blank">10.1038/s41467-019-11357-9</a></td>
+                <td>Ancient DNA from the skeletons of Roopkund Lake reveals Mediterranean migrants in India</td>
+                <td>2019</td>
+                <td>Nature Communications</td>
+                <td>Éadaoin Harney</td>
+                <td>2019-08-20</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2019.06.044" target="_blank">10.1016/j.cub.2019.06.044</a></td>
+                <td>Ancient Genomes Reveal Yamnaya-Related Ancestry and a Potential Source of Indo-European Speakers in Iron Age Tianshan</td>
+                <td>2019</td>
+                <td>Current Biology</td>
+                <td>Chao Ning</td>
+                <td>2019-07-25</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2019.06.019" target="_blank">10.1016/j.cub.2019.06.019</a></td>
+                <td>Shifts in the Genetic Landscape of the Western Eurasian Steppe Associated with the Beginning and End of the Scythian Dominance</td>
+                <td>2019</td>
+                <td>Current Biology</td>
+                <td>Mari Järve</td>
+                <td>2019-07-11</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/sciadv.aax0061" target="_blank">10.1126/sciadv.aax0061</a></td>
+                <td>Ancient DNA sheds light on the genetic origins of early Iron Age Philistines</td>
+                <td>2019</td>
+                <td>Science Advances</td>
+                <td>Michal Feldman</td>
+                <td>2019-07-03</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1080/03014460.2019.1623912" target="_blank">10.1080/03014460.2019.1623912</a></td>
+                <td>East Anglian early Neolithic monument burial linked to contemporary Megaliths</td>
+                <td>2019</td>
+                <td>Annals of Human Biology</td>
+                <td>Christiana L. Scheib</td>
+                <td>2019-06-11</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1038/s41586-019-1251-y" target="_blank">10.1038/s41586-019-1251-y</a></td>
                 <td>Palaeo-Eskimo genetic ancestry and the peopling of Chukotka and North America</td>
                 <td>2019</td>
                 <td>Nature</td>
                 <td>Pavel Flegontov</td>
+                <td>2019-06-05</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-019-1279-z" target="_blank">10.1038/s41586-019-1279-z</a></td>
+                <td>The population history of northeastern Siberia since the Pleistocene</td>
+                <td>2019</td>
+                <td>Nature</td>
+                <td>Martin Sikora</td>
                 <td>2019-06-05</td>
                 <td>✔</td>
                 <td>✔</td>
@@ -660,12 +2263,72 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1073/pnas.1820210116" target="_blank">10.1073/pnas.1820210116</a></td>
+                <td>Unraveling ancestry, kinship, and violence in a Late Neolithic mass grave</td>
+                <td>2019</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Hannes Schroeder</td>
+                <td>2019-05-14</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2019.04.026" target="_blank">10.1016/j.cub.2019.04.026</a></td>
+                <td>The Arrival of Siberian Ancestry Connecting the Eastern Baltic to Uralic Speakers further East</td>
+                <td>2019</td>
+                <td>Current Biology</td>
+                <td>Lehti Saag</td>
+                <td>2019-05-09</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1038/s41559-019-0878-2" target="_blank">10.1038/s41559-019-0878-2</a></td>
                 <td>The genetic history of admixture across inner Eurasia</td>
                 <td>2019</td>
                 <td>Nature Ecology &amp; Evolution</td>
                 <td>Choongwon Jeong</td>
                 <td>2019-04-29</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.ajhg.2019.03.015" target="_blank">10.1016/j.ajhg.2019.03.015</a></td>
+                <td>A Transient Pulse of Genetic Admixture from the Crusaders in the Near East Identified from Ancient Genome Sequences</td>
+                <td>2019</td>
+                <td>The American Journal of Human Genetics</td>
+                <td>Marc Haber</td>
+                <td>2019-04-18</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1073/pnas.1818037116" target="_blank">10.1073/pnas.1818037116</a></td>
+                <td>Megalithic tombs in western and northern Neolithic Europe were linked to a kindred society</td>
+                <td>2019</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Federico Sánchez-Quinto</td>
+                <td>2019-04-18</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-019-09209-7" target="_blank">10.1038/s41467-019-09209-7</a></td>
+                <td>Late Pleistocene human genome suggests a local origin for the first farmers of central Anatolia</td>
+                <td>2019</td>
+                <td>Nature Communications</td>
+                <td>Michal Feldman</td>
+                <td>2019-04-16</td>
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
@@ -684,12 +2347,96 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2019.02.035" target="_blank">10.1016/j.cell.2019.02.035</a></td>
+                <td>Multiple Deeply Divergent Denisovan Ancestries in Papuans</td>
+                <td>2019</td>
+                <td>Cell</td>
+                <td>Guy S. Jacobs</td>
+                <td>2019-04-11</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1126/science.aav4040" target="_blank">10.1126/science.aav4040</a></td>
                 <td>The genomic history of the Iberian Peninsula over the past 8000 years</td>
                 <td>2019</td>
                 <td>Science</td>
                 <td>Iñigo Olalde</td>
                 <td>2019-03-14</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2019.02.006" target="_blank">10.1016/j.cub.2019.02.006</a></td>
+                <td>Survival of Late Pleistocene Hunter-Gatherer Ancestry in the Iberian Peninsula</td>
+                <td>2019</td>
+                <td>Current Biology</td>
+                <td>Vanessa Villalba-Mouco</td>
+                <td>2019-03-14</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-018-08220-8" target="_blank">10.1038/s41467-018-08220-8</a></td>
+                <td>Ancient human genome-wide data from a 3000-year interval in the Caucasus corresponds with eco-geographic regions</td>
+                <td>2019</td>
+                <td>Nature Communications</td>
+                <td>Chuan-Chao Wang</td>
+                <td>2019-02-04</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1098/rspb.2018.2288" target="_blank">10.1098/rspb.2018.2288</a></td>
+                <td>A western route of prehistoric human migration from Africa into the Iberian Peninsula</td>
+                <td>2019</td>
+                <td>Proceedings of the Royal Society B: Biological Sciences</td>
+                <td>G. González-Fortes</td>
+                <td>2019-01-23</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/sciadv.aau5064" target="_blank">10.1126/sciadv.aau5064</a></td>
+                <td>Ancient nuclear genomes enable repatriation of Indigenous human remains</td>
+                <td>2018</td>
+                <td>Science Advances</td>
+                <td>Joanne L. Wright</td>
+                <td>2018-12-20</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41598-018-35667-y" target="_blank">10.1038/s41598-018-35667-y</a></td>
+                <td>Ancient DNA of Phoenician remains indicates discontinuity in the settlement history of Ibiza</td>
+                <td>2018</td>
+                <td>Scientific Reports</td>
+                <td>Pierre Zalloua</td>
+                <td>2018-11-28</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-018-07483-5" target="_blank">10.1038/s41467-018-07483-5</a></td>
+                <td>Ancient Fennoscandian genomes reveal origin and spread of Siberian ancestry in Europe</td>
+                <td>2018</td>
+                <td>Nature Communications</td>
+                <td>Thiseas C. Lamnidis</td>
+                <td>2018-11-21</td>
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
@@ -720,6 +2467,30 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2018.10.027" target="_blank">10.1016/j.cell.2018.10.027</a></td>
+                <td>Reconstructing the Deep Population History of Central and South America</td>
+                <td>2018</td>
+                <td>Cell</td>
+                <td>Cosimo Posth</td>
+                <td>2018-11-08</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1073/pnas.1813608115" target="_blank">10.1073/pnas.1813608115</a></td>
+                <td>Bronze Age population dynamics and the rise of dairy pastoralism on the eastern Eurasian steppe</td>
+                <td>2018</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Choongwon Jeong</td>
+                <td>2018-11-05</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1126/sciadv.aat4457" target="_blank">10.1126/sciadv.aat4457</a></td>
                 <td>Ancient genomes suggest the eastern Pontic-Caspian steppe as the source of western Iron Age nomads</td>
                 <td>2018</td>
@@ -739,6 +2510,18 @@
                 <td>D. M. Fernandes</td>
                 <td>2018-10-01</td>
                 <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/sciadv.aao1262" target="_blank">10.1126/sciadv.aao1262</a></td>
+                <td>Ancient genome-wide analyses infer kinship structure in an Early Medieval Alemannic graveyard</td>
+                <td>2018</td>
+                <td>Science Advances</td>
+                <td>Niall O’Sullivan</td>
+                <td>2018-09-05</td>
+                <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
             </tr>
@@ -764,7 +2547,7 @@
                 <td>2018-08-23</td>
                 <td>✔</td>
                 <td>✔</td>
-                <td>✘</td>
+                <td>✔</td>
             </tr>
             
             <tr>
@@ -828,6 +2611,18 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1126/science.aar2625" target="_blank">10.1126/science.aar2625</a></td>
+                <td>Ancient genomes from Iceland reveal the making of a human population</td>
+                <td>2018</td>
+                <td>Science</td>
+                <td>S. Sunna Ebenesersdóttir</td>
+                <td>2018-06-04</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1126/science.aat3188" target="_blank">10.1126/science.aat3188</a></td>
                 <td>Ancient genomes document multiple waves of migration in Southeast Asian prehistory</td>
                 <td>2018</td>
@@ -882,6 +2677,18 @@
                 <td>Nature</td>
                 <td>Mateja Hajdinjak</td>
                 <td>2018-03-20</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.aar8380" target="_blank">10.1126/science.aar8380</a></td>
+                <td>Pleistocene North African genomes link Near Eastern and sub-Saharan African human populations</td>
+                <td>2018</td>
+                <td>Science</td>
+                <td>Marieke van de Loosdrecht</td>
+                <td>2018-03-15</td>
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
@@ -966,6 +2773,18 @@
                 <td>Proceedings of the National Academy of Sciences</td>
                 <td>Hannes Schroeder</td>
                 <td>2018-02-20</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41467-018-02825-9" target="_blank">10.1038/s41467-018-02825-9</a></td>
+                <td>The genetic prehistory of the Baltic Sea region</td>
+                <td>2018</td>
+                <td>Nature Communications</td>
+                <td>Alissa Mittnik</td>
+                <td>2018-01-24</td>
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
@@ -1152,6 +2971,18 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1038/ncomms15694" target="_blank">10.1038/ncomms15694</a></td>
+                <td>Ancient Egyptian mummy genomes suggest an increase of Sub-Saharan African ancestry in post-Roman periods</td>
+                <td>2017</td>
+                <td>Nature Communications</td>
+                <td>Verena J. Schuenemann</td>
+                <td>2017-05-30</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1016/j.cub.2017.05.023" target="_blank">10.1016/j.cub.2017.05.023</a></td>
                 <td>Paleogenomic Evidence for Multi-generational Mixing between Neolithic Farmers and Mesolithic Hunter-Gatherers in the Lower Danube Basin</td>
                 <td>2017</td>
@@ -1218,6 +3049,18 @@
                 <td>Nature</td>
                 <td>Pontus Skoglund</td>
                 <td>2016-09-30</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/nature18964" target="_blank">10.1038/nature18964</a></td>
+                <td>The Simons Genome Diversity Project: 300 genomes from 142 diverse populations</td>
+                <td>2016</td>
+                <td>Nature</td>
+                <td>Swapan Mallick</td>
+                <td>2016-09-20</td>
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
@@ -1464,6 +3307,18 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1038/nature14895" target="_blank">10.1038/nature14895</a></td>
+                <td>Genetic evidence for two founding populations of the Americas</td>
+                <td>2015</td>
+                <td>Nature</td>
+                <td>Pontus Skoglund</td>
+                <td>2015-07-21</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1038/nature14558" target="_blank">10.1038/nature14558</a></td>
                 <td>An early modern human from Romania with a recent Neanderthal ancestor</td>
                 <td>2015</td>
@@ -1494,6 +3349,30 @@
                 <td>Nature</td>
                 <td>Morten E. Allentoft</td>
                 <td>2015-06-09</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1073/pnas.1421784112" target="_blank">10.1073/pnas.1421784112</a></td>
+                <td>Genome-wide ancestry of 17th-century enslaved Africans from the Caribbean</td>
+                <td>2015</td>
+                <td>Proceedings of the National Academy of Sciences</td>
+                <td>Hannes Schroeder</td>
+                <td>2015-03-10</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/nature14317" target="_blank">10.1038/nature14317</a></td>
+                <td>Massive migration from the steppe was a source for Indo-European languages in Europe</td>
+                <td>2015</td>
+                <td>Nature</td>
+                <td>Wolfgang Haak</td>
+                <td>2015-03-03</td>
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
@@ -1692,6 +3571,30 @@
             </tr>
             
             <tr>
+                <td><a href="https://doi.org/10.1038/nature09710" target="_blank">10.1038/nature09710</a></td>
+                <td>Genetic history of an archaic hominin group from Denisova Cave in Siberia</td>
+                <td>2010</td>
+                <td>Nature</td>
+                <td>David Reich</td>
+                <td>2010-12-21</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.1188021" target="_blank">10.1126/science.1188021</a></td>
+                <td>A Draft Sequence of the Neandertal Genome</td>
+                <td>2010</td>
+                <td>Science</td>
+                <td>Richard E. Green</td>
+                <td>2010-05-06</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
                 <td><a href="https://doi.org/10.1038/nature08835" target="_blank">10.1038/nature08835</a></td>
                 <td>Ancient human genome sequence of an extinct Palaeo-Eskimo</td>
                 <td>2010</td>
@@ -1699,6 +3602,30 @@
                 <td>Morten Rasmussen</td>
                 <td>2010-02-09</td>
                 <td>✔</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/science.1153717" target="_blank">10.1126/science.1153717</a></td>
+                <td>Worldwide Human Relationships Inferred from Genome-Wide Patterns of Variation</td>
+                <td>2008</td>
+                <td>Science</td>
+                <td>Jun Z. Li</td>
+                <td>2008-02-21</td>
+                <td>✘</td>
+                <td>✔</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/nature06742" target="_blank">10.1038/nature06742</a></td>
+                <td>Genotype, haplotype and copy-number variation in worldwide human populations</td>
+                <td>2008</td>
+                <td>Nature</td>
+                <td>Mattias Jakobsson</td>
+                <td>2008-02-20</td>
+                <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
             </tr>
@@ -1712,6 +3639,18 @@
                 <td>2005-08-31</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>✘</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.7910/dvn/ffidcw" target="_blank">10.7910/dvn/ffidcw</a></td>
+                <td>No Title Available</td>
+                <td>0</td>
+                <td>No Journal</td>
+                <td>N/A N/A</td>
+                <td>0000-00-00</td>
+                <td>✔</td>
+                <td>✔</td>
                 <td>✘</td>
             </tr>
             
