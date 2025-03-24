@@ -1,14 +1,32 @@
+import json
+import requests
+import sys
+from datetime import datetime
+import os
 import requests
 from jinja2 import Template
 from collections import defaultdict
 from datetime import datetime
-import sys
 
-# Retrieve metadata from CrossRef API ---
+def load_supplementary_metadata():
+    """Loads supplementary metadata from supplementary.json."""
+    supplementary_file = "supplementary.json"
+    if os.path.exists(supplementary_file):
+        try:
+            with open(supplementary_file, "r", encoding="utf-8") as file:
+                return json.load(file)
+        except json.JSONDecodeError:
+            sys.stderr.write("ERROR: Failed to parse supplementary.json. Using default values.\n")
+            return {}
+    return {}
+
+SUPPLEMENTARY_METADATA = load_supplementary_metadata()
+
 def get_crossref_metadata(doi, index, total):
     print(f"({index + 1} / {total}) Querying metadata for {doi}")
     url = f"https://api.crossref.org/works/{doi}"
     response = requests.get(url)
+
     if response.status_code == 200:
         data = response.json().get("message", {})
 
@@ -16,14 +34,14 @@ def get_crossref_metadata(doi, index, total):
         year_data = data.get("published-print", data.get("published-online", {})).get("date-parts", [[None]])
         year = year_data[0][0] if isinstance(year_data[0][0], int) else None
 
-        # Extracting first author details
+        # Extracting first author 
         first_author = data.get("author", [{}])[0]
         first_author_firstname = first_author.get("given", "No First Name")
         first_author_lastname = first_author.get("family", "No Last Name")
 
         # Formatting the publication date
         raw_date = data.get("created", {}).get("date-time", "No Date Available")
-        formatted_date = "0000-00-00"  # Default to earliest date for sorting
+        formatted_date = "0000-00-00"  # Default for sorting
         if raw_date and raw_date != "No Date Available":
             try:
                 formatted_date = datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d")
@@ -39,13 +57,28 @@ def get_crossref_metadata(doi, index, total):
             "first_author_lastname": first_author_lastname,
             "doi_link": f"https://doi.org/{doi}",
         }
-    
-    sys.stderr.write(f"Warning!! Failed to fetch metadata for DOI: {doi}\n")  
+
+    # If CrossRef fails, check supplementary.json
+    if doi in SUPPLEMENTARY_METADATA:
+        print(f"INFO: CrossRef missing metadata for {doi}. Using supplementary.json.")
+        metadata = SUPPLEMENTARY_METADATA[doi]
+        return {
+            "title": metadata.get("title", "No Title Available"),
+            "year": metadata.get("year", 0),
+            "journal": metadata.get("journal", "No Journal"),
+            "date": metadata.get("publication date", "0000-00-00"),
+            "first_author_firstname": metadata.get("first author", "No First Name"),
+            "first_author_lastname": "",  # If only first author is stored
+            "doi_link": f"https://doi.org/{doi}",
+        }
+
+    # If both fail, return default values
+    sys.stderr.write(f"WARNING: Metadata not found for {doi}. Using default values.\n")
     return {
         "title": "No Title Available",
         "year": 0,
         "journal": "No Journal",
-        "date": "0000-00-00",  # Default if missing
+        "date": "0000-00-00",
         "first_author_firstname": "N/A",
         "first_author_lastname": "N/A",
         "doi_link": f"https://doi.org/{doi}",
