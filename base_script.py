@@ -23,66 +23,70 @@ def load_supplementary_metadata():
 SUPPLEMENTARY_METADATA = load_supplementary_metadata()
 
 def get_crossref_metadata(doi, index, total):
-    print(f"({index + 1} / {total}) Querying metadata for {doi}")
+    print(f"({index + 1} / {total}) Gathering metadata for {doi}")
+
+    #Initialize with supplementary.json 
+    metadata = SUPPLEMENTARY_METADATA.get(doi, {})
+    metadata = {
+        "title": metadata.get("title"),
+        "year": metadata.get("year"),
+        "journal": metadata.get("journal"),
+        "date": metadata.get("publication date"),
+        "first_author_firstname": metadata.get("first author"),
+        "first_author_lastname": "",  # optional, not present in supplementary
+        "doi_link": f"https://doi.org/{doi}",
+    }
+
+    #Query CrossRef to fill missing values
     url = f"https://api.crossref.org/works/{doi}"
     response = requests.get(url)
 
     if response.status_code == 200:
         data = response.json().get("message", {})
 
-        # Extracting year 
-        year_data = data.get("published-print", data.get("published-online", {})).get("date-parts", [[None]])
-        year = year_data[0][0] if isinstance(year_data[0][0], int) else None
+        if metadata["title"] is None:
+            metadata["title"] = data.get("title", [None])[0]
 
-        # Extracting first author 
-        first_author = data.get("author", [{}])[0]
-        first_author_firstname = first_author.get("given", "No First Name")
-        first_author_lastname = first_author.get("family", "No Last Name")
+        if metadata["year"] is None:
+            year_data = data.get("published-print", data.get("published-online", {})).get("date-parts", [[None]])
+            metadata["year"] = year_data[0][0] if isinstance(year_data[0][0], int) else None
 
-        # Formatting the publication date
-        raw_date = data.get("created", {}).get("date-time", "No Date Available")
-        formatted_date = "0000-00-00"  # Default for sorting
-        if raw_date and raw_date != "No Date Available":
-            try:
-                formatted_date = datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d")
-            except ValueError:
-                pass
+        if metadata["journal"] is None:
+           container_titles = data.get("container-title", [])
+           metadata["journal"] = container_titles[0] if container_titles else None
 
-        return {
-            "title": data.get("title", ["No Title Available"])[0],
-            "year": year if year else 0,
-            "journal": data.get("container-title", ["No Journal"])[0] if data.get("container-title") else "No Journal",
-            "date": formatted_date,
-            "first_author_firstname": first_author_firstname,
-            "first_author_lastname": first_author_lastname,
-            "doi_link": f"https://doi.org/{doi}",
-        }
+        if metadata["date"] is None:
+            raw_date = data.get("created", {}).get("date-time", None)
+            if raw_date:
+                try:
+                    metadata["date"] = datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d")
+                except ValueError:
+                    pass
 
-    # If CrossRef fails, check supplementary.json
-    if doi in SUPPLEMENTARY_METADATA:
-        print(f"INFO: CrossRef missing metadata for {doi}. Using supplementary.json.")
-        metadata = SUPPLEMENTARY_METADATA[doi]
-        return {
-            "title": metadata.get("title", "No Title Available"),
-            "year": metadata.get("year", 0),
-            "journal": metadata.get("journal", "No Journal"),
-            "date": metadata.get("publication date", "0000-00-00"),
-            "first_author_firstname": metadata.get("first author", "No First Name"),
-            "first_author_lastname": "",  # If only first author is stored
-            "doi_link": f"https://doi.org/{doi}",
-        }
+        if metadata["first_author_firstname"] is None or metadata["first_author_lastname"] == "":
+            first_author = data.get("author", [{}])[0]
+            metadata["first_author_firstname"] = metadata["first_author_firstname"] or first_author.get("given")
+            metadata["first_author_lastname"] = first_author.get("family")
 
-    # If both fail, return default values
-    sys.stderr.write(f"WARNING: Metadata not found for {doi}. Using default values.\n")
-    return {
+    else:
+        sys.stderr.write(f"WARNING: CrossRef failed to fetch metadata for {doi}\n")
+
+    #Fallback defaults
+    metadata = {k: (v if v else get_default_value(k)) for k, v in metadata.items()}
+
+    return metadata
+
+def get_default_value(field):
+    """Returns default values for missing metadata fields."""
+    defaults = {
         "title": "No Title Available",
         "year": 0,
         "journal": "No Journal",
         "date": "0000-00-00",
         "first_author_firstname": "N/A",
         "first_author_lastname": "N/A",
-        "doi_link": f"https://doi.org/{doi}",
     }
+    return defaults.get(field, "N/A")
 
 # Fetch bibliography from Poseidon 
 def fetch_poseidon_bibliography(archive_name):
