@@ -31,9 +31,8 @@ def get_crossref_metadata(doi, index, total):
         "title": metadata.get("title"),
         "year": metadata.get("year"),
         "journal": metadata.get("journal"),
-        "date": metadata.get("publication date"),
-        "first_author_firstname": metadata.get("first author"),
-        "first_author_lastname": "",  # optional, not present in supplementary
+        "date": metadata.get("date"),
+        "first_author": metadata.get("first author"),
         "doi_link": f"https://doi.org/{doi}",
     }
 
@@ -63,10 +62,11 @@ def get_crossref_metadata(doi, index, total):
                 except ValueError:
                     pass
 
-        if metadata["first_author_firstname"] is None or metadata["first_author_lastname"] == "":
-            first_author = data.get("author", [{}])[0]
-            metadata["first_author_firstname"] = metadata["first_author_firstname"] or first_author.get("given")
-            metadata["first_author_lastname"] = first_author.get("family")
+        if metadata["first_author"] is None:
+            first_author_field = data.get("author", [{}])[0]
+            first = first_author_field.get("given") or ""
+            last = first_author_field.get("family") or ""
+            metadata["first_author"] = first + " " + last
 
     else:
         sys.stderr.write(f"WARNING: CrossRef failed to fetch metadata for {doi}\n")
@@ -83,8 +83,7 @@ def get_default_value(field):
         "year": 0,
         "journal": "No Journal",
         "date": "0000-00-00",
-        "first_author_firstname": "N/A",
-        "first_author_lastname": "N/A",
+        "first_author": "N/A",
     }
     return defaults.get(field, "N/A")
 
@@ -255,7 +254,7 @@ def generate_html(papers, output_file="docs/index.html"):
                 <td>{{ paper.title }}</td>
                 <td>{{ paper.year }}</td>
                 <td>{{ paper.journal }}</td>
-                <td>{{ paper.first_author_firstname }} {{ paper.first_author_lastname }}</td>
+                <td>{{ paper.first_author }}</td>
                 <td>{{ paper.date }}</td>
                 <td>{{ '✔' if 'community-archive' in paper.archives else '✘' }}</td>
                 <td>{{ '✔' if 'aadr-archive' in paper.archives else '✘' }}</td>
