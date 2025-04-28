@@ -26,16 +26,9 @@ def get_crossref_metadata(doi, index, total):
     print(f"({index + 1} / {total}) Gathering metadata for {doi}")
 
     #Initialize with supplementary.json 
-    metadata = SUPPLEMENTARY_METADATA.get(doi, {})
-    metadata = {
-        "title": metadata.get("title"),
-        "year": metadata.get("year"),
-        "journal": metadata.get("journal"),
-        "date": metadata.get("publication date"),
-        "first_author_firstname": metadata.get("first author"),
-        "first_author_lastname": "",  # optional, not present in supplementary
-        "doi_link": f"https://doi.org/{doi}",
-    }
+    metadata = SUPPLEMENTARY_METADATA.get(doi)
+    if metadata:
+        metadata["doi_link"] = "https://doi.org/" + metadata["doi"]
 
     #Query CrossRef to fill missing values
     url = f"https://api.crossref.org/works/{doi}"
