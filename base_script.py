@@ -200,6 +200,11 @@ def generate_html(papers, output_file="docs/index.html"):
                 document.getElementById('minotaurFilter').value = 'all';
                 filterTable();
             }
+
+            window.addEventListener('load', function() {
+                resetFilters();
+            });
+
         </script>
     </head>
     <body>
