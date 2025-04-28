@@ -160,6 +160,7 @@ def generate_html(papers, output_file="docs/index.html"):
                 let table = document.getElementById("paperTable");
                 let rows = table.getElementsByTagName("tr");
 
+                let nrRows = 0;
                 for (let i = 1; i < rows.length; i++) {
                     let titleCell = rows[i].getElementsByTagName("td")[1]; // Title column
                     let authorCell = rows[i].getElementsByTagName("td")[4]; // Author column
@@ -185,7 +186,10 @@ def generate_html(papers, output_file="docs/index.html"):
 
                         // Show or hide row based on both search and filter conditions
                         rows[i].style.display = (matchesSearch && matchesFilters) ? "" : "none";
+                        nrRows += matchesSearch && matchesFilters;
                     }
+                    let nrRowsSpan = document.getElementById("nrRows");
+                    nrRowsSpan.innerText = nrRows;
                 }
             }
 
@@ -225,6 +229,8 @@ def generate_html(papers, output_file="docs/index.html"):
             </select>
             <button onclick="resetFilters()">Reset Filters</button>
         </div>
+
+        <p><span id="nrRows">?</span> papers selected</p>
 
         <table id="paperTable">
             <tr>
