@@ -134,9 +134,9 @@ def check_for_duplicates(dois):
 
     return unique_dois  # Return unique dois
 
-# Generate index.html
-def generate_html(papers, output_file="index.html"):
-    print("Updating index.html...")
+# Generate public/index.html
+def generate_html(papers, output_file="public/index.html"):
+    print("Updating public/index.html...")
     html_template = """ 
     <!DOCTYPE html>
     <html lang="en">
@@ -260,7 +260,7 @@ def generate_html(papers, output_file="index.html"):
     rendered_html = template.render(papers=papers)
     with open(output_file, "w") as file:
         file.write(rendered_html)
-    print("index.html successfully updated!")
+    print("public/index.html successfully updated!")
 
 # Main Execution 
 dois = [preprocess_doi(doi) for doi in open("list.txt").read().splitlines()]
