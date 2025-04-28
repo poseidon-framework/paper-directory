@@ -6,6 +6,8 @@ on:
       - main  # Triggers when commits or merges happen in main
     paths:
       - 'list.txt'  # Triggers when the (input) list.txt file changes
+      - 'supplementary.json'
+      - 'base_script.py'
 
 jobs:
   build-and-deploy:
@@ -31,5 +33,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: .  # The root directory (where index.html is generated)
+          publish_dir: ./public  # The root directory (where index.html is generated)
           force_orphan: true
