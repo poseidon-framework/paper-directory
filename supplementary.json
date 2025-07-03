@@ -1,11 +1,4 @@
 {
-  "j.cell.2022.03.007": {
-    "journal": "bioRxiv",
-    "year": "2023",
-    "title" : "Social and genetic diversity among the first farmers of Central Europe",
-    "date" : "2023-07-23",
-    "first author" : "Pere Gelabert"
-  },
   "10.1101/2024.05.29.596386": {
     "journal": "bioRxiv",
     "year": "2024",
@@ -19,12 +12,5 @@
     "title" : "Initial sequence of the chimpanzee genome and comparison with the human genome",
     "date" : "2005-09-01",
     "first author" : "Chimpanzee Sequencing and Analysis Consortium"
-  },
-  "10.7910/dvn/ffidcw": {
-    "journal": "Harvard Dataverse",
-    "year": "2023",
-    "title" : "The Allen Ancient DNA Resource (AADR): A curated compendium of ancient human genomes",
-    "date" : "2024-09-16",
-    "first author" : "Swapan Mallick"
   }
 }
