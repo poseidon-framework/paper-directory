@@ -12,5 +12,19 @@
     "title" : "Initial sequence of the chimpanzee genome and comparison with the human genome",
     "date" : "2005-09-01",
     "first author" : "Chimpanzee Sequencing and Analysis Consortium"
+  },
+  "10.21203/rs.3.rs-1993191/v1": {
+    "journal": "Research Square",
+    "year": "2022",
+    "title": "First ancient DNA analysis of mummies from the post-Scythian Oglakhty cemetery in South Siberia",
+    "date": "2022-08-29",
+    "first author": "Artem Nedoluzhko"
+  },
+  "10.1101/2022.06.12.495320": {
+    "journal": "bioRxiv",
+    "year": "2022",
+    "title": 	"Technical Report on Ancient DNA analysis of 27 African Americans from Catoctin Furnace, Maryland",
+    "date": "2022-06-15",
+    "first author": "Éadaoin Harney"
   }
 }
