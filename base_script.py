@@ -208,6 +208,7 @@ def generate_html(papers, output_file="docs/index.html"):
     </head>
     <body>
         <h1>Paper Directory</h1>
+        <p>A list of ancient DNA papers, and their availability in Poseidon and AADR archives. Please see <a href="https://github.com/poseidon-framework/paper-directory">our README on github for instructions how to add to this list.</a></p>
         
         <div>
             <label for="searchInput">Search Title or Author:</label>
