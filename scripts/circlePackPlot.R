@@ -1,20 +1,13 @@
 library(magrittr)
 library(ggplot2)
 
-hu <- readr::read_csv("~/agora/paper-directory/docs/paper_directory.csv")
+#### read data ####
 
-hu %>%
-  dplyr::group_by(year) %>%
-  dplyr::summarise(n = sum(nr_adna_samples)) %>%
-  ggplot() +
-  geom_bar(
-    aes(x = year, y = n), stat = "identity"
-  )
+paper_directory_raw <- readr::read_csv("~/agora/paper-directory/docs/paper_directory.csv")
 
-hu <- hu %>%
+paper_directory <- paper_directory_raw %>%
   dplyr::filter(nr_adna_samples > 0) %>%
   dplyr::mutate(
-    id = 1:dplyr::n(),
     type = dplyr::case_when(
       (community_archive | minotaur_archive) & aadr_archive ~ "all",
       (community_archive | minotaur_archive) ~ "PCA or PMA",
@@ -22,18 +15,35 @@ hu <- hu %>%
       .default = "none"
     )
   ) %>%
-  dplyr::arrange(type)
+  dplyr::arrange(type) %>%
+  dplyr::mutate(
+    id = 1:dplyr::n() # after arrange step
+  )
 
+#### barplot ####
+
+paper_directory %>%
+  dplyr::group_by(year) %>%
+  dplyr::summarise(n = sum(nr_adna_samples)) %>%
+  ggplot() +
+  geom_bar(
+    aes(x = year, y = n), stat = "identity"
+  ) +
+  scale_x_continuous(breaks = 2010:2025)
+
+#### packed-circles plot ####
+
+# arrange papers on grid to release pressure from circleRepelLayout below
 grid_pos <- ggpointgrid::arrange_points_on_grid(
   grid_xy = expand_grid(
     x = seq(
-      min(as.double(hu$publication_date)),
-      max(as.double(hu$publication_date)),
-      by = 50
+      min(as.double(paper_directory$publication_date)),
+      max(as.double(paper_directory$publication_date)),
+      by = 100
     ),
-    y = seq(-1000,1000,100)
+    y = seq(-1000,1000,50)
   ) %>% as.matrix,
-  pts_xy = hu %>%
+  pts_xy = paper_directory %>%
     dplyr::transmute(
       x = as.double(publication_date),
       y = 0
@@ -42,21 +52,23 @@ grid_pos <- ggpointgrid::arrange_points_on_grid(
 
 # plot(grid_pos[,1],grid_pos[,2])
 
+# create and arrange circles
 xyz <- tibble::tibble(
-    x = as.double(hu$publication_date),#grid_pos[,1],
+    x = as.double(paper_directory$publication_date), # grid_pos[,1],
     y = grid_pos[,2],
-    n = hu$nr_adna_samples * 350
+    n = paper_directory$nr_adna_samples * 400
   )
 center_and_radius <- packcircles::circleRepelLayout(
   xyz,
-  xlim = c(min(xyz$x), max(xyz$x) + 110),
+  xlim = c(min(xyz$x), max(xyz$x) + 120),
   wrap = FALSE
 )$layout
 polygons <- packcircles::circleLayoutVertices(center_and_radius)
 
+# assemble plot
 p <- ggplot() +
   geom_polygon(
-    data = hu %>% dplyr::left_join(polygons, by = "id"),
+    data = paper_directory %>% dplyr::left_join(polygons, by = "id"),
     mapping = aes(as.Date(x), y, group = id, fill = type),
     linewidth = 0.4
   ) +
@@ -68,11 +80,11 @@ p <- ggplot() +
       "none" = "#D3D4D8"
     )
   ) +
-  guides(fill = guide_legend(title = "Archives")) +
+  guides(fill = guide_legend(title = "in Archives")) +
   geom_text(
-    data = hu %>% dplyr::bind_cols(
+    data = paper_directory %>% dplyr::bind_cols(
         center_and_radius %>% dplyr::transmute(x_center = x, y_center = y)
-      ) %>% dplyr::filter(nr_adna_samples > 160),
+      ) %>% dplyr::filter(nr_adna_samples > 150),
     mapping = aes(
       x = as.Date(x_center),
       y = y_center,
@@ -88,11 +100,13 @@ p <- ggplot() +
   coord_fixed() +
   theme_bw() +
   scale_x_date(
-    date_breaks = "1 year", date_labels = "%Y"
+    #date_breaks = "1 year",
+    breaks = seq.Date(ymd("2010-01-01"), ymd("2025-12-31"), by = "year"),
+    date_labels = "%Y"
   ) +
   theme(
     panel.grid = element_blank(),
-    panel.grid.major.x = element_line(colour = "lightgrey"),
+    panel.grid.major.x = element_line(colour = "lightgrey", linetype = "dashed"),
     panel.border = element_blank(),
     axis.line.x = element_line(),
     axis.title = element_blank(),
@@ -108,7 +122,7 @@ ggsave(
     device = "png",
     scale = 1.8,
     dpi = 300,
-    width = 1400, height = 800, units = "px",
+    width = 1400, height = 700, units = "px",
     limitsize = F,
     bg = "white"
 )
