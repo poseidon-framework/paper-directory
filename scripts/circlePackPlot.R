@@ -54,26 +54,42 @@ center_and_radius <- packcircles::circleRepelLayout(
 )$layout
 polygons <- packcircles::circleLayoutVertices(center_and_radius)
 
-flu <- hu %>%
-  dplyr::bind_cols(
-    center_and_radius %>%
-      dplyr::transmute(x_center = x, y_center = y)
-  ) %>%
-  dplyr::left_join(
-    polygons,
-    by = "id"
-  )
+flu <- hu 
 
-flu %>%
-  ggplot() +
+ggplot() +
   geom_polygon(
+    data = hu %>% dplyr::left_join(polygons, by = "id"),
     mapping = aes(as.Date(x), y, group = id, fill = type),
     colour="black"
   ) +
   geom_text(
-    mapping = aes(x = as.Date(x_center), y = y_center, label = nr_adna_samples),
+    data = hu %>% dplyr::bind_cols(
+        center_and_radius %>% dplyr::transmute(x_center = x, y_center = y)
+      ) %>% dplyr::filter(nr_adna_samples > 150),
+    mapping = aes(
+      x = as.Date(x_center),
+      y = y_center,
+      label = paste(
+        stringr::str_extract(first_author, "\\s([-\\w]+)$") %>%
+          stringr::str_replace_all("-", "-\n"),
+        year,
+        sep = "\n"
+      )
+    ),
     colour="black", size = 3
   ) +
   coord_fixed() +
-  theme_bw()
+  theme_bw() +
+  scale_x_date(
+    date_breaks = "1 year", date_labels = "%Y"
+  ) +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.line.x = element_line(),
+    axis.title = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    legend.position = "bottom"
+  )
 
