@@ -7,6 +7,7 @@ import requests
 from jinja2 import Template
 from collections import defaultdict
 from datetime import datetime
+import csv
 
 def load_supplementary_metadata():
     """Loads supplementary metadata from supplementary.json."""
@@ -134,8 +135,11 @@ def check_for_duplicates(dois):
     return unique_dois  # Return unique dois
 
 # Generate docs/index.html
-def generate_html(papers, output_file="docs/index.html"):
+def generate_html(papers):
     print("Updating docs/index.html...")
+    output_file = "docs/index.html"
+    csv_file = "docs/paper_directory.csv"
+
     html_template = """ 
     <!DOCTYPE html>
     <html lang="en">
@@ -203,12 +207,12 @@ def generate_html(papers, output_file="docs/index.html"):
             window.addEventListener('load', function() {
                 resetFilters();
             });
-
         </script>
     </head>
     <body>
         <h1>Paper Directory</h1>
-        <p>A list of ancient DNA papers, and their availability in Poseidon and AADR archives. Please see <a href="https://github.com/poseidon-framework/paper-directory">our README on github for instructions how to add to this list.</a></p>
+        <p>A list of ancient DNA papers, and their availability in Poseidon and AADR archives. <a href="{{ csv_filename }}" class="download-btn" download>⬇ Download entire list as .csv.</a><p>
+        <p>Please see <a href="https://github.com/poseidon-framework/paper-directory">our README on github for instructions how to add to this list.</a></p>
         
         <div>
             <label for="searchInput">Search Title or Author:</label>
@@ -268,10 +272,32 @@ def generate_html(papers, output_file="docs/index.html"):
     """
     
     template = Template(html_template)
-    rendered_html = template.render(papers=papers)
-    with open(output_file, "w") as file:
+    rendered_html = template.render(papers=papers, csv_filename=os.path.basename(csv_file))
+    with open(output_file, "w", encoding="utf-8") as file:
         file.write(rendered_html)
     print("docs/index.html successfully updated!")
+
+    # Save CSV file
+    with open(csv_file, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            "DOI", "title", "year", "journal",
+            "first_author", "publication_date",
+            "community_archive", "aadr_archive", "minotaur_archive"
+        ])
+        for paper in papers:
+            writer.writerow([
+                paper["doi"],
+                paper["title"],
+                paper["year"],
+                paper["journal"],
+                paper["first_author"],
+                paper["date"],
+                "community-archive" in paper["archives"],
+                "aadr-archive" in paper["archives"],
+                "minotaur-archive" in paper["archives"]
+            ])
+    print(f"{csv_file} successfully created!")
 
 # Main Execution 
 dois = [preprocess_doi(doi) for doi in open("list.txt").read().splitlines()]
