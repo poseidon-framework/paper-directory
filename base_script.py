@@ -212,8 +212,12 @@ def generate_html(papers):
     </head>
     <body>
         <h1>Paper Directory</h1>
-        <p>A list of ancient DNA papers, and their availability in Poseidon and AADR archives. <a href="{{ csv_filename }}" class="download-btn" download>⬇ Download entire list as .csv.</a><p>
-        <p>Please see <a href="https://github.com/poseidon-framework/paper-directory">our README on github for instructions how to add to this list.</a></p>
+        <p>A list of ancient DNA papers, and their availability in Poseidon and AADR archives.
+        <a href="{{ csv_filename }}" class="download-btn" download>⬇ Download entire list as .csv.</a><p>
+        <p><i># aDNA samples</i> generally considers human aDNA samples for which some form of whole genome sequencing was performed.
+        The numbers may be inaccurate.</p>
+        <p>Please see <a href="https://github.com/poseidon-framework/paper-directory">our README on github</a> 
+        for instructions how to add to this list or correct the <i># aDNA samples</i> entries.</p>
         
         <div>
             <label for="searchInput">Search Title or Author:</label>
