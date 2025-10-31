@@ -116,15 +116,16 @@ def preprocess_doi(doi):
 # Check for duplicate DOIs 
 def check_for_duplicates(dois):
     seen = set()
-    unique_dois = []
+    unique_dois_data = []
     duplicates = []
 
-    for doi in dois:
+    for entry in dois:
+        doi = entry["doi"]
         if doi in seen:
             duplicates.append(doi)  # Store duplicate for logging
         else:
             seen.add(doi)
-            unique_dois.append(doi)  # Keep only unique DOIs
+            unique_dois_data.append(entry)  # Keep only unique DOIs
 
     if duplicates:
         print("\n WARNING: Duplicate DOIs found and removed:")
@@ -132,7 +133,7 @@ def check_for_duplicates(dois):
             print(f"- {duplicate}")
         print("\nProceeding with a cleaned DOI list.\n")
 
-    return unique_dois  # Return unique dois
+    return unique_dois_data  # Return unique dois
 
 # Generate docs/index.html
 def generate_html(papers):
@@ -252,6 +253,7 @@ def generate_html(papers):
                 <th>Community Archive</th>
                 <th>AADR Archive</th>
                 <th>Minotaur Archive</th>
+                <th># aDNA samples</th>
             </tr>
             {% for paper in papers %}
             <tr>
@@ -264,6 +266,7 @@ def generate_html(papers):
                 <td>{{ '✔' if 'community-archive' in paper.archives else '✘' }}</td>
                 <td>{{ '✔' if 'aadr-archive' in paper.archives else '✘' }}</td>
                 <td>{{ '✔' if 'minotaur-archive' in paper.archives else '✘' }}</td>
+                <td>{{ paper.nr_adna_samples }}</td>
             </tr>
             {% endfor %}
         </table>
@@ -283,7 +286,8 @@ def generate_html(papers):
         writer.writerow([
             "DOI", "title", "year", "journal",
             "first_author", "publication_date",
-            "community_archive", "aadr_archive", "minotaur_archive"
+            "community_archive", "aadr_archive", "minotaur_archive",
+            "nr_adna_samples"
         ])
         for paper in papers:
             writer.writerow([
@@ -295,26 +299,39 @@ def generate_html(papers):
                 paper["date"],
                 "community-archive" in paper["archives"],
                 "aadr-archive" in paper["archives"],
-                "minotaur-archive" in paper["archives"]
+                "minotaur-archive" in paper["archives"],
+                paper["nr_adna_samples"]
             ])
     print(f"{csv_file} successfully created!")
 
 # Main Execution 
-dois = [preprocess_doi(doi) for doi in open("list.txt").read().splitlines()]
+dois_data = []
+with open("list.csv", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        doi = preprocess_doi(row["doi"])
+        nr_samples = row.get("nr_adna_samples", "").strip()
+        dois_data.append({"doi": doi, "nr_adna_samples": nr_samples})
 
-print(f"Processing {len(dois)} DOIs...")
+print(f"Processing {len(dois_data)} DOIs...")
 
 # Check for duplicates and get a unique list
-dois = check_for_duplicates(dois)
+unique_dois_data = check_for_duplicates(dois_data)
 
 # Get CrossRef metadata
-metadata_map = {doi: get_crossref_metadata(doi, index, len(dois)) for index, doi in enumerate(dois)}
+metadata_map = {entry["doi"]: get_crossref_metadata(entry["doi"], index, len(unique_dois_data))
+                for index, entry in enumerate(unique_dois_data)}
 
 # Get Poseidon DOI availability
 poseidon_doi_map = load_poseidon_doi_map()
 
 # Create structured paper data
-papers = [{"doi": doi, **metadata_map[doi], "archives": poseidon_doi_map.get(doi, set())} for doi in dois]
+papers = [{
+    "doi": entry["doi"],
+    "nr_adna_samples": entry["nr_adna_samples"],
+    **metadata_map[entry["doi"]],
+    "archives": poseidon_doi_map.get(entry["doi"], set())
+} for entry in unique_dois_data]
 
 # Sort papers by publication date (YYYY-MM-DD)
 papers.sort(key=lambda x: x["date"], reverse=True)
