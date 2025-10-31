@@ -120,9 +120,9 @@ ggsave(
     "test.png",
     plot = p,
     device = "png",
-    scale = 1.8,
+    scale = 1.7,
     dpi = 300,
-    width = 1400, height = 700, units = "px",
+    width = 1400, height = 800, units = "px",
     limitsize = F,
     bg = "white"
 )
