@@ -140,6 +140,7 @@ def generate_html(papers):
     print("Updating docs/index.html...")
     output_file = "docs/index.html"
     csv_file = "docs/paper_directory.csv"
+    stylesheet_file = "docs/pico.classless.blue.min.css"
 
     html_template = """ 
     <!DOCTYPE html>
@@ -148,11 +149,10 @@ def generate_html(papers):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Paper Directory</title>
+        <link rel="stylesheet" href="{{ stylesheet_filename }}">
         <style>
             table { width: 100%; border-collapse: collapse; }
             th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
-            th { background-color: #f2f2f2; }
-            select, input { margin: 5px; padding: 5px; }
         </style>
         <script>
             function filterTable() {
@@ -211,42 +211,49 @@ def generate_html(papers):
         </script>
     </head>
     <body>
-        <h1>Paper Directory</h1>
-        <p>A list of ancient DNA papers, and their availability in Poseidon and AADR archives.
-        <a href="{{ csv_filename }}" class="download-btn" download>⬇ Download entire list as .csv.</a><p>
-        <p><i># aDNA samples</i> generally considers human aDNA samples for which some form of whole genome sequencing was performed.
-        The numbers may be inaccurate.</p>
-        <p>Please see <a href="https://github.com/poseidon-framework/paper-directory">our README on github</a> 
-        for instructions how to add to this list or correct the <i># aDNA samples</i> entries.</p>
+      <main>
+      
+        <nav>
+          <ul><li><strong>Poseidon paper directory</strong></li></ul>
+          <ul>
+            <li><a href="paper_directory.csv">⬇ Download as .csv</a></li>
+            <li><a href="https://github.com/poseidon-framework/paper-directory">Edit this list</a></li>
+            <li><a href="https://www.poseidon-adna.org">Poseidon?</a></li>
+          </ul>
+        </nav>
+        
+        <h1>aDNA Paper Directory</h1>
+        <p>A list of ancient DNA papers, and their availability in the Poseidon archives (including the AADR archive).</p>
         
         <div>
-            <label for="searchInput">Search Title or Author:</label>
-            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search...">
-            
-            <label for="communityFilter">Community Archive:</label>
-            <select id="communityFilter" onchange="filterTable()">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <label for="aadrFilter">AADR Archive:</label>
-            <select id="aadrFilter" onchange="filterTable()">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <label for="minotaurFilter">Minotaur Archive:</label>
-            <select id="minotaurFilter" onchange="filterTable()">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <button onclick="resetFilters()">Reset Filters</button>
+            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search by title or author...">
+            <details>
+              <summary role="button">Filter by archive</summary>
+                <label for="communityFilter">Community Archive:</label>
+                <select id="communityFilter" onchange="filterTable()">
+                    <option value="all">All</option>
+                    <option value="✔">✔</option>
+                    <option value="✘">✘</option>
+                </select>
+                <label for="aadrFilter">AADR Archive:</label>
+                <select id="aadrFilter" onchange="filterTable()">
+                    <option value="all">All</option>
+                    <option value="✔">✔</option>
+                    <option value="✘">✘</option>
+                </select>
+                <label for="minotaurFilter">Minotaur Archive:</label>
+                <select id="minotaurFilter" onchange="filterTable()">
+                    <option value="all">All</option>
+                    <option value="✔">✔</option>
+                    <option value="✘">✘</option>
+                </select>
+                <button onclick="resetFilters()">Reset Filters</button>
+            </details>
         </div>
 
         <p><span id="nrRows">?</span> papers selected</p>
 
-        <table id="paperTable">
+        <table id="paperTable" style="font-size: 0.7em;">
             <tr>
                 <th>DOI</th>
                 <th>Title</th>
@@ -257,7 +264,7 @@ def generate_html(papers):
                 <th>Community Archive</th>
                 <th>AADR Archive</th>
                 <th>Minotaur Archive</th>
-                <th># aDNA samples</th>
+                <th><em data-tooltip="Human WGS aDNA samples. May be inaccurate." data-placement="left"># aDNA samples</em></th>
             </tr>
             {% for paper in papers %}
             <tr>
@@ -274,12 +281,24 @@ def generate_html(papers):
             </tr>
             {% endfor %}
         </table>
+        
+        <footer style="border-top: 1px solid; padding: 1em; border-color: #727B8A;">
+          <div style="float: right; font-size: 0.7em;">
+            Built with <a href="https://picocss.com">pico CSS</a>
+          </div>
+        </footer>
+        
+      </main>
     </body>
     </html>
     """
     
     template = Template(html_template)
-    rendered_html = template.render(papers=papers, csv_filename=os.path.basename(csv_file))
+    rendered_html = template.render(
+        papers = papers,
+        csv_filename = os.path.basename(csv_file),
+        stylesheet_filename = os.path.basename(stylesheet_file)
+    )
     with open(output_file, "w", encoding="utf-8") as file:
         file.write(rendered_html)
     print("docs/index.html successfully updated!")
