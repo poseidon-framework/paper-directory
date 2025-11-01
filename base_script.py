@@ -307,7 +307,7 @@ def generate_html(papers):
     with open(csv_file, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow([
-            "DOI", "title", "year", "journal",
+            "doi", "title", "year", "journal",
             "first_author", "publication_date",
             "community_archive", "aadr_archive", "minotaur_archive",
             "nr_adna_samples"
