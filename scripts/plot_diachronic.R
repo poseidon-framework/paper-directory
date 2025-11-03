@@ -9,11 +9,12 @@ paper_directory <- paper_directory_raw %>%
   dplyr::filter(nr_adna_samples > 0) %>%
   dplyr::mutate(
     type = dplyr::case_when(
-      (community_archive | minotaur_archive) & aadr_archive ~ "all",
+      # (community_archive | minotaur_archive) & aadr_archive ~ "all",
       (community_archive | minotaur_archive) ~ "PCA or PMA",
       aadr_archive ~ "PAA",
       .default = "none"
-    )
+    ) %>%
+      factor(levels = c("PCA or PMA", "PAA", "none"))
   ) %>%
   dplyr::arrange(type) %>%
   dplyr::mutate(
@@ -22,20 +23,39 @@ paper_directory <- paper_directory_raw %>%
 
 #### barplot ####
 
-paper_directory %>%
+p_bar <- paper_directory %>%
   dplyr::group_by(year) %>%
   dplyr::summarise(n = sum(nr_adna_samples)) %>%
   ggplot() +
-  geom_bar(
-    aes(x = year, y = n), stat = "identity"
+  geom_col(aes(x = year, y = n)) +
+  geom_text(
+    aes(
+      x = year, y = n,
+      label = dplyr::case_when(n < 10 ~ as.character(n), n >= 10 ~ paste0("≈", round(n, -1)))
+    ),
+    vjust = -0.25, size = 3
   ) +
-  scale_x_continuous(breaks = 2010:2025)
+  scale_x_continuous(breaks = 2010:2025) +
+  theme_bw() +
+  theme(axis.title.x = element_blank()) +
+  ylab("Nr of published ancient individuals")
+
+ggsave(
+  "barplot.png",
+  plot = p_bar,
+  device = "png",
+  scale = 0.4,
+  dpi = 300,
+  width = 500, height = 220, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
 
 #### packed-circles plot ####
 
 # arrange papers on grid to release pressure from circleRepelLayout below
 grid_pos <- ggpointgrid::arrange_points_on_grid(
-  grid_xy = expand_grid(
+  grid_xy = expand.grid(
     x = seq(
       min(as.double(paper_directory$publication_date)),
       max(as.double(paper_directory$publication_date)),
@@ -56,7 +76,7 @@ grid_pos <- ggpointgrid::arrange_points_on_grid(
 xyz <- tibble::tibble(
     x = as.double(paper_directory$publication_date), # grid_pos[,1],
     y = grid_pos[,2],
-    n = paper_directory$nr_adna_samples * 400
+    n = paper_directory$nr_adna_samples * 350
   )
 center_and_radius <- packcircles::circleRepelLayout(
   xyz,
@@ -66,6 +86,55 @@ center_and_radius <- packcircles::circleRepelLayout(
 polygons <- packcircles::circleLayoutVertices(center_and_radius)
 
 # assemble plot
+p_no_legend <- ggplot() +
+  geom_polygon(
+    data = paper_directory %>% dplyr::left_join(polygons, by = "id"),
+    mapping = aes(as.Date(x), y, group = id),
+    linewidth = 0.4, fill = "#D3D4D8"
+  ) +
+  geom_text(
+    data = paper_directory %>% dplyr::bind_cols(
+      center_and_radius %>% dplyr::transmute(x_center = x, y_center = y)
+    ) %>% dplyr::filter(nr_adna_samples > 150),
+    mapping = aes(
+      x = as.Date(x_center),
+      y = y_center,
+      label = paste(
+        stringr::str_extract(first_author, "\\s([-\\w]+)$") %>%
+          stringr::str_replace_all("-", "-\n"),
+        year,
+        sep = "\n"
+      )
+    ),
+    colour="black", size = 1.9
+  ) +
+  coord_fixed() +
+  theme_bw() +
+  scale_x_date(
+    breaks = seq.Date(lubridate::ymd("2010-01-01"), lubridate::ymd("2025-12-31"), by = "year"),
+    date_labels = "%Y"
+  ) +
+  theme(
+    panel.grid = element_blank(),
+    panel.grid.major.x = element_line(colour = "black", linetype = "dashed", linewidth = 0.1),
+    panel.border = element_blank(),
+    axis.line.x = element_line(),
+    axis.title = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
+  )
+
+ggsave(
+  "no_legend.png",
+  plot = p_no_legend,
+  device = "png",
+  scale = 1.7,
+  dpi = 300,
+  width = 1400, height = 730, units = "px",
+  limitsize = F,
+  bg = "white"
+)
+
 p <- ggplot() +
   geom_polygon(
     data = paper_directory %>% dplyr::left_join(polygons, by = "id"),
@@ -74,9 +143,9 @@ p <- ggplot() +
   ) +
   scale_fill_manual(
     values = c(
-      "all" = "#5785C1",
-      "PAA" = "#CB7A5C",
-      "PCA or PMA" = "#FBA82E",
+      #"PCA or PMA" = "#5785C1",
+      "PCA or PMA" = "#00b2ff",
+      "PAA" = "#ffa800",
       "none" = "#D3D4D8"
     )
   ) +
@@ -101,18 +170,18 @@ p <- ggplot() +
   theme_bw() +
   scale_x_date(
     #date_breaks = "1 year",
-    breaks = seq.Date(ymd("2010-01-01"), ymd("2025-12-31"), by = "year"),
+    breaks = seq.Date(lubridate::ymd("2010-01-01"), lubridate::ymd("2025-12-31"), by = "year"),
     date_labels = "%Y"
   ) +
   theme(
     panel.grid = element_blank(),
-    panel.grid.major.x = element_line(colour = "lightgrey", linetype = "dashed"),
+    panel.grid.major.x = element_line(colour = "black", linetype = "dashed", linewidth = 0.1),
     panel.border = element_blank(),
     axis.line.x = element_line(),
     axis.title = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank(),
-    legend.position = c(0.1, 0.8),
+    legend.position = c(0.1, 0.2),
     legend.box.background = element_rect(colour = "black")
   )
 
@@ -122,7 +191,7 @@ ggsave(
     device = "png",
     scale = 1.7,
     dpi = 300,
-    width = 1400, height = 800, units = "px",
+    width = 1400, height = 730, units = "px",
     limitsize = F,
     bg = "white"
 )
