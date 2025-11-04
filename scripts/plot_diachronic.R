@@ -5,6 +5,10 @@ library(ggplot2)
 
 paper_directory_raw <- readr::read_csv("~/agora/paper-directory/docs/paper_directory.csv")
 
+# fix one entry where the PCA is missing a correct DOI entry
+# can be removed eventually
+paper_directory_raw$community_archive[paper_directory_raw$doi == "10.1038/s41586-024-08418-5"] <- TRUE
+
 paper_directory <- paper_directory_raw %>%
   dplyr::filter(nr_adna_samples > 0) %>%
   dplyr::mutate(
@@ -31,14 +35,18 @@ p_bar <- paper_directory %>%
   geom_text(
     aes(
       x = year, y = n,
-      label = dplyr::case_when(n < 10 ~ as.character(n), n >= 10 ~ paste0("≈", round(n, -1)))
+      label = dplyr::case_when(
+        n < 10 ~ as.character(n),
+        #n >= 10 ~ paste0("≈", round(n, -1)))
+        n >= 10 ~ paste0(round(n, -1))
+      )
     ),
     vjust = -0.25, size = 3
   ) +
   scale_x_continuous(breaks = 2010:2025) +
   theme_bw() +
   theme(axis.title.x = element_blank()) +
-  ylab("Nr of published ancient individuals")
+  ylab("# of published ancient individuals")
 
 ggsave(
   "barplot.png",
