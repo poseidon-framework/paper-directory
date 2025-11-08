@@ -5,11 +5,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Paper Directory</title>
+        <link rel="stylesheet" href="pico.classless.blue.min.css">
         <style>
             table { width: 100%; border-collapse: collapse; }
             th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
-            th { background-color: #f2f2f2; }
-            select, input { margin: 5px; padding: 5px; }
         </style>
         <script>
             function filterTable() {
@@ -65,41 +64,52 @@
             window.addEventListener('load', function() {
                 resetFilters();
             });
-
         </script>
     </head>
     <body>
-        <h1>Paper Directory</h1>
-        <p>A list of ancient DNA papers, and their availability in Poseidon and AADR archives. Please see <a href="https://github.com/poseidon-framework/paper-directory">our README on github for instructions how to add to this list.</a></p>
+      <main>
+      
+        <nav>
+          <ul><li><strong>Poseidon paper directory</strong></li></ul>
+          <ul>
+            <li><a href="paper_directory.csv">⬇ Download as .csv</a></li>
+            <li><a href="https://github.com/poseidon-framework/paper-directory">Edit this list</a></li>
+            <li><a href="https://www.poseidon-adna.org">Poseidon?</a></li>
+          </ul>
+        </nav>
+        
+        <h1>aDNA Paper Directory</h1>
+        <p>A list of ancient DNA papers, and their availability in the Poseidon archives (including the AADR archive).</p>
         
         <div>
-            <label for="searchInput">Search Title or Author:</label>
-            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search...">
-            
-            <label for="communityFilter">Community Archive:</label>
-            <select id="communityFilter" onchange="filterTable()">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <label for="aadrFilter">AADR Archive:</label>
-            <select id="aadrFilter" onchange="filterTable()">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <label for="minotaurFilter">Minotaur Archive:</label>
-            <select id="minotaurFilter" onchange="filterTable()">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <button onclick="resetFilters()">Reset Filters</button>
+            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search by title or author...">
+            <details>
+              <summary role="button">Filter by archive</summary>
+                <label for="communityFilter">Community Archive:</label>
+                <select id="communityFilter" onchange="filterTable()">
+                    <option value="all">All</option>
+                    <option value="✔">✔</option>
+                    <option value="✘">✘</option>
+                </select>
+                <label for="aadrFilter">AADR Archive:</label>
+                <select id="aadrFilter" onchange="filterTable()">
+                    <option value="all">All</option>
+                    <option value="✔">✔</option>
+                    <option value="✘">✘</option>
+                </select>
+                <label for="minotaurFilter">Minotaur Archive:</label>
+                <select id="minotaurFilter" onchange="filterTable()">
+                    <option value="all">All</option>
+                    <option value="✔">✔</option>
+                    <option value="✘">✘</option>
+                </select>
+                <button onclick="resetFilters()">Reset Filters</button>
+            </details>
         </div>
 
         <p><span id="nrRows">?</span> papers selected</p>
 
-        <table id="paperTable">
+        <table id="paperTable" style="font-size: 0.7em;">
             <tr>
                 <th>DOI</th>
                 <th>Title</th>
@@ -110,6 +120,98 @@
                 <th>Community Archive</th>
                 <th>AADR Archive</th>
                 <th>Minotaur Archive</th>
+                <th><em data-tooltip="Human WGS aDNA samples. May be inaccurate." data-placement="left"># aDNA samples</em></th>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.jasrep.2025.105474" target="_blank">10.1016/j.jasrep.2025.105474</a></td>
+                <td>Ancient genomic evidence uncovers a 6th-century cross-border couple between South Asia and East Asia</td>
+                <td>2025</td>
+                <td>Journal of Archaeological Science: Reports</td>
+                <td>Panxin Du</td>
+                <td>2025-11-05</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>2</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-025-09731-3" target="_blank">10.1038/s41586-025-09731-3</a></td>
+                <td>Eight millennia of continuity of a previously unknown lineage in Argentina</td>
+                <td>2025</td>
+                <td>Nature</td>
+                <td>Javier Maravall-López</td>
+                <td>2025-11-05</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>238</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1126/sciadv.adu9625" target="_blank">10.1126/sciadv.adu9625</a></td>
+                <td>Dynamic human admixture histories over the past ~1300 years at the northern Himalayan frontier</td>
+                <td>2025</td>
+                <td>Science Advances</td>
+                <td>Esha Bandyopadhyay</td>
+                <td>2025-10-29</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>8</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41598-025-21522-4" target="_blank">10.1038/s41598-025-21522-4</a></td>
+                <td>Genome of an early Okhotsk individual reveals ancient admixture between Jomon and Kamchatka lineages</td>
+                <td>2025</td>
+                <td>Scientific Reports</td>
+                <td>Takehiro Sato</td>
+                <td>2025-10-27</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>1</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.fsigen.2025.103381" target="_blank">10.1016/j.fsigen.2025.103381</a></td>
+                <td>Murder in cold blood? Forensic and bioarchaeological identification of the skeletal remains of Béla, Duke of Macsó (c. 1245–1272)</td>
+                <td>2026</td>
+                <td>Forensic Science International: Genetics</td>
+                <td>Tamás Hajdu</td>
+                <td>2025-10-26</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>1</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cub.2025.09.047" target="_blank">10.1016/j.cub.2025.09.047</a></td>
+                <td>Paratyphoid fever and relapsing fever in 1812 Napoleon's devastated army</td>
+                <td>2025</td>
+                <td>Current Biology</td>
+                <td>Rémi Barbieri</td>
+                <td>2025-10-24</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>13</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1016/j.cell.2025.09.002" target="_blank">10.1016/j.cell.2025.09.002</a></td>
+                <td>Long shared haplotypes identify the southern Urals as a primary source for the 10th-century Hungarians</td>
+                <td>2025</td>
+                <td>Cell</td>
+                <td>Balázs Gyuris</td>
+                <td>2025-10-16</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>131</td>
             </tr>
             
             <tr>
@@ -122,6 +224,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>7</td>
             </tr>
             
             <tr>
@@ -134,6 +237,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>21</td>
             </tr>
             
             <tr>
@@ -146,6 +250,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>58</td>
             </tr>
             
             <tr>
@@ -158,6 +263,20 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>30</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://doi.org/10.1038/s41586-025-09437-6" target="_blank">10.1038/s41586-025-09437-6</a></td>
+                <td>Ancient DNA connects large-scale migration with the spread of Slavs</td>
+                <td>2025</td>
+                <td>Nature</td>
+                <td>Joscha Gretzinger</td>
+                <td>2025-09-03</td>
+                <td>✔</td>
+                <td>✘</td>
+                <td>✘</td>
+                <td>555</td>
             </tr>
             
             <tr>
@@ -170,6 +289,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>18</td>
             </tr>
             
             <tr>
@@ -182,6 +302,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>24</td>
             </tr>
             
             <tr>
@@ -194,6 +315,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -206,6 +328,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>67</td>
             </tr>
             
             <tr>
@@ -218,6 +341,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -230,6 +354,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>230</td>
             </tr>
             
             <tr>
@@ -242,6 +367,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -254,6 +380,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>131</td>
             </tr>
             
             <tr>
@@ -266,6 +393,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>24</td>
             </tr>
             
             <tr>
@@ -278,6 +406,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>21</td>
             </tr>
             
             <tr>
@@ -290,6 +419,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>47</td>
             </tr>
             
             <tr>
@@ -302,6 +432,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -314,6 +445,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>195</td>
             </tr>
             
             <tr>
@@ -326,6 +458,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>131</td>
             </tr>
             
             <tr>
@@ -338,6 +471,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>30</td>
             </tr>
             
             <tr>
@@ -350,6 +484,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>125</td>
             </tr>
             
             <tr>
@@ -362,6 +497,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>8</td>
             </tr>
             
             <tr>
@@ -374,6 +510,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>156</td>
             </tr>
             
             <tr>
@@ -386,6 +523,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>60</td>
             </tr>
             
             <tr>
@@ -398,6 +536,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>27</td>
             </tr>
             
             <tr>
@@ -410,6 +549,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -422,6 +562,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>338</td>
             </tr>
             
             <tr>
@@ -434,6 +575,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>20</td>
             </tr>
             
             <tr>
@@ -446,6 +588,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>12</td>
             </tr>
             
             <tr>
@@ -458,6 +601,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>210</td>
             </tr>
             
             <tr>
@@ -470,6 +614,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -482,6 +627,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>354</td>
             </tr>
             
             <tr>
@@ -494,6 +640,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>85</td>
             </tr>
             
             <tr>
@@ -506,6 +653,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>722</td>
             </tr>
             
             <tr>
@@ -518,6 +666,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>57</td>
             </tr>
             
             <tr>
@@ -530,6 +679,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>91</td>
             </tr>
             
             <tr>
@@ -542,6 +692,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -554,6 +705,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>250</td>
             </tr>
             
             <tr>
@@ -566,6 +718,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>7</td>
             </tr>
             
             <tr>
@@ -578,6 +731,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>102</td>
             </tr>
             
             <tr>
@@ -590,6 +744,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>131</td>
             </tr>
             
             <tr>
@@ -602,6 +757,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -614,6 +770,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -626,6 +783,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>52</td>
             </tr>
             
             <tr>
@@ -638,6 +796,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>15</td>
             </tr>
             
             <tr>
@@ -650,6 +809,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -662,6 +822,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>33</td>
             </tr>
             
             <tr>
@@ -674,6 +835,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>24</td>
             </tr>
             
             <tr>
@@ -686,6 +848,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>69</td>
             </tr>
             
             <tr>
@@ -698,6 +861,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -710,6 +874,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>6</td>
             </tr>
             
             <tr>
@@ -722,6 +887,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>14</td>
             </tr>
             
             <tr>
@@ -734,6 +900,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>239</td>
             </tr>
             
             <tr>
@@ -746,6 +913,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✔</td>
+                <td>48</td>
             </tr>
             
             <tr>
@@ -758,6 +926,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>8</td>
             </tr>
             
             <tr>
@@ -770,6 +939,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>56</td>
             </tr>
             
             <tr>
@@ -782,6 +952,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>58</td>
             </tr>
             
             <tr>
@@ -794,6 +965,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>12</td>
             </tr>
             
             <tr>
@@ -806,6 +978,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>440</td>
             </tr>
             
             <tr>
@@ -818,6 +991,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>9</td>
             </tr>
             
             <tr>
@@ -830,6 +1004,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>4</td>
             </tr>
             
             <tr>
@@ -842,6 +1017,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>10</td>
             </tr>
             
             <tr>
@@ -854,6 +1030,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -866,6 +1043,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>48</td>
             </tr>
             
             <tr>
@@ -878,6 +1056,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>39</td>
             </tr>
             
             <tr>
@@ -890,6 +1069,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>188</td>
             </tr>
             
             <tr>
@@ -902,6 +1082,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>275</td>
             </tr>
             
             <tr>
@@ -914,6 +1095,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>85</td>
             </tr>
             
             <tr>
@@ -926,6 +1108,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>631</td>
             </tr>
             
             <tr>
@@ -938,6 +1121,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>33</td>
             </tr>
             
             <tr>
@@ -950,6 +1134,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>141</td>
             </tr>
             
             <tr>
@@ -962,6 +1147,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>119</td>
             </tr>
             
             <tr>
@@ -974,6 +1160,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -986,6 +1173,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>20</td>
             </tr>
             
             <tr>
@@ -998,6 +1186,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>32</td>
             </tr>
             
             <tr>
@@ -1010,6 +1199,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>28</td>
             </tr>
             
             <tr>
@@ -1022,6 +1212,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -1034,6 +1225,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>40</td>
             </tr>
             
             <tr>
@@ -1046,6 +1238,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>72</td>
             </tr>
             
             <tr>
@@ -1058,6 +1251,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>21</td>
             </tr>
             
             <tr>
@@ -1070,6 +1264,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>27</td>
             </tr>
             
             <tr>
@@ -1082,6 +1277,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -1094,6 +1290,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>34</td>
             </tr>
             
             <tr>
@@ -1106,6 +1303,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>32</td>
             </tr>
             
             <tr>
@@ -1118,6 +1316,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✔</td>
+                <td>68</td>
             </tr>
             
             <tr>
@@ -1130,6 +1329,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>294</td>
             </tr>
             
             <tr>
@@ -1142,6 +1342,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>119</td>
             </tr>
             
             <tr>
@@ -1154,6 +1355,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -1166,6 +1368,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -1178,6 +1381,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>9</td>
             </tr>
             
             <tr>
@@ -1190,6 +1394,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>12</td>
             </tr>
             
             <tr>
@@ -1202,6 +1407,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -1214,6 +1420,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -1226,6 +1433,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -1238,6 +1446,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>80</td>
             </tr>
             
             <tr>
@@ -1250,6 +1459,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -1262,6 +1472,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -1274,6 +1485,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>90</td>
             </tr>
             
             <tr>
@@ -1286,6 +1498,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -1298,6 +1511,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>162</td>
             </tr>
             
             <tr>
@@ -1310,6 +1524,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>9</td>
             </tr>
             
             <tr>
@@ -1322,6 +1537,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>7</td>
             </tr>
             
             <tr>
@@ -1334,6 +1550,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>103</td>
             </tr>
             
             <tr>
@@ -1346,6 +1563,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>10</td>
             </tr>
             
             <tr>
@@ -1358,6 +1576,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>158</td>
             </tr>
             
             <tr>
@@ -1370,6 +1589,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -1382,6 +1602,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>31</td>
             </tr>
             
             <tr>
@@ -1394,6 +1615,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>37</td>
             </tr>
             
             <tr>
@@ -1406,6 +1628,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -1418,6 +1641,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>33</td>
             </tr>
             
             <tr>
@@ -1430,6 +1654,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>10</td>
             </tr>
             
             <tr>
@@ -1442,6 +1667,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -1454,6 +1680,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>13</td>
             </tr>
             
             <tr>
@@ -1466,6 +1693,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -1478,6 +1706,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>50</td>
             </tr>
             
             <tr>
@@ -1490,6 +1719,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>487</td>
             </tr>
             
             <tr>
@@ -1502,6 +1732,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -1514,6 +1745,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>6</td>
             </tr>
             
             <tr>
@@ -1526,6 +1758,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -1538,6 +1771,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -1550,6 +1784,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>778</td>
             </tr>
             
             <tr>
@@ -1562,6 +1797,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -1574,6 +1810,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>10</td>
             </tr>
             
             <tr>
@@ -1586,6 +1823,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>163</td>
             </tr>
             
             <tr>
@@ -1598,6 +1836,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>8</td>
             </tr>
             
             <tr>
@@ -1610,6 +1849,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>7</td>
             </tr>
             
             <tr>
@@ -1622,6 +1862,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>25</td>
             </tr>
             
             <tr>
@@ -1634,6 +1875,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✔</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -1646,6 +1888,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>16</td>
             </tr>
             
             <tr>
@@ -1658,6 +1901,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -1670,6 +1914,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -1682,6 +1927,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>291</td>
             </tr>
             
             <tr>
@@ -1694,6 +1940,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -1706,6 +1953,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>34</td>
             </tr>
             
             <tr>
@@ -1718,6 +1966,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>15</td>
             </tr>
             
             <tr>
@@ -1730,6 +1979,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>19</td>
             </tr>
             
             <tr>
@@ -1742,6 +1992,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>5</td>
             </tr>
             
             <tr>
@@ -1754,6 +2005,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -1766,6 +2018,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>20</td>
             </tr>
             
             <tr>
@@ -1778,6 +2031,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>66</td>
             </tr>
             
             <tr>
@@ -1790,6 +2044,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>202</td>
             </tr>
             
             <tr>
@@ -1802,6 +2057,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>21</td>
             </tr>
             
             <tr>
@@ -1814,6 +2070,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>48</td>
             </tr>
             
             <tr>
@@ -1826,6 +2083,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>38</td>
             </tr>
             
             <tr>
@@ -1838,6 +2096,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>8</td>
             </tr>
             
             <tr>
@@ -1850,6 +2109,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>24</td>
             </tr>
             
             <tr>
@@ -1862,6 +2122,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -1874,6 +2135,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>37</td>
             </tr>
             
             <tr>
@@ -1886,6 +2148,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>16</td>
             </tr>
             
             <tr>
@@ -1898,6 +2161,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>5</td>
             </tr>
             
             <tr>
@@ -1910,6 +2174,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>62</td>
             </tr>
             
             <tr>
@@ -1922,6 +2187,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>793</td>
             </tr>
             
             <tr>
@@ -1934,6 +2200,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>66</td>
             </tr>
             
             <tr>
@@ -1946,6 +2213,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>9</td>
             </tr>
             
             <tr>
@@ -1958,6 +2226,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>136</td>
             </tr>
             
             <tr>
@@ -1970,6 +2239,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>18</td>
             </tr>
             
             <tr>
@@ -1982,6 +2252,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>18</td>
             </tr>
             
             <tr>
@@ -1994,6 +2265,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>17</td>
             </tr>
             
             <tr>
@@ -2006,6 +2278,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>81</td>
             </tr>
             
             <tr>
@@ -2018,6 +2291,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>12</td>
             </tr>
             
             <tr>
@@ -2030,6 +2304,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -2042,6 +2317,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -2054,6 +2330,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>283</td>
             </tr>
             
             <tr>
@@ -2066,6 +2343,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>28</td>
             </tr>
             
             <tr>
@@ -2078,6 +2356,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -2090,6 +2369,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -2102,6 +2382,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>26</td>
             </tr>
             
             <tr>
@@ -2114,6 +2395,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -2126,6 +2408,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>11</td>
             </tr>
             
             <tr>
@@ -2138,6 +2421,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -2150,6 +2434,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>31</td>
             </tr>
             
             <tr>
@@ -2162,6 +2447,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>25</td>
             </tr>
             
             <tr>
@@ -2174,6 +2460,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -2186,6 +2473,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>24</td>
             </tr>
             
             <tr>
@@ -2198,6 +2486,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>11</td>
             </tr>
             
             <tr>
@@ -2210,6 +2499,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>6</td>
             </tr>
             
             <tr>
@@ -2222,6 +2512,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -2234,6 +2525,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>21</td>
             </tr>
             
             <tr>
@@ -2246,6 +2538,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -2258,6 +2551,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>14</td>
             </tr>
             
             <tr>
@@ -2270,6 +2564,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>10</td>
             </tr>
             
             <tr>
@@ -2282,6 +2577,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>117</td>
             </tr>
             
             <tr>
@@ -2294,6 +2590,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>16</td>
             </tr>
             
             <tr>
@@ -2306,6 +2603,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -2318,6 +2616,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>38</td>
             </tr>
             
             <tr>
@@ -2330,6 +2629,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>191</td>
             </tr>
             
             <tr>
@@ -2342,6 +2642,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>16</td>
             </tr>
             
             <tr>
@@ -2354,6 +2655,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>40</td>
             </tr>
             
             <tr>
@@ -2366,6 +2668,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>29</td>
             </tr>
             
             <tr>
@@ -2378,6 +2681,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -2390,6 +2694,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>25</td>
             </tr>
             
             <tr>
@@ -2404,6 +2709,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>40</td>
             </tr>
             
             <tr>
@@ -2416,6 +2722,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>174</td>
             </tr>
             
             <tr>
@@ -2428,6 +2735,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -2440,6 +2748,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -2452,6 +2761,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>12</td>
             </tr>
             
             <tr>
@@ -2464,6 +2774,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -2476,6 +2787,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>194</td>
             </tr>
             
             <tr>
@@ -2488,6 +2800,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>45</td>
             </tr>
             
             <tr>
@@ -2500,6 +2813,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>98</td>
             </tr>
             
             <tr>
@@ -2512,6 +2826,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -2524,6 +2839,7 @@
                 <td>✘</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>11</td>
             </tr>
             
             <tr>
@@ -2536,6 +2852,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>12</td>
             </tr>
             
             <tr>
@@ -2548,6 +2865,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>442</td>
             </tr>
             
             <tr>
@@ -2560,6 +2878,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>19</td>
             </tr>
             
             <tr>
@@ -2572,6 +2891,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>20</td>
             </tr>
             
             <tr>
@@ -2584,6 +2904,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>12</td>
             </tr>
             
             <tr>
@@ -2596,6 +2917,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>44</td>
             </tr>
             
             <tr>
@@ -2608,6 +2930,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -2620,6 +2943,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>19</td>
             </tr>
             
             <tr>
@@ -2632,6 +2956,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>34</td>
             </tr>
             
             <tr>
@@ -2644,6 +2969,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>93</td>
             </tr>
             
             <tr>
@@ -2656,6 +2982,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>55</td>
             </tr>
             
             <tr>
@@ -2668,6 +2995,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>101</td>
             </tr>
             
             <tr>
@@ -2680,6 +3008,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>19</td>
             </tr>
             
             <tr>
@@ -2692,6 +3021,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>72</td>
             </tr>
             
             <tr>
@@ -2704,6 +3034,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>110</td>
             </tr>
             
             <tr>
@@ -2716,6 +3047,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>58</td>
             </tr>
             
             <tr>
@@ -2728,6 +3060,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>31</td>
             </tr>
             
             <tr>
@@ -2740,6 +3073,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>24</td>
             </tr>
             
             <tr>
@@ -2752,6 +3086,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>60</td>
             </tr>
             
             <tr>
@@ -2764,6 +3099,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -2776,6 +3112,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>96</td>
             </tr>
             
             <tr>
@@ -2788,6 +3125,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>19</td>
             </tr>
             
             <tr>
@@ -2800,6 +3138,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -2812,6 +3151,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -2824,6 +3164,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -2836,6 +3177,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>70</td>
             </tr>
             
             <tr>
@@ -2848,6 +3190,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>62</td>
             </tr>
             
             <tr>
@@ -2860,6 +3203,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>7</td>
             </tr>
             
             <tr>
@@ -2872,6 +3216,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -2884,6 +3229,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -2896,6 +3242,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -2908,6 +3255,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>133</td>
             </tr>
             
             <tr>
@@ -2920,6 +3268,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>122</td>
             </tr>
             
             <tr>
@@ -2932,6 +3281,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>11</td>
             </tr>
             
             <tr>
@@ -2944,6 +3294,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>542</td>
             </tr>
             
             <tr>
@@ -2956,6 +3307,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -2968,6 +3320,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>38</td>
             </tr>
             
             <tr>
@@ -2980,6 +3333,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>11</td>
             </tr>
             
             <tr>
@@ -2992,6 +3346,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>31</td>
             </tr>
             
             <tr>
@@ -3004,6 +3359,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>10</td>
             </tr>
             
             <tr>
@@ -3016,6 +3372,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -3028,6 +3385,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>49</td>
             </tr>
             
             <tr>
@@ -3040,6 +3398,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>30</td>
             </tr>
             
             <tr>
@@ -3052,6 +3411,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>43</td>
             </tr>
             
             <tr>
@@ -3064,6 +3424,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>24</td>
             </tr>
             
             <tr>
@@ -3076,6 +3437,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>43</td>
             </tr>
             
             <tr>
@@ -3088,6 +3450,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -3100,6 +3463,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>13</td>
             </tr>
             
             <tr>
@@ -3112,6 +3476,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>23</td>
             </tr>
             
             <tr>
@@ -3124,6 +3489,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>8</td>
             </tr>
             
             <tr>
@@ -3136,6 +3502,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>70</td>
             </tr>
             
             <tr>
@@ -3148,6 +3515,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -3160,6 +3528,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>277</td>
             </tr>
             
             <tr>
@@ -3172,6 +3541,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>12</td>
             </tr>
             
             <tr>
@@ -3184,6 +3554,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -3196,6 +3567,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>49</td>
             </tr>
             
             <tr>
@@ -3208,6 +3580,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>4</td>
             </tr>
             
             <tr>
@@ -3220,6 +3593,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>9</td>
             </tr>
             
             <tr>
@@ -3232,6 +3606,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -3244,6 +3619,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>15</td>
             </tr>
             
             <tr>
@@ -3256,6 +3632,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>7</td>
             </tr>
             
             <tr>
@@ -3268,6 +3645,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>17</td>
             </tr>
             
             <tr>
@@ -3280,6 +3658,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>51</td>
             </tr>
             
             <tr>
@@ -3292,6 +3671,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>20</td>
             </tr>
             
             <tr>
@@ -3304,6 +3684,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>35</td>
             </tr>
             
             <tr>
@@ -3316,6 +3697,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>17</td>
             </tr>
             
             <tr>
@@ -3328,6 +3710,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>12</td>
             </tr>
             
             <tr>
@@ -3340,6 +3723,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>63</td>
             </tr>
             
             <tr>
@@ -3352,6 +3736,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✔</td>
+                <td>23</td>
             </tr>
             
             <tr>
@@ -3364,6 +3749,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -3376,6 +3762,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>22</td>
             </tr>
             
             <tr>
@@ -3388,6 +3775,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>26</td>
             </tr>
             
             <tr>
@@ -3400,6 +3788,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>12</td>
             </tr>
             
             <tr>
@@ -3412,6 +3801,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>75</td>
             </tr>
             
             <tr>
@@ -3424,6 +3814,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>27</td>
             </tr>
             
             <tr>
@@ -3436,6 +3827,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>25</td>
             </tr>
             
             <tr>
@@ -3448,6 +3840,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>70</td>
             </tr>
             
             <tr>
@@ -3460,6 +3853,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>137</td>
             </tr>
             
             <tr>
@@ -3472,6 +3866,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>4</td>
             </tr>
             
             <tr>
@@ -3484,6 +3879,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>6</td>
             </tr>
             
             <tr>
@@ -3496,6 +3892,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>8</td>
             </tr>
             
             <tr>
@@ -3508,6 +3905,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>11</td>
             </tr>
             
             <tr>
@@ -3520,6 +3918,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>41</td>
             </tr>
             
             <tr>
@@ -3532,6 +3931,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>22</td>
             </tr>
             
             <tr>
@@ -3544,6 +3944,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>19</td>
             </tr>
             
             <tr>
@@ -3556,6 +3957,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>398</td>
             </tr>
             
             <tr>
@@ -3568,6 +3970,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>226</td>
             </tr>
             
             <tr>
@@ -3580,6 +3983,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -3592,6 +3996,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>39</td>
             </tr>
             
             <tr>
@@ -3604,6 +4009,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>7</td>
             </tr>
             
             <tr>
@@ -3616,6 +4022,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -3628,6 +4035,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>138</td>
             </tr>
             
             <tr>
@@ -3640,6 +4048,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>5</td>
             </tr>
             
             <tr>
@@ -3652,6 +4061,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -3664,6 +4074,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -3676,6 +4087,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>7</td>
             </tr>
             
             <tr>
@@ -3688,6 +4100,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>5</td>
             </tr>
             
             <tr>
@@ -3700,6 +4113,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>7</td>
             </tr>
             
             <tr>
@@ -3712,6 +4126,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>25</td>
             </tr>
             
             <tr>
@@ -3724,6 +4139,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -3736,6 +4152,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>20</td>
             </tr>
             
             <tr>
@@ -3748,6 +4165,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>5</td>
             </tr>
             
             <tr>
@@ -3760,6 +4178,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>14</td>
             </tr>
             
             <tr>
@@ -3772,6 +4191,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>7</td>
             </tr>
             
             <tr>
@@ -3784,6 +4204,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -3796,6 +4217,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>6</td>
             </tr>
             
             <tr>
@@ -3808,6 +4230,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -3820,6 +4243,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>8</td>
             </tr>
             
             <tr>
@@ -3832,6 +4256,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>5</td>
             </tr>
             
             <tr>
@@ -3844,6 +4269,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>8</td>
             </tr>
             
             <tr>
@@ -3856,6 +4282,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>4</td>
             </tr>
             
             <tr>
@@ -3868,6 +4295,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -3880,6 +4308,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>5</td>
             </tr>
             
             <tr>
@@ -3892,6 +4321,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>9</td>
             </tr>
             
             <tr>
@@ -3904,6 +4334,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>41</td>
             </tr>
             
             <tr>
@@ -3916,6 +4347,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -3928,6 +4360,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>5</td>
             </tr>
             
             <tr>
@@ -3940,6 +4373,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>8</td>
             </tr>
             
             <tr>
@@ -3952,6 +4386,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>5</td>
             </tr>
             
             <tr>
@@ -3964,6 +4399,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>40</td>
             </tr>
             
             <tr>
@@ -3976,6 +4412,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -3988,6 +4425,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>9</td>
             </tr>
             
             <tr>
@@ -4000,6 +4438,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>10</td>
             </tr>
             
             <tr>
@@ -4012,6 +4451,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -4024,6 +4464,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>4</td>
             </tr>
             
             <tr>
@@ -4036,6 +4477,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>142</td>
             </tr>
             
             <tr>
@@ -4048,6 +4490,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -4060,6 +4503,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4072,6 +4516,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -4084,6 +4529,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>5</td>
             </tr>
             
             <tr>
@@ -4096,6 +4542,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4108,6 +4555,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>23</td>
             </tr>
             
             <tr>
@@ -4120,6 +4568,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -4132,6 +4581,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4144,6 +4594,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4156,6 +4607,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>98</td>
             </tr>
             
             <tr>
@@ -4168,6 +4620,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -4180,6 +4633,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>69</td>
             </tr>
             
             <tr>
@@ -4192,6 +4646,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4204,6 +4659,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -4216,6 +4672,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4228,6 +4685,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>13</td>
             </tr>
             
             <tr>
@@ -4240,6 +4698,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -4252,6 +4711,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>4</td>
             </tr>
             
             <tr>
@@ -4264,6 +4724,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>11</td>
             </tr>
             
             <tr>
@@ -4276,6 +4737,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4288,6 +4750,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4300,6 +4763,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4312,6 +4776,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>2</td>
             </tr>
             
             <tr>
@@ -4324,6 +4789,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -4336,6 +4802,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -4348,6 +4815,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4360,6 +4828,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4372,6 +4841,7 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -4384,6 +4854,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4396,6 +4867,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>3</td>
             </tr>
             
             <tr>
@@ -4408,6 +4880,7 @@
                 <td>✔</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>1</td>
             </tr>
             
             <tr>
@@ -4420,6 +4893,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -4432,6 +4906,7 @@
                 <td>✘</td>
                 <td>✔</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
             <tr>
@@ -4444,9 +4919,18 @@
                 <td>✔</td>
                 <td>✘</td>
                 <td>✘</td>
+                <td>0</td>
             </tr>
             
         </table>
+        
+        <footer style="border-top: 1px solid; padding: 1em; border-color: #727B8A;">
+          <div style="float: right; font-size: 0.7em;">
+            Built with <a href="https://picocss.com">pico CSS</a>
+          </div>
+        </footer>
+        
+      </main>
     </body>
     </html>
     

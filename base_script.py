@@ -7,6 +7,7 @@ import requests
 from jinja2 import Template
 from collections import defaultdict
 from datetime import datetime
+import csv
 
 def load_supplementary_metadata():
     """Loads supplementary metadata from supplementary.json."""
@@ -115,15 +116,16 @@ def preprocess_doi(doi):
 # Check for duplicate DOIs 
 def check_for_duplicates(dois):
     seen = set()
-    unique_dois = []
+    unique_dois_data = []
     duplicates = []
 
-    for doi in dois:
+    for entry in dois:
+        doi = entry["doi"]
         if doi in seen:
             duplicates.append(doi)  # Store duplicate for logging
         else:
             seen.add(doi)
-            unique_dois.append(doi)  # Keep only unique DOIs
+            unique_dois_data.append(entry)  # Keep only unique DOIs
 
     if duplicates:
         print("\n WARNING: Duplicate DOIs found and removed:")
@@ -131,11 +133,15 @@ def check_for_duplicates(dois):
             print(f"- {duplicate}")
         print("\nProceeding with a cleaned DOI list.\n")
 
-    return unique_dois  # Return unique dois
+    return unique_dois_data  # Return unique dois
 
 # Generate docs/index.html
-def generate_html(papers, output_file="docs/index.html"):
+def generate_html(papers):
     print("Updating docs/index.html...")
+    output_file = "docs/index.html"
+    csv_file = "docs/paper_directory.csv"
+    stylesheet_file = "docs/pico.classless.blue.min.css"
+
     html_template = """ 
     <!DOCTYPE html>
     <html lang="en">
@@ -143,11 +149,10 @@ def generate_html(papers, output_file="docs/index.html"):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Paper Directory</title>
+        <link rel="stylesheet" href="{{ stylesheet_filename }}">
         <style>
             table { width: 100%; border-collapse: collapse; }
             th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
-            th { background-color: #f2f2f2; }
-            select, input { margin: 5px; padding: 5px; }
         </style>
         <script>
             function filterTable() {
@@ -203,41 +208,52 @@ def generate_html(papers, output_file="docs/index.html"):
             window.addEventListener('load', function() {
                 resetFilters();
             });
-
         </script>
     </head>
     <body>
-        <h1>Paper Directory</h1>
-        <p>A list of ancient DNA papers, and their availability in Poseidon and AADR archives. Please see <a href="https://github.com/poseidon-framework/paper-directory">our README on github for instructions how to add to this list.</a></p>
+      <main>
+      
+        <nav>
+          <ul><li><strong>Poseidon paper directory</strong></li></ul>
+          <ul>
+            <li><a href="paper_directory.csv">⬇ Download as .csv</a></li>
+            <li><a href="https://github.com/poseidon-framework/paper-directory">Edit this list</a></li>
+            <li><a href="https://www.poseidon-adna.org">Poseidon?</a></li>
+          </ul>
+        </nav>
+        
+        <h1>aDNA Paper Directory</h1>
+        <p>A list of ancient DNA papers, and their availability in the Poseidon archives (including the AADR archive).</p>
         
         <div>
-            <label for="searchInput">Search Title or Author:</label>
-            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search...">
-            
-            <label for="communityFilter">Community Archive:</label>
-            <select id="communityFilter" onchange="filterTable()">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <label for="aadrFilter">AADR Archive:</label>
-            <select id="aadrFilter" onchange="filterTable()">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <label for="minotaurFilter">Minotaur Archive:</label>
-            <select id="minotaurFilter" onchange="filterTable()">
-                <option value="all">All</option>
-                <option value="✔">✔</option>
-                <option value="✘">✘</option>
-            </select>
-            <button onclick="resetFilters()">Reset Filters</button>
+            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search by title or author...">
+            <details>
+              <summary role="button">Filter by archive</summary>
+                <label for="communityFilter">Community Archive:</label>
+                <select id="communityFilter" onchange="filterTable()">
+                    <option value="all">All</option>
+                    <option value="✔">✔</option>
+                    <option value="✘">✘</option>
+                </select>
+                <label for="aadrFilter">AADR Archive:</label>
+                <select id="aadrFilter" onchange="filterTable()">
+                    <option value="all">All</option>
+                    <option value="✔">✔</option>
+                    <option value="✘">✘</option>
+                </select>
+                <label for="minotaurFilter">Minotaur Archive:</label>
+                <select id="minotaurFilter" onchange="filterTable()">
+                    <option value="all">All</option>
+                    <option value="✔">✔</option>
+                    <option value="✘">✘</option>
+                </select>
+                <button onclick="resetFilters()">Reset Filters</button>
+            </details>
         </div>
 
         <p><span id="nrRows">?</span> papers selected</p>
 
-        <table id="paperTable">
+        <table id="paperTable" style="font-size: 0.7em;">
             <tr>
                 <th>DOI</th>
                 <th>Title</th>
@@ -248,6 +264,7 @@ def generate_html(papers, output_file="docs/index.html"):
                 <th>Community Archive</th>
                 <th>AADR Archive</th>
                 <th>Minotaur Archive</th>
+                <th><em data-tooltip="Human WGS aDNA samples. May be inaccurate." data-placement="left"># aDNA samples</em></th>
             </tr>
             {% for paper in papers %}
             <tr>
@@ -260,35 +277,84 @@ def generate_html(papers, output_file="docs/index.html"):
                 <td>{{ '✔' if 'community-archive' in paper.archives else '✘' }}</td>
                 <td>{{ '✔' if 'aadr-archive' in paper.archives else '✘' }}</td>
                 <td>{{ '✔' if 'minotaur-archive' in paper.archives else '✘' }}</td>
+                <td>{{ paper.nr_adna_samples }}</td>
             </tr>
             {% endfor %}
         </table>
+        
+        <footer style="border-top: 1px solid; padding: 1em; border-color: #727B8A;">
+          <div style="float: right; font-size: 0.7em;">
+            Built with <a href="https://picocss.com">pico CSS</a>
+          </div>
+        </footer>
+        
+      </main>
     </body>
     </html>
     """
     
     template = Template(html_template)
-    rendered_html = template.render(papers=papers)
-    with open(output_file, "w") as file:
+    rendered_html = template.render(
+        papers = papers,
+        csv_filename = os.path.basename(csv_file),
+        stylesheet_filename = os.path.basename(stylesheet_file)
+    )
+    with open(output_file, "w", encoding="utf-8") as file:
         file.write(rendered_html)
     print("docs/index.html successfully updated!")
 
-# Main Execution 
-dois = [preprocess_doi(doi) for doi in open("list.txt").read().splitlines()]
+    # Save CSV file
+    with open(csv_file, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            "doi", "title", "year", "journal",
+            "first_author", "publication_date",
+            "community_archive", "aadr_archive", "minotaur_archive",
+            "nr_adna_samples"
+        ])
+        for paper in papers:
+            writer.writerow([
+                paper["doi"],
+                paper["title"],
+                paper["year"],
+                paper["journal"],
+                paper["first_author"],
+                paper["date"],
+                "community-archive" in paper["archives"],
+                "aadr-archive" in paper["archives"],
+                "minotaur-archive" in paper["archives"],
+                paper["nr_adna_samples"]
+            ])
+    print(f"{csv_file} successfully created!")
 
-print(f"Processing {len(dois)} DOIs...")
+# Main Execution 
+dois_data = []
+with open("list.csv", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        doi = preprocess_doi(row["doi"])
+        nr_samples = row.get("nr_adna_samples", "").strip()
+        dois_data.append({"doi": doi, "nr_adna_samples": nr_samples})
+
+print(f"Processing {len(dois_data)} DOIs...")
 
 # Check for duplicates and get a unique list
-dois = check_for_duplicates(dois)
+unique_dois_data = check_for_duplicates(dois_data)
 
 # Get CrossRef metadata
-metadata_map = {doi: get_crossref_metadata(doi, index, len(dois)) for index, doi in enumerate(dois)}
+metadata_map = {entry["doi"]: get_crossref_metadata(entry["doi"], index, len(unique_dois_data))
+                for index, entry in enumerate(unique_dois_data)}
 
 # Get Poseidon DOI availability
 poseidon_doi_map = load_poseidon_doi_map()
 
 # Create structured paper data
-papers = [{"doi": doi, **metadata_map[doi], "archives": poseidon_doi_map.get(doi, set())} for doi in dois]
+papers = [{
+    "doi": entry["doi"],
+    "nr_adna_samples": entry["nr_adna_samples"],
+    **metadata_map[entry["doi"]],
+    "archives": poseidon_doi_map.get(entry["doi"], set())
+} for entry in unique_dois_data]
 
 # Sort papers by publication date (YYYY-MM-DD)
 papers.sort(key=lambda x: x["date"], reverse=True)
