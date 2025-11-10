@@ -17,11 +17,11 @@ paper_directory <- paper_directory_raw %>%
   dplyr::mutate(
     type = dplyr::case_when(
       # (community_archive | minotaur_archive) & aadr_archive ~ "all",
-      (community_archive | minotaur_archive) ~ "community- or minotaur-archive",
-      aadr_archive ~ "aadr-archive",
-      .default = "none"
+      (community_archive | minotaur_archive) ~ "in community- or minotaur-archive",
+      aadr_archive ~ "only in aadr-archive",
+      .default = "in no archive"
     ) %>%
-      factor(levels = c("community- or minotaur-archive", "aadr-archive", "none"))
+      factor(levels = c("in community- or minotaur-archive", "only in aadr-archive", "in no archive"))
   ) %>%
   dplyr::arrange(type) %>%
   dplyr::mutate(
@@ -201,9 +201,9 @@ p <- ggplot() +
   scale_fill_manual(
     values = c(
       #"PCA or PMA" = "#5785C1",
-      "community- or minotaur-archive" = "#00b2ff",
-      "aadr-archive" = "#ffa800",
-      "none" = "#D3D4D8"
+      "in community- or minotaur-archive" = "#00b2ff",
+      "only in aadr-archive" = "#ffa800",
+      "in no archive" = "#D3D4D8"
     )
   ) +
   geom_text(
@@ -237,7 +237,7 @@ p <- ggplot() +
     axis.title = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank(),
-    legend.position = c(0.3, 0.15),
+    legend.position = c(0.31, 0.15),
     legend.box.background = element_rect(colour = "black"),
     legend.text = element_text(size = 8),
     legend.title = element_blank()
