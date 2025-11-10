@@ -96,41 +96,42 @@ center_and_radius <- packcircles::circleRepelLayout(
   xlim = c(min(xyz$x), max(xyz$x) + 120),
   wrap = FALSE
 )$layout
-# paper_directory %>%
-#   dplyr::bind_cols(center_and_radius) %>%
-#   ggplot() +
-#   geom_point(aes(x = nr_adna_samples, y = pi*radius^2))
-# paper_directory %>%
-#   dplyr::bind_cols(center_and_radius) %>%
-#   ggplot() +
-#   geom_point(aes(x = sqrt(nr_adna_samples/pi), y = radius))
 polygons <- packcircles::circleLayoutVertices(center_and_radius)
+
+# samples_radius_area <- paper_directory %>%
+#   dplyr::bind_cols(center_and_radius) %>%
+#   dplyr::select(nr_adna_samples, radius) %>%
+#   dplyr::mutate(area = pi*radius^2)
+# samples_radius_area %>%
+#   ggplot() +
+#   geom_point(aes(x = nr_adna_samples, y = area))
+# mo <- lm(area~nr_adna_samples, data = samples_radius_area)
+legend_center_and_radius <- tibble::tibble(
+  x = lubridate::ymd("2011-01-01"),
+  y = -1200,
+  n = c(800, 400, 50),
+  radius = sqrt((n * 350)/pi)
+)
+legend_polygons <- packcircles::circleLayoutVertices(
+  legend_center_and_radius,
+  npoints = 50,
+  xysizecols = c(1L,2L,4L),
+)
 
 # assemble plots
 p_no_legend <- ggplot() +
-  # for a fake size legend
-  geom_point(
-    data = tibble::tibble(x = lubridate::ymd("2012-01-01"), y = 0, area = 0),
-    mapping = aes(x, y, size = area), colour = NA
+  # size legend
+  geom_polygon(
+    data = legend_polygons,
+    mapping = aes(as.Date(x), y, group = id),
+    linewidth = 0.4, fill = "white", colour = "black"
   ) +
-  scale_radius(
-    # this range must be carefully calibrated to the plot size
-    # this is only a hack to simulate a size legend for the bubble polygons
-    range = c(0,25),
-    transform = scales::trans_new(
-      name = "area_to_radius",
-      transform = function(a) sqrt(a / pi),
-      inverse   = function(r) pi * r^2,
-      domain    = c(0, Inf)
-    ),
-    limits = c(10, 1000),
-    breaks = c(50, 100, 200),
-    guide = guide_legend(
-      title = "# ancient genomes",
-      override.aes = list(color = "#D3D4D8"),
-      direction = "horizontal"
-    )
+  geom_text(
+    data = legend_center_and_radius,
+    mapping = aes(x = x, y = y + c(0, 130, 250), label = rev(n)),
+    colour="black", size = 1.9
   ) +
+  # bubbles
   geom_polygon(
     data = paper_directory %>% dplyr::left_join(polygons, by = "id"),
     mapping = aes(as.Date(x), y, group = id),
@@ -165,11 +166,7 @@ p_no_legend <- ggplot() +
     axis.line.x = element_line(),
     axis.title = element_blank(),
     axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    legend.position = c(0.2, 0.2),
-    legend.box.background = element_rect(colour = "black"),
-    legend.text = element_text(size = 8),
-    legend.title = element_text(size = 8)
+    axis.ticks.y = element_blank()
   )
 
 ggsave(
@@ -184,6 +181,18 @@ ggsave(
 )
 
 p <- ggplot() +
+  # size legend
+  geom_polygon(
+    data = legend_polygons,
+    mapping = aes(as.Date(x), y, group = id),
+    linewidth = 0.4, fill = "white", colour = "black"
+  ) +
+  geom_text(
+    data = legend_center_and_radius,
+    mapping = aes(x = x, y = y + c(0, 130, 250), label = rev(n)),
+    colour="black", size = 1.9
+  ) +
+  # bubbles
   geom_polygon(
     data = paper_directory %>% dplyr::left_join(polygons, by = "id"),
     mapping = aes(as.Date(x), y, group = id, fill = type),
@@ -197,7 +206,6 @@ p <- ggplot() +
       "none" = "#D3D4D8"
     )
   ) +
-  guides(fill = guide_legend(title = "in Archives")) +
   geom_text(
     data = paper_directory %>% dplyr::bind_cols(
         center_and_radius %>% dplyr::transmute(x_center = x, y_center = y)
@@ -229,9 +237,10 @@ p <- ggplot() +
     axis.title = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank(),
-    legend.position = c(0.2, 0.2),
+    legend.position = c(0.3, 0.15),
     legend.box.background = element_rect(colour = "black"),
-    legend.text = element_text(size = 8)
+    legend.text = element_text(size = 8),
+    legend.title = element_blank()
   )
 
 ggsave(
@@ -245,61 +254,13 @@ ggsave(
     bg = "white"
 )
 
-p <- ggplot() +
-  geom_polygon(
-    data = paper_directory %>% dplyr::left_join(polygons, by = "id"),
-    mapping = aes(as.Date(x), y, group = id, fill = type),
-    linewidth = 0.4
-  ) +
-  scale_fill_manual(
-    values = c(
-      #"PCA or PMA" = "#5785C1",
-      "PCA or PMA" = "#00b2ff",
-      "PAA" = "#ffa800",
-      "none" = "#D3D4D8"
-    )
-  ) +
-  geom_polygon(
+p <- p +
+    geom_polygon(
     data = paper_directory %>% dplyr::left_join(polygons, by = "id") %>%
       dplyr::filter(!aadr_archive & (community_archive | minotaur_archive)),
     mapping = aes(as.Date(x), y, group = id),
-    fill = "#30e0ff", colour = "black",
-    linewidth = 0.5
-  ) +
-  guides(fill = guide_legend(title = "in Archives")) +
-  geom_text(
-    data = paper_directory %>% dplyr::bind_cols(
-      center_and_radius %>% dplyr::transmute(x_center = x, y_center = y)
-    ) %>% dplyr::filter(nr_adna_samples > 150),
-    mapping = aes(
-      x = as.Date(x_center),
-      y = y_center,
-      label = paste(
-        stringr::str_extract(first_author, "\\s([-\\w]+)$") %>%
-          stringr::str_replace_all("-", "-\n"),
-        year,
-        sep = "\n"
-      )
-    ),
-    colour="black", size = 1.9
-  ) +
-  coord_fixed() +
-  theme_bw() +
-  scale_x_date(
-    #date_breaks = "1 year",
-    breaks = seq.Date(lubridate::ymd("2010-01-01"), lubridate::ymd("2025-12-31"), by = "year"),
-    date_labels = "%Y"
-  ) +
-  theme(
-    panel.grid = element_blank(),
-    panel.grid.major.x = element_line(colour = "black", linetype = "dashed", linewidth = 0.1),
-    panel.border = element_blank(),
-    axis.line.x = element_line(),
-    axis.title = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    legend.position = c(0.1, 0.2),
-    legend.box.background = element_rect(colour = "black")
+    fill = NA, colour = "black",
+    linewidth = 0.8
   )
 
 ggsave(
