@@ -1,4 +1,4 @@
-name: Deploy GitHub Pages
+name: Update docs/ directory via python script
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
       - 'list.csv'  # Triggers when the (input) list.txt file changes
       - 'supplementary.json'
       - 'base_script.py'
+  workflow_dispatch: # allow manual dispatch
 
 jobs:
   build-and-deploy:
