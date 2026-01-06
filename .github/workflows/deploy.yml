@@ -5,7 +5,7 @@ on:
     branches:
       - main  # Triggers when commits or merges happen in main
     paths:
-      - 'list.txt'  # Triggers when the (input) list.txt file changes
+      - 'list.csv'  # Triggers when the (input) list.txt file changes
       - 'supplementary.json'
       - 'base_script.py'
 
