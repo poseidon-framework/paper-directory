@@ -1,6 +1,13 @@
 doi,title,year,journal,first_author,publication_date,community_archive,aadr_archive,minotaur_archive,nr_adna_samples
+10.1038/s41467-025-67906-y,Tracing social mechanisms and interregional connections in Early Bronze Age Societies in Lower Austria,2025,Nature Communications,Anja Furtwängler,2025-12-31,False,False,False,129
+10.1016/j.jasrep.2025.105559,"Genetic and historical perspectives on the early medieval inhumations from the Menga dolmen, Antequera (Spain)",2026,Journal of Archaeological Science: Reports,Marina Silva,2025-12-24,False,False,False,1
+10.1038/s42003-025-09194-2,Archaeogenetics reconstructs demography and extreme parental consanguinity in a Bronze Age community from Southern Italy,2025,Communications Biology,Francesco Fontani,2025-12-15,False,False,False,14
+10.64898/2025.12.07.692553,"Ancestry, admixture, and pathogens in contemporaneous Neolithic farmers and foragers on the Island of Gotland",0,No Journal,Magdalena Fraser,2025-12-10,False,False,False,2
+10.1038/s41586-025-09811-4,Homo sapiens-specific evolution unveiled by ancient southern African genomes,2025,Nature,Mattias Jakobsson,2025-12-03,False,False,False,28
+10.1038/s41586-025-09799-x,Ancient DNA from Shimao city records kinship practices in Neolithic China,2025,Nature,Zehui Chen,2025-11-26,False,False,False,144
 10.1016/j.jasrep.2025.105474,Ancient genomic evidence uncovers a 6th-century cross-border couple between South Asia and East Asia,2025,Journal of Archaeological Science: Reports,Panxin Du,2025-11-05,False,False,False,2
 10.1038/s41586-025-09731-3,Eight millennia of continuity of a previously unknown lineage in Argentina,2025,Nature,Javier Maravall-López,2025-11-05,False,False,False,238
+10.1101/2025.11.03.686206,"Genetic insights into Iron Age Saka culture: Ancient DNA analysis of the Boz-Barmak burial ground, Kyrgyzstan",0,No Journal,Aigerim Rymbekova,2025-11-04,False,False,False,9
 10.1126/sciadv.adu9625,Dynamic human admixture histories over the past ~1300 years at the northern Himalayan frontier,2025,Science Advances,Esha Bandyopadhyay,2025-10-29,False,False,False,8
 10.1038/s41598-025-21522-4,Genome of an early Okhotsk individual reveals ancient admixture between Jomon and Kamchatka lineages,2025,Scientific Reports,Takehiro Sato,2025-10-27,False,False,False,1
 10.1016/j.fsigen.2025.103381,"Murder in cold blood? Forensic and bioarchaeological identification of the skeletal remains of Béla, Duke of Macsó (c. 1245–1272)",2026,Forensic Science International: Genetics,Tamás Hajdu,2025-10-26,False,False,False,1
@@ -41,7 +48,7 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1038/s41467-025-56555-w,East Asian Gene flow bridged by northern coastal populations over past 6000 years,2025,Nature Communications,Juncen Liu,2025-02-03,False,False,False,85
 10.1038/s41586-024-08418-5,Ancient DNA reveals reproductive barrier despite shared Avar-period culture,2025,Nature,Ke Wang,2025-01-15,False,False,False,722
 10.1038/s41586-024-08409-6,Continental influx and pervasive matrilocality in Iron Age Britain,2025,Nature,Lara M. Cassidy,2025-01-15,False,False,False,57
-10.1126/sciadv.adr0695,North Pontic crossroads: Mobility in Ukraine from the Bronze Age to the early modern period,2025,Science Advances,Lehti Saag,2025-01-08,False,False,False,91
+10.1126/sciadv.adr0695,North Pontic crossroads: Mobility in Ukraine from the Bronze Age to the early modern period,2025,Science Advances,Lehti Saag,2025-01-08,True,False,False,91
 10.1073/pnas.2412355121,The genetic origins and impacts of historical Papuan migrations into Wallacea,2024,Proceedings of the National Academy of Sciences,Gludhug A. Purnomo,2024-12-17,False,False,False,0
 10.1038/s41562-024-02034-z,Social and genetic diversity in first farmers of central Europe,2024,Nature Human Behaviour,Pere Gelabert,2024-11-29,False,True,False,250
 10.1186/s12915-024-02068-9,Ancient genomes from the Tang Dynasty capital reveal the genetic legacy of trans-Eurasian communication at the eastern end of Silk Road,2024,BMC Biology,Minglei Lv,2024-11-20,False,False,False,7
@@ -71,11 +78,11 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1038/s41598-024-54824-0,Biomolecular evidence for changing millet reliance in Late Bronze Age central Germany,2024,Scientific Reports,Eleftheria Orfanou,2024-02-22,False,False,False,0
 10.1038/s41598-024-54462-6,Kinship practices at the early bronze age site of Leubingen in Central Germany,2024,Scientific Reports,Sandra Penske,2024-02-16,False,True,False,48
 10.1038/s41559-024-02322-x,Medieval DNA from Soqotra points to Eurasian origins of an isolated population at the crossroads of Africa and Arabia,2024,Nature Ecology &amp; Evolution,Kendra Sirak,2024-02-08,False,False,False,39
-10.7554/elife.79714,"Stable population structure in Europe since the Iron Age, despite high mobility",2024,eLife,Margaret L Antonio,2024-01-30,False,True,False,188
 10.1126/sciadv.adi5903,Genetic history of Cambridgeshire before and after the Black Death,2024,Science Advances,Ruoyun Hui,2024-01-17,False,False,False,275
 10.1038/s41586-023-06618-z,Elevated genetic risk for multiple sclerosis emerged in steppe pastoralist populations,2024,Nature,William Barrie,2024-01-10,False,True,False,85
 10.1038/s41586-023-06865-0,Population genomics of post-glacial western Eurasia,2024,Nature,Morten E. Allentoft,2024-01-10,True,True,False,631
 10.1038/s41467-023-44328-2,Genomic portrait and relatedness patterns of the Iron Age Log Coffin culture in northwestern Thailand,2023,Nature Communications,Selina Carlhoff,2023-12-22,True,True,False,33
+10.7554/elife.79714,"Stable population structure in Europe since the Iron Age, despite high mobility",2024,eLife,Margaret L Antonio,2023-12-12,True,True,False,188
 10.1016/j.cell.2023.10.018,A genetic history of the Balkans from Roman frontier to Slavic migrations,2023,Cell,Iñigo Olalde,2023-12-07,False,True,True,141
 10.1038/s41586-023-06771-5,Genetic continuity and change among the Indigenous peoples of California,2023,Nature,Nathan Nakatsuka,2023-11-22,True,True,False,119
 10.1038/s41559-023-02211-9,"Genome sequences of 36,000- to 37,000-year-old modern humans at Buran-Kaya III in Crimea",2023,Nature Ecology &amp; Evolution,E. Andrew Bennett,2023-10-23,False,True,False,2
@@ -116,7 +123,7 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1016/j.cub.2022.11.034,Spatial and temporal heterogeneity in human mobility patterns in Holocene Southwest Asia and the East Mediterranean,2023,Current Biology,Dilek Koptekin,2022-12-08,True,True,False,37
 10.1038/s41598-022-25384-y,4000-year-old hair from the Middle Nile highlights unusual ancient DNA degradation pattern and a potential source of early eastern Africa pastoralists,2022,Scientific Reports,Ke Wang,2022-12-03,False,True,False,1
 10.1016/j.cell.2022.11.002,Genome-wide data from medieval German Jews show that the Ashkenazi founder event pre-dated the 14th century,2022,Cell,Shamam Waldman,2022-11-30,False,True,False,33
-10.1016/j.isci.2022.105636,Cultural and demic co-diffusion of Tubo Empire on Tibetan Plateau,2022,iScience,Kongyang Zhu,2022-11-22,False,True,False,10
+10.1016/j.isci.2022.105636,Cultural and demic co-diffusion of Tubo Empire on Tibetan Plateau,2022,iScience,Kongyang Zhu,2022-11-21,False,True,False,10
 10.1038/s42003-022-04190-2,"Genomic ancestry, diet and microbiomes of Upper Palaeolithic hunter-gatherers from San Teodoro cave",2022,Communications Biology,Gabriele Scorrano,2022-11-18,False,True,False,2
 10.1126/sciadv.abo3609,A genomic snapshot of demographic and cultural dynamism in Upper Mesopotamia during the Neolithic Transition,2022,Science Advances,N. Ezgi Altınışık,2022-11-04,True,True,False,13
 10.1038/s41559-022-01883-z,Dual ancestries and ecologies of the Late Glacial Palaeolithic in Britain,2022,Nature Ecology &amp; Evolution,Sophy Charlton,2022-10-24,False,False,False,2
@@ -157,7 +164,7 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1093/molbev/msac014,The Genetic Origin of Daunians and the Pan-Mediterranean Southern Italian Iron Age Context,2022,Molecular Biology and Evolution,Serena Aneli,2022-01-13,False,True,False,16
 10.3390/genes13010136,"First Glimpse into the Genomic Characterization of People from the Imperial Roman Community of Casal Bertone (Rome, First–Third Centuries AD)",2022,Genes,Flavio De Angelis,2022-01-13,False,True,False,5
 10.1038/s41586-021-04241-4,A high-resolution picture of kinship practices in an Early Neolithic tomb,2022,Nature,Chris Fowler,2021-12-22,False,True,False,62
-10.1038/s41586-021-04287-4,Large-scale migration into Britain during the Middle to Late Bronze Age,2022,Nature,Nick Patterson,2021-12-22,True,True,False,793
+10.1038/s41586-021-04287-4,Large-scale migration into Britain during the Middle to Late Bronze Age,2022,Nature,Nick Patterson,2021-12-22,True,True,True,793
 10.1038/s41467-021-27356-8,Social stratification without genetic differentiation at the site of Kulubnarti in Christian Period Nubia,2021,Nature Communications,Kendra A. Sirak,2021-12-14,False,True,False,66
 10.1093/molbev/msab351,"Ancient Human Genomes and Environmental DNA from the Cement Attaching 2,000-Year-Old Head Lice Nits",2022,Molecular Biology and Evolution,Mikkel W Pedersen,2021-12-06,False,False,False,9
 10.1126/sciadv.abi7038,Genomic transformation and social organization during the Copper Age–Bronze Age transition in southern Iberia,2021,Science Advances,Vanessa Villalba-Mouco,2021-11-17,False,True,False,136
@@ -192,7 +199,7 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1073/pnas.2026132118,"Multiple migrations to the Philippines during the last 50,000 years",2021,Proceedings of the National Academy of Sciences,Maximilian Larena,2021-03-22,True,True,False,2
 10.1371/journal.pone.0247332,Genome-wide analysis of nearly all the victims of a 6200 year old massacre,2021,PLOS ONE,Mario Novak,2021-03-10,True,True,False,38
 10.1038/s41586-021-03336-2,Genomic insights into the formation of human populations in East Asia,2021,Nature,Chuan-Chao Wang,2021-02-22,True,True,False,191
-10.1101/gr.267534.120,A minimally destructive protocol for DNA extraction from ancient teeth,2021,Genome Research,Éadaoin Harney,2021-02-17,True,True,False,16
+10.1101/gr.267534.120,A minimally destructive protocol for DNA extraction from ancient teeth,2021,Genome Research,Éadaoin Harney,2021-02-16,True,True,False,16
 10.1038/s42003-020-01627-4,Genome-wide study of a Neolithic Wartberg grave community reveals distinct HLA variation and hunter-gatherer ancestry,2021,Communications Biology,Alexander Immel,2021-01-25,False,True,False,40
 10.1126/sciadv.abd6535,Genetic ancestry changes in Stone to Bronze Age transition in the East European plain,2021,Science Advances,Lehti Saag,2021-01-20,True,True,True,29
 10.1371/journal.pone.0244872,Genomic Steppe ancestry in skeletons from the Neolithic Single Grave Culture in Denmark,2021,PLOS ONE,Anne Friis-Holm Egfjord,2021-01-14,True,True,False,3
@@ -265,7 +272,7 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1126/science.aav4040,The genomic history of the Iberian Peninsula over the past 8000 years,2019,Science,Iñigo Olalde,2019-03-14,True,True,False,277
 10.1016/j.cub.2019.02.006,Survival of Late Pleistocene Hunter-Gatherer Ancestry in the Iberian Peninsula,2019,Current Biology,Vanessa Villalba-Mouco,2019-03-14,True,True,False,12
 10.1038/s41431-019-0361-1,People from Ibiza: an unexpected isolate in the Western Mediterranean,2019,European Journal of Human Genetics,Simone Andrea Biagini,2019-02-14,True,True,False,1
-10.1038/s41467-018-08220-8,Ancient human genome-wide data from a 3000-year interval in the Caucasus corresponds with eco-geographic regions,2019,Nature Communications,Chuan-Chao Wang,2019-02-04,True,True,False,49
+10.1038/s41467-018-08220-8,Ancient human genome-wide data from a 3000-year interval in the Caucasus corresponds with eco-geographic regions,2019,Nature Communications,Chuan-Chao Wang,2019-02-03,True,True,False,49
 10.1098/rspb.2018.2288,A western route of prehistoric human migration from Africa into the Iberian Peninsula,2019,Proceedings of the Royal Society B: Biological Sciences,G. González-Fortes,2019-01-23,True,True,False,4
 10.1126/sciadv.aau5064,Ancient nuclear genomes enable repatriation of Indigenous human remains,2018,Science Advances,Joanne L. Wright,2018-12-20,False,True,False,9
 10.1038/s41598-018-35667-y,Ancient DNA of Phoenician remains indicates discontinuity in the settlement history of Ibiza,2018,Scientific Reports,Pierre Zalloua,2018-11-28,False,True,False,1
@@ -307,7 +314,7 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1016/j.cub.2017.09.030,"40,000-Year-Old Individual from Asia Provides Insight into Early Population Structure in Eurasia",2017,Current Biology,Melinda A. Yang,2017-10-13,True,True,False,1
 10.1126/science.aao1807,Ancient genomes show social and reproductive behavior of early Upper Paleolithic foragers,2017,Science,Martin Sikora,2017-10-06,True,True,False,7
 10.1126/science.aao1887,A high-coverage Neandertal genome from Vindija Cave in Croatia,2017,Science,Kay Prüfer,2017-10-06,True,True,False,5
-10.1126/science.aao6266,"Southern African ancient genomes estimate modern human divergence to 350,000 to 260,000 years ago",2017,Science,Carina M. Schlebusch,2017-09-30,True,True,False,7
+10.1126/science.aao6266,"Southern African ancient genomes estimate modern human divergence to 350,000 to 260,000 years ago",2017,Science,Carina M. Schlebusch,2017-09-29,True,True,False,7
 10.1016/j.cell.2017.08.049,Reconstructing Prehistoric African Population Structure,2017,Cell,Pontus Skoglund,2017-09-21,True,True,False,25
 10.1002/ajpa.23312,Testing support for the northern and southern dispersal routes out of Africa: an analysis of Levantine and southern Arabian populations,2017,American Journal of Physical Anthropology,Deven N. Vyas,2017-09-15,True,True,False,0
 10.1038/nature23310,Genetic origins of the Minoans and Mycenaeans,2017,Nature,Iosif Lazaridis,2017-08-01,True,True,False,20
@@ -316,7 +323,7 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1016/j.cub.2017.06.022,Extensive Farming in Estonia Started through a Sex-Biased Migration from the Steppe,2017,Current Biology,Lehti Saag,2017-07-14,True,True,False,7
 10.1038/ncomms15694,Ancient Egyptian mummy genomes suggest an increase of Sub-Saharan African ancestry in post-Roman periods,2017,Nature Communications,Verena J. Schuenemann,2017-05-30,True,True,False,3
 10.1016/j.cub.2017.05.023,Paleogenomic Evidence for Multi-generational Mixing between Neolithic Farmers and Mesolithic Hunter-Gatherers in the Lower Danube Basin,2017,Current Biology,Gloria González-Fortes,2017-05-25,True,True,False,6
-10.1073/pnas.1620410114,"Ancient individuals from the North American Northwest Coast reveal 10,000 years of regional genetic continuity",2017,Proceedings of the National Academy of Sciences,John Lindo,2017-04-05,True,True,False,1
+10.1073/pnas.1620410114,"Ancient individuals from the North American Northwest Coast reveal 10,000 years of regional genetic continuity",2017,Proceedings of the National Academy of Sciences,John Lindo,2017-04-04,True,True,False,1
 10.1038/ncomms14615,Ancestry and demography and descendants of Iron Age nomads of the Eurasian Steppe,2017,Nature Communications,Martina Unterländer,2017-03-03,True,True,False,8
 10.1038/ncomms14115,Archaeogenomic evidence reveals prehistoric matrilineal dynasty,2017,Nature Communications,Douglas J. Kennett,2017-02-21,True,True,False,5
 10.1016/j.cub.2016.12.060,The Neolithic Transition in the Baltic Was Not Driven by Admixture with Early European Farmers,2017,Current Biology,Eppie R. Jones,2017-02-03,True,True,False,8
@@ -328,14 +335,14 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1038/ng.3621,Genomic analysis of Andamanese provides insights into ancient human migration into Asia and adaptation,2016,Nature Genetics,Mayukh Mondal,2016-07-25,True,True,False,0
 10.1126/science.aaf7943,Early Neolithic genomes from the eastern Fertile Crescent,2016,Science,Farnaz Broushaki,2016-07-15,True,True,False,5
 10.1073/pnas.1520844113,Long-term genetic stability and a high-altitude East Asian origin for the peoples of the high valleys of the Himalayan arc,2016,Proceedings of the National Academy of Sciences,Choongwon Jeong,2016-06-21,True,True,False,8
-10.1073/pnas.1523951113,Early farmers from across Europe directly descended from Neolithic Aegeans,2016,Proceedings of the National Academy of Sciences,Zuzana Hofmanová,2016-06-07,True,True,False,5
+10.1073/pnas.1523951113,Early farmers from across Europe directly descended from Neolithic Aegeans,2016,Proceedings of the National Academy of Sciences,Zuzana Hofmanová,2016-06-06,True,True,False,5
 10.1038/nature17993,The genetic history of Ice Age Europe,2016,Nature,Qiaomei Fu,2016-04-29,True,True,False,40
 10.1126/science.aae0344,Long-read sequence assembly of the gorilla genome,2016,Science,David Gordon,2016-03-31,True,False,False,0
 10.1038/ncomms10326,Genomic signals of migration and continuity in Britain before the Anglo-Saxons,2016,Nature Communications,Rui Martiniano,2016-01-19,True,True,False,9
 10.1038/ncomms10408,Iron Age and Anglo-Saxon genomes from East England reveal British migration history,2016,Nature Communications,Stephan Schiffels,2016-01-19,True,True,False,10
 10.1016/j.cub.2015.12.019,Genomic Evidence Establishes Anatolia as the Source of the European Neolithic Gene Pool,2016,Current Biology,Ayça Omrak,2015-12-31,True,True,False,2
 10.1073/pnas.1518445113,Neolithic and Bronze Age migration to Ireland and establishment of the insular Atlantic genome,2016,Proceedings of the National Academy of Sciences,Lara M. Cassidy,2015-12-29,True,True,False,4
-10.1038/nature16152,Genome-wide patterns of selection in 230 ancient Eurasians,2015,Nature,Iain Mathieson,2015-11-24,True,True,False,142
+10.1038/nature16152,Genome-wide patterns of selection in 230 ancient Eurasians,2015,Nature,Iain Mathieson,2015-11-23,True,True,False,142
 10.1038/ncomms9912,Upper Palaeolithic genomes reveal deep roots of modern Eurasians,2015,Nature Communications,Eppie R. Jones,2015-11-16,True,True,False,3
 10.1126/science.aad2879,Ancient Ethiopian genome reveals extensive Eurasian admixture in Eastern Africa,2015,Science,M. Gallego Llorente,2015-10-09,True,True,False,1
 10.1038/nature15393,A global reference for human genetic variation,2015,Nature, ,2015-09-29,True,True,False,0
