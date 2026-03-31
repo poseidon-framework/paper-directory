@@ -81,6 +81,39 @@
         <h1>aDNA Paper Directory</h1>
         <p>A list of ancient DNA papers, and their availability in the Poseidon archives (including the AADR archive).</p>
         
+        <!-- bubble chart begin -->
+        <details>
+        <summary role="button">Timeline visualization</summary>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <style>
+        #chart {
+          width: 100%;
+          height: 300px;
+          display: block;
+          margin-bottom: 25px;
+        }
+        .tooltip {
+          position: absolute;
+          background: white;
+          border: 1px solid #13171f;
+          padding: 6px;
+          font-size: 12px;
+          pointer-events: none;
+          color: #13171f;
+        }
+        </style>
+        <select id="colorMode">
+          <option value="community_archive">community-archive highlighted</option>
+          <option value="aadr_archive">aadr-archive highlighted</option>
+          <option value="minotaur_archive">minotaur-archive highlighted</option>
+          <option value="none">no archive highlighted</option>
+        </select>
+        <svg id="chart"></svg>
+        <div class="tooltip" style="opacity:0"></div>
+        <script src="chart.js"></script>
+        </details>
+        <!-- bubble chart end -->
+        
         <div>
             <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search by title or author...">
             <details>
@@ -1224,7 +1257,7 @@
                 <td>2024-02-26</td>
                 <td>✘</td>
                 <td>✔</td>
-                <td>✘</td>
+                <td>✔</td>
                 <td>10</td>
             </tr>
             

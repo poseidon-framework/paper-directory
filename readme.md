@@ -93,3 +93,21 @@ This is a **fully automated workflow** that updates the table and deploys it to 
 **GitHub Actions Workflow** runs everything behind the scenes. No manual updates needed!
 
 
+## Testing locally
+
+To run the script locally, you can try `python3 base_script.py`. Likely you will be required to first install libraries `requests` and `jinja2`. You can do that by creating a virtual environment, for example:
+
+```{bash}
+python3 -m venv ~/venv/paper-directory
+source ~/venvs/paper-directory/bin/activate
+python3 -m pip install requests
+python3 -m pip install jinja2
+```
+
+Then `python3 base_script.py` should generate the page.
+
+You can then run a test server:
+
+`python3 -m http.server --directory docs 8000`
+
+and open `http://localhost:8000` in your browser.
