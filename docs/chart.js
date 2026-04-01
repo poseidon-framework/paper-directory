@@ -49,7 +49,7 @@ d3.csv("paper_directory.csv", d3.autoType).then(data => {
           "<b>" + d.title + "</b><br>" +
           d.first_author + "<br>" +
           d.journal + " (" + d.year + ")<br>" +
-          "Samples: " + d.nr_adna_samples
+          "aDNA samples: " + d.nr_adna_samples
         );
     })
 
@@ -72,7 +72,7 @@ d3.csv("paper_directory.csv", d3.autoType).then(data => {
   function updateColors(mode) {
     circles.attr("fill", d => {
       if (mode === "none") return "#1c212c";
-      return d[mode] ? "orange" : "#1c212c";
+      return d[mode] ? "#f4900c" : "#1c212c";
     });
   }
   
