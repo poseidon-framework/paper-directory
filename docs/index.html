@@ -79,10 +79,45 @@
         </nav>
         
         <h1>aDNA Paper Directory</h1>
-        <p>A list of ancient DNA papers, and their availability in the Poseidon archives (including the AADR archive).</p>
+        <p>A list of ancient DNA papers, and their availability in the Poseidon archives.</p>
+        
+        <!-- bubble chart begin -->
+        <hr>
+        <h6>Diachronic packed circle chart</h6>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <style>
+        #chart {
+          width: 100%;
+          height: 300px;
+          display: block;
+          margin-bottom: 25px;
+          border: 1px solid #ddd;
+        }
+        .tooltip {
+          position: absolute;
+          background: white;
+          border: 1px solid #13171f;
+          padding: 6px;
+          font-size: 12px;
+          pointer-events: none;
+          color: #13171f;
+        }
+        </style>
+        <select id="colorMode">
+          <option value="community_archive">&#128992 in Community Archive</option>
+          <option value="aadr_archive">&#128992 in AADR Archive</option>
+          <option value="minotaur_archive">&#128992 in Minotaur Archive</option>
+          <option value="none">No archive highlighted</option>
+        </select>
+        <svg id="chart"></svg>
+        <div class="tooltip" style="opacity:0"></div>
+        <script src="chart.js"></script>
+        <!-- bubble chart end -->
+        
+        <hr>
+        <h6>Searchable list</h6>
         
         <div>
-            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search by title or author...">
             <details>
               <summary role="button">Filter by archive</summary>
                 <label for="communityFilter">Community Archive:</label>
@@ -105,6 +140,7 @@
                 </select>
                 <button onclick="resetFilters()">Reset Filters</button>
             </details>
+            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Type to search by title or author...">
         </div>
 
         <p><span id="nrRows">?</span> papers selected</p>
@@ -1224,7 +1260,7 @@
                 <td>2024-02-26</td>
                 <td>✘</td>
                 <td>✔</td>
-                <td>✘</td>
+                <td>✔</td>
                 <td>10</td>
             </tr>
             
