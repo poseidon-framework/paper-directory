@@ -23,7 +23,30 @@ def load_supplementary_metadata():
 
 SUPPLEMENTARY_METADATA = load_supplementary_metadata()
 
+def load_crossref_cache():
+    if os.path.exists(CACHE_FILE):
+        try:
+            with open(CACHE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            sys.stderr.write("WARNING: Failed to parse crossref_cache.json. Starting with empty cache.\n")
+    return {}
+
+def save_crossref_cache(cache):
+    with open(CACHE_FILE, "w", encoding="utf-8") as f:
+        json.dump(cache, f, indent=2, ensure_ascii=False)
+    print(f"Saved CrossRef cache to {CACHE_FILE}")
+
+CACHE_FILE = "crossref_cache.json"
+CROSSREF_CACHE = load_crossref_cache()
+
 def get_crossref_metadata(doi, index, total):
+
+    # Return cached metadata if available
+    if doi in CROSSREF_CACHE:
+        print(f"({index + 1} / {total}) Using cached metadata for {doi}")
+        return CROSSREF_CACHE[doi]
+
     print(f"({index + 1} / {total}) Gathering metadata for {doi}")
 
     #Initialize with supplementary.json 
@@ -74,6 +97,8 @@ def get_crossref_metadata(doi, index, total):
 
     #Fallback defaults
     metadata = {k: (v if v else get_default_value(k)) for k, v in metadata.items()}
+
+    CROSSREF_CACHE[doi] = metadata
 
     return metadata
 
@@ -380,6 +405,8 @@ unique_dois_data = check_for_duplicates(dois_data)
 # Get CrossRef metadata
 metadata_map = {entry["doi"]: get_crossref_metadata(entry["doi"], index, len(unique_dois_data))
                 for index, entry in enumerate(unique_dois_data)}
+
+save_crossref_cache(CROSSREF_CACHE)
 
 # Get Poseidon DOI availability
 poseidon_doi_map = load_poseidon_doi_map()
