@@ -62,40 +62,43 @@ def get_crossref_metadata(doi, index, total):
 
     #Query CrossRef to fill missing values
     url = f"https://api.crossref.org/works/{doi}"
-    response = requests.get(url, timeout=(10, 120))
 
-    if response.status_code == 200:
+    try:
+        response = requests.get(url, timeout=(10, 120))
+        response.raise_for_status()
         data = response.json().get("message", {})
 
-        if metadata["title"] is None:
-            metadata["title"] = data.get("title", [None])[0]
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"CrossRef request failed for {doi}: {e}") from e
 
-        if metadata["year"] is None:
-            year_data = data.get("published-print", data.get("published-online", {})).get("date-parts", [[None]])
-            metadata["year"] = year_data[0][0] if isinstance(year_data[0][0], int) else None
+    except ValueError as e:
+        raise RuntimeError(f"CrossRef returned invalid JSON for {doi}: {e}") from e
 
-        if metadata["journal"] is None:
-           container_titles = data.get("container-title", [])
-           metadata["journal"] = container_titles[0] if container_titles else None
+    if metadata["title"] is None:
+        metadata["title"] = data.get("title", [None])[0]
 
-        if metadata["date"] is None:
-            raw_date = data.get("created", {}).get("date-time", None)
-            if raw_date:
-                try:
-                    metadata["date"] = datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d")
-                except ValueError:
-                    pass
+    if metadata["year"] is None:
+        year_data = data.get("published-print", data.get("published-online", {})).get("date-parts", [[None]])
+        metadata["year"] = year_data[0][0] if isinstance(year_data[0][0], int) else None
 
-        if metadata["first_author"] is None:
-            first_author_field = data.get("author", [{}])[0]
-            first = first_author_field.get("given") or ""
-            last = first_author_field.get("family") or ""
-            metadata["first_author"] = first + " " + last
+    if metadata["journal"] is None:
+        container_titles = data.get("container-title", [])
+        metadata["journal"] = container_titles[0] if container_titles else None
 
-    else:
-        sys.stderr.write(f"WARNING: CrossRef failed to fetch metadata for {doi}\n")
+    if metadata["date"] is None:
+        raw_date = data.get("created", {}).get("date-time", None)
+        if raw_date:
+            try:
+                metadata["date"] = datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d")
+            except ValueError:
+                pass
 
-    #Fallback defaults
+    if metadata["first_author"] is None:
+        first_author_field = data.get("author", [{}])[0]
+        first = first_author_field.get("given") or ""
+        last = first_author_field.get("family") or ""
+        metadata["first_author"] = first + " " + last
+
     metadata = {k: (v if v else get_default_value(k)) for k, v in metadata.items()}
 
     CROSSREF_CACHE[doi] = metadata
@@ -116,17 +119,15 @@ def get_default_value(field):
 # Fetch bibliography from Poseidon 
 def fetch_poseidon_bibliography(archive_name):
     print(f"Fetching DOI data from {archive_name}...")
-    url = f"http://server.poseidon-adna.org:3000/bibliography?archive={archive_name}"
+    url = f"http://server.poseidon-adna.org/bibliography?archive={archive_name}"
     try:
         response = requests.get(url, timeout=(10, 120))
-        if response.status_code == 200:
-            return response.json().get("serverResponse", {}).get("bibEntries", [])
-        else:
-            sys.stderr.write(f"WARNING: Poseidon request failed for {archive_name}: HTTP {response.status_code}\n")
-            return []
+        response.raise_for_status()
+        return response.json().get("serverResponse", {}).get("bibEntries", [])
     except requests.exceptions.RequestException as e:
-        sys.stderr.write(f"WARNING: Poseidon request failed for {archive_name}: {e}\n")
-        return []
+        raise RuntimeError(f"Poseidon request failed for {archive_name}: {e}") from e
+    except ValueError as e:
+        raise RuntimeError(f"Poseidon returned invalid JSON for {archive_name}: {e}") from e
 
 # Load all Poseidon bibliography data into a dictionary 
 def load_poseidon_doi_map():
