@@ -16,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: '3.x'
 
@@ -33,8 +33,9 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add crossref_cache.json
           git add docs/
-          git diff --cached --quiet && echo "No changes to commit" || git commit -m "Update index.html via GitHub Actions"
+          git diff --cached --quiet && echo "No changes to commit" || git commit -m "Update repo via GitHub Actions"
       
       - name: Push changes
         if: success()
