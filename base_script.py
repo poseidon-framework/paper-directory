@@ -62,7 +62,7 @@ def get_crossref_metadata(doi, index, total):
 
     #Query CrossRef to fill missing values
     url = f"https://api.crossref.org/works/{doi}"
-    response = requests.get(url)
+    response = requests.get(url, timeout=(10, 120))
 
     if response.status_code == 200:
         data = response.json().get("message", {})
@@ -117,10 +117,16 @@ def get_default_value(field):
 def fetch_poseidon_bibliography(archive_name):
     print(f"Fetching DOI data from {archive_name}...")
     url = f"http://server.poseidon-adna.org:3000/bibliography?archive={archive_name}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json().get("serverResponse", {}).get("bibEntries", [])
-    return []
+    try:
+        response = requests.get(url, timeout=(10, 120))
+        if response.status_code == 200:
+            return response.json().get("serverResponse", {}).get("bibEntries", [])
+        else:
+            sys.stderr.write(f"WARNING: Poseidon request failed for {archive_name}: HTTP {response.status_code}\n")
+            return []
+    except requests.exceptions.RequestException as e:
+        sys.stderr.write(f"WARNING: Poseidon request failed for {archive_name}: {e}\n")
+        return []
 
 # Load all Poseidon bibliography data into a dictionary 
 def load_poseidon_doi_map():
