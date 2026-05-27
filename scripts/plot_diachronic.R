@@ -11,9 +11,10 @@ paper_directory_raw$community_archive[paper_directory_raw$doi == "10.1038/s41586
 # fix a wrong year
 paper_directory_raw$year[paper_directory_raw$doi == "10.1016/j.fsigen.2025.103381"] <- 2025
 
-
 paper_directory <- paper_directory_raw %>%
   dplyr::filter(nr_adna_samples > 0) %>%
+  # removing preprints
+  dplyr::filter(journal != "No Journal") %>%
   dplyr::mutate(
     type = dplyr::case_when(
       # (community_archive | minotaur_archive) & aadr_archive ~ "all",
@@ -46,13 +47,13 @@ p_bar <- paper_directory %>%
     ),
     vjust = -0.25, size = 3
   ) +
-  scale_x_continuous(breaks = 2010:2025) +
+  scale_x_continuous(breaks = 2010:2050) +
   theme_bw() +
   theme(axis.title.x = element_blank()) +
   ylab("# of published ancient genomes")
 
 ggsave(
-  "barplot.png",
+  "plots/barplot.png",
   plot = p_bar,
   device = "png",
   scale = 0.4,
@@ -156,7 +157,7 @@ p_no_legend <- ggplot() +
   coord_fixed() +
   theme_bw() +
   scale_x_date(
-    breaks = seq.Date(lubridate::ymd("2010-01-01"), lubridate::ymd("2025-12-31"), by = "year"),
+    breaks = seq.Date(lubridate::ymd("2010-01-01"), lubridate::ymd("2026-12-31"), by = "year"),
     date_labels = "%Y"
   ) +
   theme(
@@ -170,7 +171,7 @@ p_no_legend <- ggplot() +
   )
 
 ggsave(
-  "no_legend.png",
+  "plots/no_legend.png",
   plot = p_no_legend,
   device = "png",
   scale = 1.7,
@@ -226,7 +227,7 @@ p <- ggplot() +
   theme_bw() +
   scale_x_date(
     #date_breaks = "1 year",
-    breaks = seq.Date(lubridate::ymd("2010-01-01"), lubridate::ymd("2025-12-31"), by = "year"),
+    breaks = seq.Date(lubridate::ymd("2010-01-01"), lubridate::ymd("2026-12-31"), by = "year"),
     date_labels = "%Y"
   ) +
   theme(
@@ -237,14 +238,14 @@ p <- ggplot() +
     axis.title = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank(),
-    legend.position = c(0.31, 0.15),
+    legend.position = c(0.305, 0.14),
     legend.box.background = element_rect(colour = "black"),
     legend.text = element_text(size = 8),
     legend.title = element_blank()
   )
 
 ggsave(
-    "in_poseidon.png",
+    "plots/in_poseidon.png",
     plot = p,
     device = "png",
     scale = 1.7,
@@ -264,7 +265,7 @@ p <- p +
   )
 
 ggsave(
-  "not_in_aadr.png",
+  "plots/in_poseidon_not_in_aadr.png",
   plot = p,
   device = "png",
   scale = 1.7,
