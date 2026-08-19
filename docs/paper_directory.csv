@@ -6,7 +6,7 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1371/journal.pone.0350298,Genetic histories of individuals from multi-faith medieval Sicily,2026,PLOS One,Aurore Monnereau,2026-06-24,False,False,False,32
 10.1038/s41586-026-10540-5,"Lethal plague outbreaks in Lake Baikal hunter-gatherers 5,500 years ago",2026,Nature,Ruairidh Macleod,2026-06-17,False,False,False,46
 10.1016/j.isci.2026.116186,The genetic landscape of northeastern Iberian communities from the early to late Iron Age,2026,iScience,Daniel R. Cuesta-Aguirre,2026-06-03,False,False,False,22
-10.1186/s12864-026-12962-x,"Bioarchaeological analysis illustrates the life of a 16th-century Sámi individual from Kitka, Kuusamo, northern Finland",2026,BMC Genomics,Sanni Peltola,2026-05-25,False,False,False,1
+10.1186/s12864-026-12962-x,"Bioarchaeological analysis illustrates the life of a 16th-century Sámi individual from Kitka, Kuusamo, northern Finland",2026,BMC Genomics,Sanni Peltola,2026-05-25,True,False,False,1
 10.1038/s41467-026-72216-y,Ancient DNA reveals a family ossuary and long-distance migration on the Pacific coast before the Inca Empire,2026,Nature Communications,Jacob L. Bongers,2026-05-22,False,False,False,21
 10.1016/j.jasrep.2026.105815,Multidisciplinary analysis reveals the genetic and dietary structure of the seated burials from Tang Dynasty Chang’an,2026,Journal of Archaeological Science: Reports,Chenshuang Sun,2026-05-22,False,False,False,4
 10.1126/science.aeb2926,Long-distance genetic relatedness in megalithic central Europe,2026,Science,Nicolas Antonio da Silva,2026-05-21,False,False,False,203
@@ -34,12 +34,12 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
                     )",2026,International Journal of Osteoarchaeology,Jiawei Li,2026-03-08,False,False,False,13
 10.1093/molbev/msag057,Ancient genomes uncover dynamic cultural and genetic interplay in the eastern Tianshan,2026,Molecular Biology and Evolution,Xiaomin Yang,2026-03-06,False,False,False,23
 10.1016/j.cub.2026.02.004,Ancient genomes provide insight into the Paleolithic-to-Neolithic transition in northern East Asia,2026,Current Biology,Ganyu Zhang,2026-03-04,False,False,False,2
-10.1038/s41467-026-69895-y,"Reconstruction of the lifeways of Central European Late Bronze Age communities using ancient DNA, isotope and osteoarchaeological analyses",2026,Nature Communications,Eleftheria Orfanou,2026-02-24,False,False,False,69
+10.1038/s41467-026-69895-y,"Reconstruction of the lifeways of Central European Late Bronze Age communities using ancient DNA, isotope and osteoarchaeological analyses",2026,Nature Communications,Eleftheria Orfanou,2026-02-24,True,False,False,69
 10.1038/s41562-025-02399-9,A large mass grave from the Early Iron Age indicates selective violence towards women and children in the Carpathian Basin,2026,Nature Human Behaviour,Linda Fibiger,2026-02-23,False,False,False,25
 10.1098/rspb.2025.0813,Genetic relatedness mattered in the co-burial ritual of Neolithic hunter–gatherers,2026,Proceedings of the Royal Society B: Biological Sciences,Tiina Maria Mattila,2026-02-18,False,False,False,10
 10.1038/s41586-026-10111-8,Lasting Lower Rhine–Meuse forager ancestry shaped Bell Beaker expansion,2026,Nature,Iñigo Olalde,2026-02-11,False,True,False,112
 10.1186/s13059-026-03968-5,Genetic affinities between the ancient Greek colony of Amvrakia and its metropolis,2026,Genome Biology,Nikolaos Psonis,2026-02-07,False,False,False,26
-10.1186/s13059-026-03969-4,Cosmopolitanism in the depths of Barbaricum evidenced by archaeogenomic data from the Late Iron Age Goth community of the Masłomęcz group,2026,Genome Biology,Michał Golubiński,2026-01-28,False,False,False,37
+10.1186/s13059-026-03969-4,Cosmopolitanism in the depths of Barbaricum evidenced by archaeogenomic data from the Late Iron Age Goth community of the Masłomęcz group,2026,Genome Biology,Michał Golubiński,2026-01-28,True,False,False,37
 10.1038/s41586-025-09856-5,An ancient DNA perspective on the Russian conquest of Yakutia,2026,Nature,Éric Crubézy,2026-01-07,False,False,False,105
 10.1038/s41467-025-67906-y,Tracing social mechanisms and interregional connections in Early Bronze Age Societies in Lower Austria,2025,Nature Communications,Anja Furtwängler,2025-12-31,False,False,False,129
 10.1016/j.jasrep.2025.105559,"Genetic and historical perspectives on the early medieval inhumations from the Menga dolmen, Antequera (Spain)",2026,Journal of Archaeological Science: Reports,Marina Silva,2025-12-24,False,True,False,1
@@ -70,10 +70,10 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1093/gbe/evaf149,A New Perspective on the Arrival of the Eastern Mediterranean Genetic Influx in Central Italy Before the Onset of the Roman Empire,2025,Genome Biology and Evolution,Francesco Ravasini,2025-07-26,False,False,False,1
 10.1126/sciadv.ads8179,Genetic history of Scythia,2025,Science Advances,Tatiana V. Andreeva,2025-07-23,False,False,False,131
 10.1016/j.cub.2025.06.054,Bronze and Iron Age genomes reveal the integration of diverse ancestries in the Tarim Basin,2025,Current Biology,Fan Zhang,2025-07-17,False,False,False,24
-10.1016/j.isci.2025.113086,Archaeogenetics reveals fine-scale genetic continuity and patterns of kinship and health in medieval Finland,2025,iScience,Ulla Nordfors,2025-07-15,False,False,False,21
+10.1016/j.isci.2025.113086,Archaeogenetics reveals fine-scale genetic continuity and patterns of kinship and health in medieval Finland,2025,iScience,Ulla Nordfors,2025-07-15,True,False,False,21
 10.1038/s41467-025-61601-8,Genomic diversity and structure of prehistoric alpine individuals from the Tyrolean Iceman’s territory,2025,Nature Communications,Myriam Croze,2025-07-11,False,False,False,47
 10.1038/s41586-025-09195-5,Whole-genome ancestry of an Old Kingdom Egyptian,2025,Nature,Adeline Morez Jacobs,2025-07-02,False,True,False,1
-10.1038/s41586-025-09189-3,Ancient DNA reveals the prehistory of the Uralic and Yeniseian peoples,2025,Nature,Tian Chen Zeng,2025-07-02,False,True,False,195
+10.1038/s41586-025-09189-3,Ancient DNA reveals the prehistory of the Uralic and Yeniseian peoples,2025,Nature,Tian Chen Zeng,2025-07-02,True,True,False,195
 10.1126/science.adr2915,Female lineages and changing kinship patterns in Neolithic Çatalhöyük,2025,Science,Eren Yüncü,2025-06-26,True,True,False,131
 10.1126/science.adr3326,Out-of-Anatolia: Cultural and genetic interactions during the Neolithic expansion in the Aegean,2025,Science,Dilek Koptekin,2025-06-26,False,False,False,30
 10.1038/s41467-025-60368-2,Ancient DNA reveals diverse community organizations in the 5th millennium BCE Carpathian Basin,2025,Nature Communications,Anna Szécsényi-Nagy,2025-06-24,False,True,False,125
@@ -197,7 +197,7 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1073/pnas.2120786119,Ancient DNA gives new insights into a Norman Neolithic monumental cemetery dedicated to male elites,2022,Proceedings of the National Academy of Sciences,Maïté Rivollat,2022-04-21,False,True,False,5
 10.1093/pnasnexus/pgac047,The genomic prehistory of the Indigenous peoples of Uruguay,2022,PNAS Nexus,John Lindo,2022-04-21,False,True,False,2
 10.1016/j.isci.2022.104244,Genomic and dietary discontinuities during the Mesolithic and Neolithic in Sicily,2022,iScience,He Yu,2022-04-12,True,True,False,20
-10.1016/j.cell.2022.03.007,Ancient genomes reveal origin and rapid trans-Eurasian migration of 7th century Avar elites,2022,Cell,Guido Alberto Gnecchi-Ruscone,2022-04-01,False,True,False,66
+10.1016/j.cell.2022.03.007,Ancient genomes reveal origin and rapid trans-Eurasian migration of 7th century Avar elites,2022,Cell,Guido Alberto Gnecchi-Ruscone,2022-04-01,True,True,False,66
 10.1126/science.abk1534,Bronze and Iron Age population movements underlie Xinjiang population history,2022,Science,Vikas Kumar,2022-03-31,True,True,False,202
 10.1038/s41467-022-29158-y,South-to-north migration preceded the advent of intensive farming in the Maya region,2022,Nature Communications,Douglas J. Kennett,2022-03-22,False,True,True,21
 10.1016/j.isci.2022.104094,Origin and mobility of Iron Age Gaulish groups in present-day France revealed through archaeogenomics,2022,iScience,Claire-Elise Fischer,2022-03-16,False,True,True,48
@@ -320,7 +320,7 @@ doi,title,year,journal,first_author,publication_date,community_archive,aadr_arch
 10.1038/s41467-018-08220-8,Ancient human genome-wide data from a 3000-year interval in the Caucasus corresponds with eco-geographic regions,2019,Nature Communications,Chuan-Chao Wang,2019-02-03,True,True,False,49
 10.1098/rspb.2018.2288,A western route of prehistoric human migration from Africa into the Iberian Peninsula,2019,Proceedings of the Royal Society B: Biological Sciences,G. González-Fortes,2019-01-23,True,True,False,4
 10.1126/sciadv.aau5064,Ancient nuclear genomes enable repatriation of Indigenous human remains,2018,Science Advances,Joanne L. Wright,2018-12-20,False,True,False,9
-10.1038/s41598-018-35667-y,Ancient DNA of Phoenician remains indicates discontinuity in the settlement history of Ibiza,2018,Scientific Reports,Pierre Zalloua,2018-11-28,False,True,False,1
+10.1038/s41598-018-35667-y,Ancient DNA of Phoenician remains indicates discontinuity in the settlement history of Ibiza,2018,Scientific Reports,Pierre Zalloua,2018-11-28,True,True,False,1
 10.1038/s41467-018-07483-5,Ancient Fennoscandian genomes reveal origin and spread of Siberian ancestry in Europe,2018,Nature Communications,Thiseas C. Lamnidis,2018-11-21,True,True,False,15
 10.1126/sciadv.aau4921,The genetic prehistory of the Andean highlands 7000 years BP though European contact,2018,Science Advances,John Lindo,2018-11-08,True,True,False,7
 10.1126/science.aav2621,Early human dispersals within the Americas,2018,Science,J. Víctor Moreno-Mayar,2018-11-08,True,True,False,17

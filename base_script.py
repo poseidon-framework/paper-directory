@@ -257,12 +257,11 @@ def generate_html(papers):
         <h1>aDNA Paper Directory</h1>
         <p>A list of ancient DNA papers, and their availability in the Poseidon archives.</p>
         
-        <!-- bubble chart begin -->
+        <!-- charts begin -->
         <hr>
-        <h6>Diachronic packed circle chart</h6>
         <script src="https://d3js.org/d3.v7.min.js"></script>
         <style>
-        #chart {
+        #chart, #barChart {
           width: 100%;
           height: 300px;
           display: block;
@@ -279,16 +278,21 @@ def generate_html(papers):
           color: #13171f;
         }
         </style>
+        <select id="chartMode">
+          <option value="bubble">Packed circle chart: aDNA Papers through time</option>
+          <option value="bars">Bar chart: Published ancient genomes per year</option>
+        </select>
         <select id="colorMode">
+          <option value="none">No archive selected</option>
           <option value="community_archive">&#128992 in Community Archive</option>
           <option value="aadr_archive">&#128992 in AADR Archive</option>
           <option value="minotaur_archive">&#128992 in Minotaur Archive</option>
-          <option value="none">No archive highlighted</option>
         </select>
         <svg id="chart"></svg>
+        <svg id="barChart" style="display: none;"></svg>
         <div class="tooltip" style="opacity:0"></div>
         <script src="chart.js"></script>
-        <!-- bubble chart end -->
+        <!-- charts end -->
         
         <hr>
         <h6>Searchable list</h6>
