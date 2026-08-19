@@ -9,6 +9,10 @@
         <style>
             table { width: 100%; border-collapse: collapse; }
             th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+            .last-updated {
+                font-size: 0.75em;
+                margin-top: -0.7rem;
+            }
         </style>
         <script>
             function filterTable() {
@@ -80,6 +84,7 @@
         
         <h1>aDNA Paper Directory</h1>
         <p>A list of ancient DNA papers, and their availability in the Poseidon archives.</p>
+        <p class="last-updated"> Last updated: <time datetime="2026-08-19 17:23 UTC">2026-08-19 17:23 UTC</time></p>
         
         <!-- charts begin -->
         <hr>
@@ -103,7 +108,7 @@
         }
         </style>
         <select id="chartMode">
-          <option value="bubble">Packed circle chart: Papers and number of genomes</option>
+          <option value="bubble">Packed circle chart: aDNA papers through time</option>
           <option value="bars">Bar chart: Published ancient genomes per year</option>
         </select>
         <select id="colorMode">

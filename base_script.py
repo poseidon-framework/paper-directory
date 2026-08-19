@@ -1,12 +1,11 @@
 import json
 import requests
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 import os
 import requests
 from jinja2 import Template
 from collections import defaultdict
-from datetime import datetime
 import csv
 
 def load_supplementary_metadata():
@@ -167,8 +166,11 @@ def check_for_duplicates(dois):
 
     return unique_dois_data  # Return unique dois
 
+# timestamp when the page was last generated
+last_updated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
 # Generate docs/index.html
-def generate_html(papers):
+def generate_html(papers, last_updated):
     print("Updating docs/index.html...")
     output_file = "docs/index.html"
     csv_file = "docs/paper_directory.csv"
@@ -185,6 +187,10 @@ def generate_html(papers):
         <style>
             table { width: 100%; border-collapse: collapse; }
             th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+            .last-updated {
+                font-size: 0.75em;
+                margin-top: -0.7rem;
+            }
         </style>
         <script>
             function filterTable() {
@@ -256,6 +262,7 @@ def generate_html(papers):
         
         <h1>aDNA Paper Directory</h1>
         <p>A list of ancient DNA papers, and their availability in the Poseidon archives.</p>
+        <p class="last-updated"> Last updated: <time datetime="{{ last_updated }}">{{ last_updated }}</time></p>
         
         <!-- charts begin -->
         <hr>
@@ -279,7 +286,7 @@ def generate_html(papers):
         }
         </style>
         <select id="chartMode">
-          <option value="bubble">Packed circle chart: aDNA Papers through time</option>
+          <option value="bubble">Packed circle chart: aDNA papers through time</option>
           <option value="bars">Bar chart: Published ancient genomes per year</option>
         </select>
         <select id="colorMode">
@@ -368,6 +375,7 @@ def generate_html(papers):
     template = Template(html_template)
     rendered_html = template.render(
         papers = papers,
+        last_updated = last_updated,
         csv_filename = os.path.basename(csv_file),
         stylesheet_filename = os.path.basename(stylesheet_file)
     )
@@ -434,5 +442,5 @@ papers = [{
 papers.sort(key=lambda x: x["date"], reverse=True)
 
 # Generate HTML report
-generate_html(papers)
+generate_html(papers, last_updated)
 
