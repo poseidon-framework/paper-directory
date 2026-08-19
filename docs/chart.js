@@ -133,11 +133,8 @@ d3.csv("paper_directory.csv", d3.autoType).then(data => {
 
 const barMargin = { left: 60, right: 50, top: 20, bottom: 40 };
 
-const barInnerWidth =
-  width - barMargin.left - barMargin.right;
-
-const barInnerHeight =
-  height - barMargin.top - barMargin.bottom;
+const barInnerWidth = width - barMargin.left - barMargin.right;
+const barInnerHeight = height - barMargin.top - barMargin.bottom;
 
 const barSvg = d3.select("#barChart")
   .attr("width", width)
@@ -163,18 +160,16 @@ d3.csv("paper_directory.csv", d3.autoType).then(barData => {
     d.minotaur_archive = d.minotaur_archive === true || d.minotaur_archive === "True";
   });
 
-  // exclude entries without a valid publication year.
+  // exclude entries without a valid publication year
   barData = barData.filter(d =>
     Number.isFinite(d.year) && d.year > 0
   );
 
   function renderBarChart(archiveMode) {
-    // redraw the chart whenever the selected archive changes.
+    // redraw the chart whenever the selected archive changes
     barG.selectAll("*").remove();
 
-    if (barData.length === 0) {
-      return;
-    }
+    if (barData.length === 0) { return; }
 
     const totalsByYear = d3.rollup(
       barData,
@@ -183,7 +178,6 @@ d3.csv("paper_directory.csv", d3.autoType).then(barData => {
           papers,
           d => d.nr_adna_samples
         );
-
         const archived = archiveMode === "none"
           ? 0
           : d3.sum(
@@ -192,7 +186,6 @@ d3.csv("paper_directory.csv", d3.autoType).then(barData => {
                 ? d.nr_adna_samples
                 : 0
             );
-
         return {
           total,
           archived,
@@ -214,7 +207,6 @@ d3.csv("paper_directory.csv", d3.autoType).then(barData => {
           archived: 0,
           notArchived: 0
         };
-
         return {
           year,
           ...totals
