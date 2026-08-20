@@ -3350,5 +3350,61 @@
     "date": "2026-07-03",
     "first_author": "Ayshin Ghalichi",
     "doi_link": "https://doi.org/10.1126/sciadv.aef0108"
+  },
+  "10.1038/s42003-026-10498-0": {
+    "title": "Ancestry, admixture, and pathogens in contemporaneous Neolithic farmers and foragers on the Island of Gotland",
+    "year": 2026,
+    "journal": "Communications Biology",
+    "date": "2026-07-13",
+    "first_author": "Magdalena Fraser",
+    "doi_link": "https://doi.org/10.1038/s42003-026-10498-0"
+  },
+  "10.3389/fgene.2026.1864752": {
+    "title": "Paleogenomic evidence for genetic heterogeneity and prior admixture in Gothic-associated communities of late antique Bulgaria",
+    "year": 2026,
+    "journal": "Frontiers in Genetics",
+    "date": "2026-07-23",
+    "first_author": "Svetoslav Stamov",
+    "doi_link": "https://doi.org/10.3389/fgene.2026.1864752"
+  },
+  "10.1016/j.cub.2026.06.046": {
+    "title": "Genetic continuity and dietary change during the emergence of millet farming in northern China",
+    "year": 2026,
+    "journal": "Current Biology",
+    "date": "2026-07-14",
+    "first_author": "Fan Zhang",
+    "doi_link": "https://doi.org/10.1016/j.cub.2026.06.046"
+  },
+  "10.1038/s41598-026-62891-8": {
+    "title": "Genomic insights into the Iron Age Saka of Boz-Barmak, Kyrgyzstan",
+    "year": 2026,
+    "journal": "Scientific Reports",
+    "date": "2026-07-20",
+    "first_author": "Aigerim Rymbekova",
+    "doi_link": "https://doi.org/10.1038/s41598-026-62891-8"
+  },
+  "10.1126/sciadv.aeb3636": {
+    "title": "Ancient genomes from Ladakh reveal 2800-year-old admixture between Tibetans and South Asians",
+    "year": 2026,
+    "journal": "Science Advances",
+    "date": "2026-07-24",
+    "first_author": "Nick Patterson",
+    "doi_link": "https://doi.org/10.1126/sciadv.aeb3636"
+  },
+  "10.1186/s13059-026-04214-8": {
+    "title": "Ancient genomics study reveals low HLA diversity in eastern hunter-gatherers",
+    "year": 2026,
+    "journal": "Genome Biology",
+    "date": "2026-07-29",
+    "first_author": "Onur Özer",
+    "doi_link": "https://doi.org/10.1186/s13059-026-04214-8"
+  },
+  "10.1126/sciadv.aea7469": {
+    "title": "Jomon genomics reveal cold adaptation in Upper Paleolithic hunter-gatherers of eastern Eurasia",
+    "year": 2026,
+    "journal": "Science Advances",
+    "date": "2026-08-12",
+    "first_author": "Yusuke Watanabe",
+    "doi_link": "https://doi.org/10.1126/sciadv.aea7469"
   }
 }
