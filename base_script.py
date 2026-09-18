@@ -1,4 +1,5 @@
 import json
+import re
 import requests
 import sys
 from datetime import datetime, timezone
@@ -165,6 +166,33 @@ def check_for_duplicates(dois):
         print("\nProceeding with a cleaned DOI list.\n")
 
     return unique_dois_data  # Return unique dois
+
+LIST_CSV_HEADER = ["doi", "nr_adna_samples"]
+DOI_RE = re.compile(r"^10\.\d{4,9}/\S+$")
+
+def validate_list_csv(csv_file):
+    # A stray character on the header line once silently dropped a column from
+    # every row, because csv.DictReader ignores unmatched columns instead of
+    # erroring out. Fail fast and loudly instead.
+    with open(csv_file, newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        header = next(reader, None)
+        if header != LIST_CSV_HEADER:
+            sys.exit(f"ERROR: unexpected {csv_file} header {header!r}, expected {LIST_CSV_HEADER!r}")
+
+        errors = []
+        for line_no, row in enumerate(reader, start=2):
+            if len(row) != len(LIST_CSV_HEADER):
+                errors.append(f"line {line_no}: expected {len(LIST_CSV_HEADER)} columns, got {len(row)}: {row!r}")
+                continue
+            doi, nr_samples = row
+            if not DOI_RE.match(preprocess_doi(doi)):
+                errors.append(f"line {line_no}: doi {doi!r} doesn't look like a valid DOI")
+            if not nr_samples.strip().isdigit():
+                errors.append(f"line {line_no}: nr_adna_samples {nr_samples!r} is not a non-negative integer")
+
+    if errors:
+        sys.exit(f"ERROR: {csv_file} failed validation:\n" + "\n".join(f"  - {e}" for e in errors))
 
 # timestamp when the page was last generated
 last_updated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -408,12 +436,11 @@ def generate_html(papers, last_updated):
     print(f"{csv_file} successfully created!")
 
 # Main Execution 
+validate_list_csv("list.csv")
+
 dois_data = []
 with open("list.csv", newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
-    expected_fields = ["doi", "nr_adna_samples"]
-    if reader.fieldnames != expected_fields:
-        sys.exit(f"ERROR: unexpected list.csv header {reader.fieldnames!r}, expected {expected_fields!r}")
     for row in reader:
         doi = preprocess_doi(row["doi"])
         nr_samples = row.get("nr_adna_samples", "").strip()
