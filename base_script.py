@@ -1,4 +1,5 @@
 import json
+import re
 import requests
 import sys
 from datetime import datetime, timezone
@@ -48,7 +49,7 @@ def get_crossref_metadata(doi, index, total):
 
     print(f"({index + 1} / {total}) Gathering metadata for {doi}")
 
-    #Initialize with supplementary.json 
+    #Initialize with supplementary.json
     metadata = SUPPLEMENTARY_METADATA.get(doi, {})
     metadata = {
         "title": metadata.get("title"),
@@ -115,7 +116,7 @@ def get_default_value(field):
     }
     return defaults.get(field, "N/A")
 
-# Fetch bibliography from Poseidon 
+# Fetch bibliography from Poseidon
 def fetch_poseidon_bibliography(archive_name):
     print(f"Fetching DOI data from {archive_name}...")
     url = f"http://server.poseidon-adna.org/bibliography?archive={archive_name}"
@@ -128,7 +129,7 @@ def fetch_poseidon_bibliography(archive_name):
     except ValueError as e:
         raise RuntimeError(f"Poseidon returned invalid JSON for {archive_name}: {e}") from e
 
-# Load all Poseidon bibliography data into a dictionary 
+# Load all Poseidon bibliography data into a dictionary
 def load_poseidon_doi_map():
     archives = ["community-archive", "minotaur-archive", "aadr-archive"]
     poseidon_doi_map = defaultdict(set)
@@ -144,7 +145,7 @@ def load_poseidon_doi_map():
 def preprocess_doi(doi):
     return doi.replace("https://doi.org/", "").strip().lower()
 
-# Check for duplicate DOIs 
+# Check for duplicate DOIs
 def check_for_duplicates(dois):
     seen = set()
     unique_dois_data = []
@@ -166,6 +167,30 @@ def check_for_duplicates(dois):
 
     return unique_dois_data  # Return unique dois
 
+LIST_CSV_HEADER = ["doi", "nr_adna_samples"]
+DOI_RE = re.compile(r"^10\.\d{4,9}/\S+$")
+
+def validate_list_csv(csv_file):
+    with open(csv_file, newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        header = next(reader, None)
+        if header != LIST_CSV_HEADER:
+            sys.exit(f"ERROR: unexpected {csv_file} header {header!r}, expected {LIST_CSV_HEADER!r}")
+
+        errors = []
+        for line_no, row in enumerate(reader, start=2):
+            if len(row) != len(LIST_CSV_HEADER):
+                errors.append(f"line {line_no}: expected {len(LIST_CSV_HEADER)} columns, got {len(row)}: {row!r}")
+                continue
+            doi, nr_samples = row
+            if not DOI_RE.match(preprocess_doi(doi)):
+                errors.append(f"line {line_no}: doi {doi!r} doesn't look like a valid DOI")
+            if not nr_samples.strip().isdigit():
+                errors.append(f"line {line_no}: nr_adna_samples {nr_samples!r} is not a non-negative integer")
+
+    if errors:
+        sys.exit(f"ERROR: {csv_file} failed validation:\n" + "\n".join(f"  - {e}" for e in errors))
+
 # timestamp when the page was last generated
 last_updated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
@@ -176,7 +201,7 @@ def generate_html(papers, last_updated):
     csv_file = "docs/paper_directory.csv"
     stylesheet_file = "docs/pico.classless.blue.min.css"
 
-    html_template = """ 
+    html_template = """
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -250,7 +275,7 @@ def generate_html(papers, last_updated):
     </head>
     <body>
       <main>
-      
+
         <nav>
           <ul><li><strong>Poseidon paper directory</strong></li></ul>
           <ul>
@@ -259,11 +284,11 @@ def generate_html(papers, last_updated):
             <li><a href="https://www.poseidon-adna.org">Poseidon?</a></li>
           </ul>
         </nav>
-        
+
         <h1>aDNA Paper Directory</h1>
         <p>A list of ancient DNA papers, and their availability in the Poseidon archives.</p>
         <p class="last-updated"> Last updated: <time datetime="{{ last_updated }}">{{ last_updated }}</time></p>
-        
+
         <!-- charts begin -->
         <hr>
         <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -300,10 +325,10 @@ def generate_html(papers, last_updated):
         <div class="tooltip" style="opacity:0"></div>
         <script src="chart.js"></script>
         <!-- charts end -->
-        
+
         <hr>
         <h6>Searchable list</h6>
-        
+
         <div>
             <details>
               <summary role="button">Filter by archive</summary>
@@ -360,18 +385,18 @@ def generate_html(papers, last_updated):
             </tr>
             {% endfor %}
         </table>
-        
+
         <footer style="border-top: 1px solid; padding: 1em; border-color: #727B8A;">
           <div style="float: right; font-size: 0.7em;">
             Built with <a href="https://picocss.com">pico CSS</a>
           </div>
         </footer>
-        
+
       </main>
     </body>
     </html>
     """
-    
+
     template = Template(html_template)
     rendered_html = template.render(
         papers = papers,
@@ -407,7 +432,9 @@ def generate_html(papers, last_updated):
             ])
     print(f"{csv_file} successfully created!")
 
-# Main Execution 
+# Main Execution
+validate_list_csv("list.csv")
+
 dois_data = []
 with open("list.csv", newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
@@ -443,4 +470,3 @@ papers.sort(key=lambda x: x["date"], reverse=True)
 
 # Generate HTML report
 generate_html(papers, last_updated)
-
