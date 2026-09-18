@@ -25,9 +25,7 @@ def validate(csv_file=CSV_FILE):
             return [f"{csv_file} is empty."]
 
         if header != EXPECTED_HEADER:
-            errors.append(
-                f"Unexpected header {header!r}, expected {EXPECTED_HEADER!r}. "
-            )
+            errors.append(f"Unexpected header {header!r}, expected {EXPECTED_HEADER!r}.")
             # Header is wrong: don't bother validating rows against it.
             return errors
 
