@@ -411,6 +411,9 @@ def generate_html(papers, last_updated):
 dois_data = []
 with open("list.csv", newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
+    expected_fields = ["doi", "nr_adna_samples"]
+    if reader.fieldnames != expected_fields:
+        sys.exit(f"ERROR: unexpected list.csv header {reader.fieldnames!r}, expected {expected_fields!r}")
     for row in reader:
         doi = preprocess_doi(row["doi"])
         nr_samples = row.get("nr_adna_samples", "").strip()

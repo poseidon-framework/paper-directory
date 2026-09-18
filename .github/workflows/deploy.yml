@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: pip install requests Jinja2
 
+      - name: Validate list.csv
+        run: python scripts/validate_list_csv.py
+
       - name: Run script to generate index.html
         run: python base_script.py
 
